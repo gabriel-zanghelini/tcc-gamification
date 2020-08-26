@@ -1,6 +1,5 @@
 import { observable, action, computed } from "mobx";
-
-import CurrentUser from "models/CurrentUser";
+import CurrentUser from "model/CurrentUser";
 
 class CurrentUserStore {
   @observable currentUser?: CurrentUser;
