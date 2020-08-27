@@ -1,0 +1,48 @@
+{
+  "menus": {
+    "home": "Início",
+    "dashboard": "Dashboard",
+    "scrollable": "Rolável",
+    "todos": "Tarefas",
+    "user": "Usuário"
+  },
+  "footer": {
+    "copyright": "© {{siteName}} - Desenvolvido por Depto. de Desenvolvimento e Aplicação de Produto - WMO"
+  },
+  "spinner": {
+    "loading": "Carregando..."
+  },
+  "login": {
+    "title": "Login",
+    "labels": {
+      "username": "Usuário",
+      "password": "Senha"
+    },
+    "button": "Entrar",
+    "error": {
+      "wrong_username": "Usuário Incorreto!",
+      "wrong_password": "Senha Incorreta!"
+    }
+  },
+  "user_card": {
+    "greeting": "Bem Vindo"
+  },
+  "user_drawer": {
+    "profile": "Perfil",
+    "personal_data": "Dados Pessoais",
+    "company_data": "Dados da Empresa",
+    "labels": {
+      "name": "Nome",
+      "login": "Login",
+      "email": "E-mail",
+      "phone": "Ramal",
+      "country": "País",
+      "city": "Cidade",
+      "company": "Empresa",
+      "division": "Divisão",
+      "department": "Departamento",
+      "section": "Seção",
+      "manager": "Chefe"
+    }
+  }
+}

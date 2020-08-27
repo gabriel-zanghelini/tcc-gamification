@@ -1,0 +1,14 @@
+:root {
+  --xs-pad: 5px;
+  --sm-pad: 10px;
+  --md-pad: 15px;
+  --lg-pad: 25px;
+  --xl-pad: 40px;
+
+  --h1-fs: 1.5em;
+  --h2-fs: 1.25em;
+  --h3-fs: 1em;
+
+  --main-white: white;
+  --black-highlight: rgba(0, 0, 0, 0.85);
+}

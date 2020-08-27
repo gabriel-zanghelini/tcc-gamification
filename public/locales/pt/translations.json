@@ -1,0 +1,47 @@
+{
+  "global": {
+    "department": "Depto. de Desenvolvimento e Aplicação de Produto",
+    "company": "WMO"
+  },
+  "common": {
+    "username": "usuário",
+    "password": "senha"
+  },
+  "buttons": {
+    "login": "Entrar",
+    "logout": "Sair"
+  },
+  "login_modaltitle": "Login",
+  "error": {
+    "wrong_username": "Login Incorreto",
+    "wrong_password": "Senha Incorreta"
+  },
+  "alert": {
+    "loading": "Carregando..."
+  },
+  "labels": {
+    "name": "Nome",
+    "login": "Login",
+    "email": "E-mail",
+    "company_phone": "Ramal",
+    "country": "País",
+    "city": "Cidade",
+    "company": "Empresa",
+    "division": "Divisão",
+    "department": "Departamento",
+    "section": "Seção",
+    "manager": "Líder"
+  },
+  "header": {
+    "welcome": "Bem Vindo",
+    "profile": "Perfil",
+    "personal_data": "Dados Pessoais",
+    "company_data": "Dados da Empresa"
+  },
+  "footer": "© {{name}} - Desenvolvido por $t(global.department) - $t(global.company)",
+  "menus": {
+    "home": "Home",
+    "menu2": "Menu Dois",
+    "menu3": "Menu Três"
+  }
+}

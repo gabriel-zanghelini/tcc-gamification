@@ -1,0 +1,48 @@
+{
+  "menus": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "scrollable": "Scrollable",
+    "todos": "Todos",
+    "user": "User"
+  },
+  "footer": {
+    "copyright": "© {{siteName}} - Developed by Product Development and Aplication Dept. - WMO"
+  },
+  "spinner": {
+    "loading": "Loading..."
+  },
+  "login": {
+    "title": "Login",
+    "labels": {
+      "username": "Username",
+      "password": "Password"
+    },
+    "button": "Log In",
+    "error": {
+      "wrong_username": "Wrong Username!",
+      "wrong_password": "Wrong Password!"
+    }
+  },
+  "user_card": {
+    "greeting": "Welcome"
+  },
+  "user_drawer": {
+    "profile": "Profile",
+    "personal_data": "Personal Data",
+    "company_data": "Company Data",
+    "labels": {
+      "name": "Name",
+      "login": "Login",
+      "email": "E-mail",
+      "phone": "Extension Line",
+      "country": "Country",
+      "city": "City",
+      "company": "Company",
+      "division": "Division",
+      "department": "Department",
+      "section": "Section",
+      "manager": "Manager"
+    }
+  }
+}

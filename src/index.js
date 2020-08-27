@@ -1,17 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import * as serviceWorker from './serviceWorker';
-import AppView from './views/AppView/AppView';
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom";
+
+import { BrowserRouter as Router } from "react-router-dom";
+
+import Spinner from "./components/Common/Spinner";
+import AppView from "./views/AppView";
+
+import "mobx-react/batchingForReactDom";
+
+import "./configs/language";
+import "./styles/global.css";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <AppView />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Router>
+    <Suspense fallback={<Spinner size="large" fixed />}>
+      <AppView />
+    </Suspense>
+  </Router>,
+  document.querySelector("#root")
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
