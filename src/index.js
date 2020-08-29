@@ -10,6 +10,7 @@ import "mobx-react/batchingForReactDom";
 
 import "./configs/language";
 import "./styles/global.css";
+import "./styles/custom-antd.css";
 
 ReactDOM.render(
   <Router>
