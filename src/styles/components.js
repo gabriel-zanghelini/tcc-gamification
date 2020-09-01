@@ -3,6 +3,8 @@ import { Tabs } from "antd";
 import styled from "@emotion/styled";
 
 export const ContentWrapper = styled.div`
+  width: ${({ width }) => (width ? width : "100%")};
+
   padding: var(--sm-pad);
 
   background: var(--main-white);
