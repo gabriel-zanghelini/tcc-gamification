@@ -1,4 +1,9 @@
-import { observable } from "mobx";
+import { observable, action } from "mobx";
+import axios from "axios";
+
+const fetcher = axios.create({
+	baseURL: "/api/user",
+  });
 
 class User {
 	@observable id = null;
@@ -14,6 +19,17 @@ class User {
 		this.password = user.password;
 		this.reputationPoints = user.reputationPoints;
 	}
+
+	@action
+	async getAll() {
+		try {
+			// TODO: move to API
+			
+		}
+		catch (e) {
+			return [];
+		}
+	};
 }
 
 export default User;
