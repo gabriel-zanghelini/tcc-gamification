@@ -6,7 +6,7 @@ import cryptoRandomString from "crypto-random-string";
 export const ENV = process.env.ENVIRONMENT || "DEV";
 
 export const PORT = 8080;
-export const HOST = "0.0.0.0";
+export const HOST = "192.168.100.69";
 
 const interfaces = os.networkInterfaces();
 
