@@ -17,4 +17,4 @@ async function connect() {
 	}
 }
 
-export default { pool, connect };
+export { pool, connect };

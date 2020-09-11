@@ -1,27 +1,28 @@
 import React from "react";
 
-import { Tabs, Layout, Typography, Input, Button } from "antd";
+import { Tabs, Typography } from "antd";
 import { ContentTabs, ContentWrapper } from "styles/components";
 import * as Styled from "./styled";
-import User from "model/User";
 import axios from "axios";
 
 const { Title, Text } = Typography;
 
 const fetcher = axios.create({
-  baseURL: "/api/user",
+  baseURL: "/api",
 });
 
-const HomeView = () => {
-  fetcher
-    .get("")
+const onClick = async () => {
+  await fetcher
+    .get("/user")
     .then(({ data }) => {
       console.table(data);
     })
     .catch((err) => {
       console.error("EROOOO", err);
     });
+};
 
+const HomeView = () => {
   return (
     <ContentTabs>
       <Tabs.TabPane tab="Projetos" key="projects" style={{ display: "flex" }}>
@@ -49,6 +50,7 @@ const HomeView = () => {
               icon="arrow-right"
               size={"large"}
               style={{ marginRight: "20%" }}
+              onClick={onClick}
             />
           </ContentWrapper>
         </ContentWrapper>

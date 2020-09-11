@@ -6,17 +6,13 @@ import { pool, connect } from "../../db/connection";
 
 export default function register(app) {
   app.get("/user", async (req, res) => {
+    console.log("CHEGOUUUUUUUUUUU");
     try {
       connect();
       const results = await pool.query("select id, name from tb_user");
       console.table(results.rows);
 
-      return (
-        res
-          .status(200)
-          // .set(headers)
-          .send(results.rows)
-      );
+      return res.status(200).send(results.rows);
     } catch (err) {
       if (err.response) {
         return res.status(err.response.status).send(err.response.data);
@@ -27,11 +23,11 @@ export default function register(app) {
   });
 
   // Examplessss:
-  // app.get("/objects/:id", async (req, res) => {
+  // app.get("/user/:id", async (req, res) => {
   //   const id = req.params.id;
 
   //   try {
-  //     const { status, data, headers } = await fetcher.get(id);
+  //     const { status, data, headers } = await pool.query("select id, name from tb_user");
   //     return res.status(status).set(headers).send(data);
   //   } catch (err) {
   //     if (err.response) {

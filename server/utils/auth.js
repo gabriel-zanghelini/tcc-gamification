@@ -31,7 +31,7 @@ export function permit(permissions) {
   if (typeof permissions === "string") permissions = [permissions];
 
   const guard = (req, res, next) => {
-    if (!req.user.permissions.some(perm => permissions.includes(perm)))
+    if (!req.user.permissions.some((perm) => permissions.includes(perm)))
       return res.sendStatus(401);
     next();
   };
