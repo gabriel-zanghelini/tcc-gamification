@@ -1,6 +1,7 @@
 import path from "path";
 
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import Express from "express";
 
 import api from "./api";
@@ -11,17 +12,19 @@ const app = Express();
 
 app.use(Express.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.use("/api", validate, api);
 
 app.use(Express.static(STATIC_PATH));
 app.get("*", (req, res) => res.sendFile(path.join(STATIC_PATH, "index.html")));
 
+console.log('SERVER INFO', PORT, HOST, IP, STATIC_PATH);
 console.log(`Starting the development server...
 `);
 app.listen(PORT, HOST, () =>
   console.log(`Compiled successfully!
-
+  
   You can now access your backend through http.
 
     Local:            http://localhost:${PORT}/

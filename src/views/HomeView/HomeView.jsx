@@ -8,12 +8,12 @@ import axios from "axios";
 const { Title, Text } = Typography;
 
 const fetcher = axios.create({
-  baseURL: "/api",
+  baseURL: "/user",
 });
 
 const onClick = async () => {
   await fetcher
-    .get("/user")
+    .get("")
     .then(({ data }) => {
       console.table(data);
     })

@@ -4,7 +4,7 @@ import { Button } from "antd";
 import { observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 
-// import LoginModal from "components/MainLayout/LoginModal";
+import LoginModal from "components/MainLayout/LoginModal";
 import UserCard from "components/MainLayout/UserCard";
 
 import APPLogo from 'assets/images/applogo.png';
@@ -23,18 +23,18 @@ const Header = () => {
   const openModal = () => {
     setModalVisible(true);
   };
-  // const closeModal = () => {
-  //   setModalVisible(false);
-  // };
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   return (
     <Styled.Header>
-      {/* <LoginModal
+      <LoginModal
         onOk={closeModal}
         onCancel={closeModal}
         visible={modalVisible}
         closable
-      /> */}
+      />
       <Styled.Content>
         <img src={APPLogo} alt="APPLogo" width={45} />
         <Styled.Title>{SITE_NAME}</Styled.Title>

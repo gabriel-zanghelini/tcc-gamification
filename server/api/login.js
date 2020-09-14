@@ -1,14 +1,43 @@
 import axios from "axios";
 import { titleCase } from "voca";
+import { pool } from "../../db/connection";
 
 import { createToken, authorize } from "../utils/auth";
 import { TOKEN_NAME } from "../utils/constants";
 
 const fetcher = axios.create({
-  baseURL: "http://10.0.36.217:5009/"
+  baseURL: "/api",
 });
 
 export default function register(app) {
+  app.post("/signup", async (req, res, next) => {
+    try {
+      const user = req.body;
+      console.log("BODY:", user);
+      pool.connect().then(async (client) => {
+        try {
+          const result = await client.query(
+            "insert into tb_user (name, email, password, reputation_points) values ($1, $2, $3, $4)",
+            [user.name, user.email, user.password, user.reputationPoints]
+          );
+          client.release();
+          console.table(result.rows);
+          return res.status(200).send(result.rows);
+        } catch (err) {
+          client.release();
+          console.log(err.stack);
+          throw err;
+        }
+      });
+    } catch (err) {
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.status(500).send(err);
+    }
+  });
+
   app.post("/login/credentials", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -25,7 +54,7 @@ export default function register(app) {
 
     try {
       const { data } = await fetcher.get("", {
-        params: { validate: b64 }
+        params: { validate: b64 },
       });
 
       if (typeof data === "string") {
@@ -51,13 +80,13 @@ export default function register(app) {
         department: data.department,
         section: data.section,
         manager: data.manager,
-        permissions: []
+        permissions: [],
       };
 
       return res
         .cookie(TOKEN_NAME, createToken(info), {
           httpOnly: true,
-          sameSite: true
+          sameSite: true,
         })
         .status(200)
         .send(info);
