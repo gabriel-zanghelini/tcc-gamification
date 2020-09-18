@@ -8,7 +8,7 @@ import axios from "axios";
 const { Title, Text } = Typography;
 
 const fetcher = axios.create({
-  baseURL: "/user",
+  baseURL: "/api/user",
 });
 
 const onClick = async () => {

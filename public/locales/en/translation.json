@@ -15,7 +15,7 @@
   "login": {
     "title": "Login",
     "labels": {
-      "username": "Username",
+      "email": "Email",
       "password": "Password"
     },
     "button": "Log In",

@@ -1,8 +1,50 @@
 import axios from "axios";
 
+import bcrypt from "bcrypt";
 import { permit } from "../utils/auth";
-
 import { pool } from "../../db/connection";
+
+export const getUserByEmail = async (email) => {
+  let user = null;
+  await pool.connect().then((client) => {
+    return client
+      .query(
+        "select id, name, email, password, reputation_points from tb_user where email = $1",
+        [email]
+      )
+      .then((result) => {
+        client.release();
+        user = result.rows[0];
+      })
+      .catch((err) => {
+        client.release();
+        console.log(err.stack);
+        throw err;
+      });
+  });
+
+  return user;
+};
+
+export const createUser = async (user) => {
+  await bcrypt.hash(user.password, 10).then((hash) => {
+    pool.connect().then(async (client) => {
+      try {
+        await client.query(
+          "insert into tb_user (name, email, password, reputation_points) values ($1, $2, $3, $4)",
+          [user.name, user.email, hash, user.reputationPoints]
+        );
+        client.release();
+      } catch (err) {
+        client.release();
+        // console.log(err.stack);
+        throw err;
+      }
+    });
+  });
+
+  return 1;
+};
 
 export default function register(app) {
   app.get("/user", async (req, res) => {
@@ -34,24 +76,9 @@ export default function register(app) {
   app.get("/user/email/:email", async (req, res) => {
     try {
       const email = req.params.email;
-      console.log(email);
-
-      pool.connect().then((client) => {
-        return client
-          .query("select count(email) from tb_user where email = $1", [email]) // your query string here
-          .then((result) => {
-            client.release();
-            console.log(result.rows[0]); // your callback here
-            let emailInUse = result.rows[0].count !== "0";
-
-            return res.json({ emailInUse: emailInUse, email: email });
-          })
-          .catch((err) => {
-            client.release();
-            console.log(err.stack); // your callback here
-            throw err;
-          });
-      });
+      let user = await getUserByEmail(email);
+      
+      return res.json({ user: user });
     } catch (err) {
       if (err.response) {
         return res.status(err.response.status).send(err.response.data);

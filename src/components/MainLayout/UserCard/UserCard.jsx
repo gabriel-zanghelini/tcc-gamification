@@ -16,15 +16,19 @@ const UserCard = () => {
   const { currentUser } = CurrentUserStore;
 
   const [drawerVisible, setDrawerVisible] = useState(false);
-
+  console.log(currentUser);
   return (
     <>
       <Styled.CardButton type="primary" onClick={() => setDrawerVisible(true)}>
         <span>
           <strong>{t("user_card.greeting")}, </strong>
-          {currentUser.fullName}
+          {currentUser.name}
         </span>
-        <Avatar icon="user" src={currentUser.picture} />
+        <Avatar
+          style={{ backgroundColor: "#7265e6", verticalAlign: "middle" }}
+          size="large"
+          children={currentUser.name}
+        />
       </Styled.CardButton>
       <UserDrawer
         visible={drawerVisible}

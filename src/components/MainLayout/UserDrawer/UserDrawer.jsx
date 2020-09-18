@@ -30,7 +30,7 @@ const UserDrawer = ({ visible, onClose }) => {
       <Styled.Division>
         <Entry
           label={t("user_drawer.labels.name")}
-          value={currentUser.fullName}
+          value={currentUser.name}
         />
         <Entry
           label={t("user_drawer.labels.login")}

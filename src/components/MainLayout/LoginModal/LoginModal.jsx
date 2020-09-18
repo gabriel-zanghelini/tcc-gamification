@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import CurrentUserStore from "stores/CurrentUserStore";
 
 const fetcher = axios.create({
-  baseURL: "/api/login",
+  baseURL: "/api",
 });
 
 const LoginModal = ({ onOk, ...props }) => {
@@ -16,7 +16,7 @@ const LoginModal = ({ onOk, ...props }) => {
 
   const [loading, setLoading] = useState(false);
   const formState = useLocalStore(() => ({
-    username: {
+    email: {
       value: "",
       error: null,
       dirty: false,
@@ -29,14 +29,15 @@ const LoginModal = ({ onOk, ...props }) => {
   }));
 
   const cleanForm = () => {
-    formState.username.error = null;
-    formState.username.dirty = false;
+    formState.email.error = null;
+    formState.email.dirty = false;
 
     formState.password.error = null;
     formState.password.dirty = false;
   };
 
   const onLogin = (user) => {
+    console.log(user);
     CurrentUserStore.setUser(user);
     setLoading(false);
     onOk();
@@ -46,19 +47,19 @@ const LoginModal = ({ onOk, ...props }) => {
     setLoading(true);
     cleanForm();
     try {
-      const { data } = await fetcher.post("credentials", {
-        username: formState.username.value,
+      const { user } = await fetcher.post("login", {
+        email: formState.email.value,
         password: formState.password.value,
       });
-      onLogin(data);
+      onLogin(user);
     } catch ({ response }) {
       setLoading(false);
       switch (response.data) {
         case "Incorrect Password":
           formState.password.error = "login.error.wrong_password";
           break;
-        case "Incorrect Username":
-          formState.password.error = "login.error.wrong_username";
+        case "Incorrect Email":
+          formState.password.error = "login.error.wrong_email";
           break;
         default:
       }
@@ -68,7 +69,7 @@ const LoginModal = ({ onOk, ...props }) => {
   useEffect(() => {
     setLoading(true);
     fetcher
-      .get("token")
+      .get("login/token")
       .then(({ data }) => onLogin(data))
       .catch(() => setLoading(false));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -92,10 +93,10 @@ const LoginModal = ({ onOk, ...props }) => {
     >
       <FormInput
         formState={formState}
-        name="username"
+        name="email"
         icon="user"
-        type="username"
-        placeholder={t("login.labels.username")}
+        type="email"
+        placeholder={t("login.labels.email")}
       />
       <FormInput
         formState={formState}
