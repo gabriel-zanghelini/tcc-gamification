@@ -23,59 +23,30 @@ const UserDrawer = ({ visible, onClose }) => {
     >
       <Styled.Title>{t("user_drawer.profile")}</Styled.Title>
       <Styled.Avatar>
-        <Avatar size={128} icon={"user"} src={currentUser.picture} />
+        <Avatar
+          size={128}
+          style={{ backgroundColor: "#7265e6", verticalAlign: "middle" }}
+          children={currentUser.name?.charAt(0)}
+        />
       </Styled.Avatar>
       <Divider />
       <Styled.SubTitle>{t("user_drawer.personal_data")}</Styled.SubTitle>
       <Styled.Division>
-        <Entry
-          label={t("user_drawer.labels.name")}
-          value={currentUser.name}
-        />
-        <Entry
-          label={t("user_drawer.labels.login")}
-          value={currentUser.login}
-        />
+        <Entry label={t("user_drawer.labels.name")} value={currentUser.name} />
         <Entry
           label={t("user_drawer.labels.email")}
           value={currentUser.email}
         />
         <Entry
-          label={t("user_drawer.labels.phone")}
-          value={currentUser.phone}
+          label={t("user_drawer.labels.reputation_points")}
+          value={currentUser.reputationPoints}
         />
-        <Entry
-          label={t("user_drawer.labels.country")}
-          value={currentUser.country}
-        />
-        <Entry label={t("user_drawer.labels.city")} value={currentUser.city} />
       </Styled.Division>
 
       <Divider />
-      <Styled.SubTitle>{t("user_drawer.company_data")}</Styled.SubTitle>
+      <Styled.SubTitle>{t("user_drawer.team_data")}</Styled.SubTitle>
       <Styled.Division>
-        <Entry
-          label={t("user_drawer.labels.company")}
-          value={currentUser.company}
-        />
-        <Entry
-          label={t("user_drawer.labels.division")}
-          value={currentUser.division}
-        />
-        <Entry
-          label={t("user_drawer.labels.department")}
-          value={currentUser.department}
-          span={2}
-        />
-        <Entry
-          label={t("user_drawer.labels.section")}
-          value={currentUser.section}
-          span={2}
-        />
-        <Entry
-          label={t("user_drawer.labels.manager")}
-          value={currentUser.manager}
-        />
+        <Entry label={t("user_drawer.labels.team_name")} value={""} />
       </Styled.Division>
 
       <Divider />

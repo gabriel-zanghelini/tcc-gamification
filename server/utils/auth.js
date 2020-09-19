@@ -17,7 +17,7 @@ export function verifyToken(token) {
 export function validate(req, res, next) {
   const token = req.cookies[TOKEN_NAME];
   const { success, data } = verifyToken(token);
-  console.log('VALIDATE', success, data);
+  console.log('validate jwt', success);
   if (success) req.user = data;
   else res.clearCookie(TOKEN_NAME);
   next();

@@ -12,11 +12,9 @@ import * as Styled from "./styled";
 
 const UserCard = () => {
   const { t } = useTranslation();
-
   const { currentUser } = CurrentUserStore;
-
   const [drawerVisible, setDrawerVisible] = useState(false);
-  console.log(currentUser);
+
   return (
     <>
       <Styled.CardButton type="primary" onClick={() => setDrawerVisible(true)}>
@@ -27,7 +25,7 @@ const UserCard = () => {
         <Avatar
           style={{ backgroundColor: "#7265e6", verticalAlign: "middle" }}
           size="large"
-          children={currentUser.name}
+          children={currentUser.name?.charAt(0)}
         />
       </Styled.CardButton>
       <UserDrawer

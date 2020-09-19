@@ -37,7 +37,7 @@ const LoginModal = ({ onOk, ...props }) => {
   };
 
   const onLogin = (user) => {
-    console.log(user);
+    console.log("onLogin", user);
     CurrentUserStore.setUser(user);
     setLoading(false);
     onOk();
@@ -47,11 +47,15 @@ const LoginModal = ({ onOk, ...props }) => {
     setLoading(true);
     cleanForm();
     try {
-      const { user } = await fetcher.post("login", {
-        email: formState.email.value,
-        password: formState.password.value,
-      });
-      onLogin(user);
+      await fetcher
+        .post("login", {
+          email: formState.email.value,
+          password: formState.password.value,
+        })
+        .then(({ user }) => {
+          console.log(user);
+          onLogin(user);
+        });
     } catch ({ response }) {
       setLoading(false);
       switch (response.data) {
@@ -74,11 +78,13 @@ const LoginModal = ({ onOk, ...props }) => {
       .catch(() => setLoading(false));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  //  height: ${({ height }) => (height ? height : "100%")};
   return (
     <Modal
       title={t("login.title")}
       closable
       centered
+      width="60%"
       {...props}
       footer={
         <Button
@@ -91,20 +97,40 @@ const LoginModal = ({ onOk, ...props }) => {
         </Button>
       }
     >
-      <FormInput
-        formState={formState}
-        name="email"
-        icon="user"
-        type="email"
-        placeholder={t("login.labels.email")}
-      />
-      <FormInput
-        formState={formState}
-        name="password"
-        icon="lock"
-        type="password"
-        placeholder={t("login.labels.password")}
-      />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ width: "48%" }}>
+          <FormInput
+            formState={formState}
+            name="email"
+            icon="user"
+            type="email"
+            placeholder={t("login.labels.email")}
+          />
+          <FormInput
+            formState={formState}
+            name="password"
+            icon="lock"
+            type="password"
+            placeholder={t("login.labels.password")}
+          />
+        </div>
+        <div style={{ width: "48%" }}>
+          <FormInput
+            formState={formState}
+            name="email"
+            icon="user"
+            type="email"
+            placeholder={t("login.labels.email")}
+          />
+          <FormInput
+            formState={formState}
+            name="password"
+            icon="lock"
+            type="password"
+            placeholder={t("login.labels.password")}
+          />
+        </div>
+      </div>
     </Modal>
   );
 };

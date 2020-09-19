@@ -7,13 +7,13 @@
     "user": "Usuário"
   },
   "footer": {
-    "copyright": "© {{siteName}} - Desenvolvido por Depto. de Desenvolvimento e Aplicação de Produto - WMO"
+    "copyright": "© {{siteName}}"
   },
   "spinner": {
     "loading": "Carregando..."
   },
   "login": {
-    "title": "Login",
+    "title": "Bem Vindo",
     "labels": {
       "email": "Email",
       "password": "Senha"
@@ -30,19 +30,11 @@
   "user_drawer": {
     "profile": "Perfil",
     "personal_data": "Dados Pessoais",
-    "company_data": "Dados da Empresa",
+    "team_data": "Dados da Equipe",
     "labels": {
       "name": "Nome",
-      "login": "Login",
       "email": "E-mail",
-      "phone": "Ramal",
-      "country": "País",
-      "city": "Cidade",
-      "company": "Empresa",
-      "division": "Divisão",
-      "department": "Departamento",
-      "section": "Seção",
-      "manager": "Chefe"
+      "reputation_points": "Reputação"
     }
   }
 }

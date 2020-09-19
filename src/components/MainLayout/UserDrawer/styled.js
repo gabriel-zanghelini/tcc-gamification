@@ -22,7 +22,7 @@ export const Division = styled.div`
 `;
 
 export const Entry = styled.div`
-  grid-column: span ${({ span }) => span || 1};
+  grid-column: span ${({ span }) => span || 2};
 `;
 
 export const Label = styled.span`

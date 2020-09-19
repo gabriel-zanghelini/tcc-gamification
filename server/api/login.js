@@ -4,7 +4,7 @@ import { pool } from "../../db/connection";
 import bcrypt from "bcrypt";
 
 import { createToken, authorize } from "../utils/auth";
-import { TOKEN_NAME } from "../utils/constants";
+import { ENV, TOKEN_NAME } from "../utils/constants";
 
 import { getUserByEmail, createUser } from "./user";
 
@@ -31,8 +31,22 @@ export default function register(app) {
 
       bcrypt.compare(authData.password, user.password).then((result) => {
         if (result) {
-          console.log("Login Successful");
-          return res.status(200).send({ message: "Login Successful", user });
+          let userInfo = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            reputationPoints: user.reputation_points,
+          };
+
+          return res
+            .cookie(TOKEN_NAME, createToken(userInfo), {
+              httpOnly: true,
+              sameSite: true,
+              secure: ENV !== "DEV",
+              // signed: true,
+            })
+            .status(200)
+            .send(userInfo);
         } else {
           return res.status(401).send("Incorrect Password");
         }
