@@ -32,7 +32,7 @@ export const createUser = async (user) => {
       try {
         await client.query(
           "insert into tb_user (name, email, password, reputation_points) values ($1, $2, $3, $4)",
-          [user.name, user.email, hash, user.reputationPoints]
+          [user.name, user.email, hash, 0]
         );
         client.release();
       } catch (err) {
@@ -77,7 +77,7 @@ export default function register(app) {
     try {
       const email = req.params.email;
       let user = await getUserByEmail(email);
-      
+
       return res.json({ user: user });
     } catch (err) {
       if (err.response) {

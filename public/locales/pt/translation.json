@@ -13,7 +13,9 @@
     "loading": "Carregando..."
   },
   "login": {
-    "title": "Bem Vindo",
+    "title": "Autenticação",
+    "sign_in": "Já possui conta? Entre",
+    "sign_up": "Crie sua conta",
     "labels": {
       "email": "Email",
       "password": "Senha"
