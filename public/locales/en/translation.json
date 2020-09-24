@@ -17,13 +17,16 @@
     "sign_in": "Already have an account? Sign In",
     "sign_up": "Create your account",
     "labels": {
+      "name": "Name",
       "email": "Email",
       "password": "Password"
     },
     "button": "Log In",
     "error": {
       "wrong_username": "Wrong Username!",
-      "wrong_password": "Wrong Password!"
+      "wrong_password": "Wrong Password!",
+      "email_in_use": "Email already in use!",
+      "email_not_found": "Email not found!"
     }
   },
   "user_card": {

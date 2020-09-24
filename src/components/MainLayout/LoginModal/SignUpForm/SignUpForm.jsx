@@ -4,7 +4,7 @@ import { useLocalStore, observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 
 import CurrentUserStore from "stores/CurrentUserStore";
-import { FormInput } from "../FormInput.jsx/FormInput";
+import { FormInput } from "../FormInput/FormInput";
 import axios from "axios";
 
 const { Title } = Typography;
@@ -56,15 +56,15 @@ const SignUpForm = ({ onOk }) => {
           email: formState.email.value,
           password: formState.password.value,
         })
-        .then(({ user }) => {
-          console.log(user);
-          onLogin(user);
+        .then(({ data }) => {
+          console.log(data);
+          onLogin(data);
         });
     } catch ({ response }) {
       setLoading(false);
       switch (response.data) {
         case "Email Already In Use":
-          formState.password.error = "login.error.wrong_email";
+          formState.email.error = "login.error.email_in_use";
           break;
         default:
       }
@@ -79,12 +79,19 @@ const SignUpForm = ({ onOk }) => {
   };
 
   return (
-    <div style={{ width: "45%", marginRight: "48px" }}>
-      <Title level={4}>{t("login.sign_in")}</Title>
+    <div style={{ width: "45%", margin: "0 48px 0 48px" }}>
+      <Title level={4}>{t("login.sign_up")}</Title>
+      <FormInput
+        formState={formState}
+        name="name"
+        icon="user"
+        type="name"
+        placeholder={t("login.labels.name")}
+      />
       <FormInput
         formState={formState}
         name="email"
-        icon="user"
+        icon="mail"
         type="email"
         placeholder={t("login.labels.email")}
       />

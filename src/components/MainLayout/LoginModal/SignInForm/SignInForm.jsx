@@ -4,7 +4,7 @@ import { useLocalStore, observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 
 import CurrentUserStore from "stores/CurrentUserStore";
-import { FormInput } from "../FormInput.jsx/FormInput";
+import { FormInput } from "../FormInput/FormInput";
 import axios from "axios";
 
 const { Title } = Typography;
@@ -30,14 +30,6 @@ const SignInForm = ({ onOk }) => {
     },
   }));
 
-  useEffect(() => {
-    setLoading(true);
-    fetcher
-      .get("login/token")
-      .then(({ data }) => onLogin(data))
-      .catch(() => setLoading(false));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
   const cleanForm = () => {
     formState.email.error = null;
     formState.email.dirty = false;
@@ -55,9 +47,9 @@ const SignInForm = ({ onOk }) => {
           email: formState.email.value,
           password: formState.password.value,
         })
-        .then(({ user }) => {
-          console.log(user);
-          onLogin(user);
+        .then(({ data }) => {
+          console.log(data);
+          onLogin(data);
         });
     } catch ({ response }) {
       setLoading(false);
@@ -67,6 +59,9 @@ const SignInForm = ({ onOk }) => {
           break;
         case "Incorrect Email":
           formState.password.error = "login.error.wrong_email";
+          break;
+        case "Email Not Found":
+          formState.email.error = "login.error.email_not_found";
           break;
         default:
       }
@@ -81,7 +76,7 @@ const SignInForm = ({ onOk }) => {
   };
 
   return (
-    <div style={{ width: "45%", marginRight: "48px" }}>
+    <div style={{ width: "45%", margin: "0 48px 0 48px" }}>
       <Title level={4}>{t("login.sign_in")}</Title>
       <FormInput
         formState={formState}

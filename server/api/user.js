@@ -27,23 +27,33 @@ export const getUserByEmail = async (email) => {
 };
 
 export const createUser = async (user) => {
-  await bcrypt.hash(user.password, 10).then((hash) => {
-    pool.connect().then(async (client) => {
-      try {
-        await client.query(
-          "insert into tb_user (name, email, password, reputation_points) values ($1, $2, $3, $4)",
-          [user.name, user.email, hash, 0]
-        );
-        client.release();
-      } catch (err) {
-        client.release();
-        // console.log(err.stack);
+  let userResult = null;
+
+  await bcrypt.hash(user.password, 10).then(async (hash) => {
+    await pool
+      .connect()
+      .then(async (client) => {
+        await client
+          .query(
+            "insert into tb_user (name, email, password, reputation_points) values ($1, $2, $3, $4) returning *",
+            [user.name, user.email, hash, 0]
+          )
+          .then((result) => {
+            client.release();
+            userResult = result.rows[0];
+          })
+          .catch((err) => {
+            client.release();
+            throw err;
+          });
+      })
+      .catch((err) => {
+        console.log(err.stack);
         throw err;
-      }
-    });
+      });
   });
 
-  return 1;
+  return userResult;
 };
 
 export default function register(app) {

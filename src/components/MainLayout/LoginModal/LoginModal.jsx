@@ -1,42 +1,27 @@
 import React from "react";
 
-import { Modal } from "antd";
+import { Divider, Modal } from "antd";
 import { observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 import SignInForm from "./SignInForm";
+import SignUpForm from "./SignUpForm";
 
 const LoginModal = ({ onOk, ...props }) => {
   const { t } = useTranslation();
 
-  //  height: ${({ height }) => (height ? height : "100%")};
   return (
     <Modal
       title={t("login.title")}
       closable
       centered
-      width="40%"
+      width="50%"
       {...props}
       footer={null}
     >
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center", paddingBottom: "24px" }}>
         <SignInForm onOk={onOk} />
-        {/* <div style={{ width: "45%" }}>
-          <Title level={4}>{t("login.sign_up")}</Title>
-          <FormInput
-            formState={loginFormState}
-            name="email"
-            icon="user"
-            type="email"
-            placeholder={t("login.labels.email")}
-          />
-          <FormInput
-            formState={loginFormState}
-            name="password"
-            icon="lock"
-            type="password"
-            placeholder={t("login.labels.password")}
-          />
-        </div> */}
+        <Divider style={{ height: "15em", marginTop: "24px" }} type="vertical" />
+        <SignUpForm onOk={onOk} />
       </div>
     </Modal>
   );

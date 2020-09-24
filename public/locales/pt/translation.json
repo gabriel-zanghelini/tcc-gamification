@@ -17,13 +17,16 @@
     "sign_in": "Já possui conta? Entre",
     "sign_up": "Crie sua conta",
     "labels": {
+      "name": "Nome",
       "email": "Email",
       "password": "Senha"
     },
     "button": "Entrar",
     "error": {
       "wrong_username": "Usuário Incorreto!",
-      "wrong_password": "Senha Incorreta!"
+      "wrong_password": "Senha Incorreta!",
+      "email_in_use": "Email já está em uso!",
+      "email_not_found": "Email não encontrado!"
     }
   },
   "user_card": {
