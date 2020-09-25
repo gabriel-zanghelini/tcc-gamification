@@ -58,16 +58,16 @@ export default function register(app) {
     try {
       pool.connect().then((client) => {
         return client
-          .query("select id, name from tb_user") // your query string here
+          .query("select id, name from tb_user") 
           .then((result) => {
             client.release();
-            console.table(result.rows); // your callback here
+            console.table(result.rows);
 
             return res.status(200).send(result.rows);
           })
           .catch((err) => {
             client.release();
-            console.log(err.stack); // your callback here
+            console.log(err.stack);
             throw err;
           });
       });
