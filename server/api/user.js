@@ -1,7 +1,4 @@
-import axios from "axios";
-
 import bcrypt from "bcrypt";
-import { permit } from "../utils/auth";
 import { pool } from "../../db/connection";
 
 export const getUserByEmail = async (email) => {
@@ -97,50 +94,4 @@ export default function register(app) {
       return res.sendStatus(500);
     }
   });
-
-  // Examplessss:
-  // app.get("/user/:id", async (req, res) => {
-  //   const id = req.params.id;
-
-  //   try {
-  //     const { status, data, headers } = await pool.query("select id, name from tb_user");
-  //     return res.status(status).set(headers).send(data);
-  //   } catch (err) {
-  //     if (err.response) {
-  //       return res.status(err.response.status).send(err.response.data);
-  //     }
-
-  //     return res.sendStatus(500);
-  //   }
-  // });
-
-  // app.post("/objects", async (req, res) => {
-  //   const body = req.body;
-
-  //   try {
-  //     const { status, data, headers } = await fetcher.post("", body);
-  //     return res.status(status).set(headers).send(data);
-  //   } catch (err) {
-  //     if (err.response) {
-  //       return res.status(err.response.status).send(err.response.data);
-  //     }
-
-  //     return res.sendStatus(500);
-  //   }
-  // });
-
-  // app.delete("/objects/:id", permit("WRITE"), async (req, res) => {
-  //   const id = req.params.id;
-
-  //   try {
-  //     const { status, data, headers } = await fetcher.delete(id);
-  //     return res.status(status).set(headers).send(data);
-  //   } catch (err) {
-  //     if (err.response) {
-  //       return res.status(err.response.status).send(err.response.data);
-  //     }
-
-  //     return res.sendStatus(500);
-  //   }
-  // });
 }
