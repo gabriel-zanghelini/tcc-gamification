@@ -1,19 +1,19 @@
 import { pool } from "../../db/connection";
 
-const createProject = async (project) => {
-  let projectResult = null;
+const createTask = async (task) => {
+  let taskResult = null;
 
   await pool
     .connect()
     .then(async (client) => {
       await client
         .query(
-          "insert into tb_project (description, leader_id, team_id) values ($1, $2, $3) returning *",
-          [project.description, project.leader_id, 0]
+          "insert into tb_task (description, status, difficulty, points_rewarded) values ($1, $2, $3, $4) returning *",
+          [task.description, task.status, task.difficulty, task.points_rewarded]
         )
         .then((result) => {
           client.release();
-          projectResult = result.rows[0];
+          taskResult = result.rows[0];
         })
         .catch((err) => {
           client.release();
@@ -25,17 +25,18 @@ const createProject = async (project) => {
       throw err;
     });
 
-  return projectResult;
+  return taskResult;
 };
 
-const updateProject = async (project) => {
+//TODO: refatorar pra task
+const updateTask = async (task) => {
   await pool
     .connect()
     .then(async (client) => {
       await client
         .query(
-          "update tb_project set description=$1, leader_id=$2, team_id=$3 where id=$4",
-          [project.description, project.leader_id, project.team_id, project.id]
+          "update tb_task set description=$1, leader_id=$2, team_id=$3 where id=$4",
+          [task.description, task.leader_id, task.team_id, task.id]
         )
         .then((result) => {
           client.release();
@@ -51,12 +52,12 @@ const updateProject = async (project) => {
     });
 };
 
-const deleteProject = async (id) => {
+const deleteTask = async (id) => {
   await pool
     .connect()
     .then(async (client) => {
       await client
-        .query("delete from tb_project where id=$1", [id])
+        .query("delete from tb_task where id=$1", [id])
         .then((result) => {
           client.release();
         })
@@ -72,11 +73,11 @@ const deleteProject = async (id) => {
 };
 
 export default function register(app) {
-  app.get("/project", async (req, res) => {
+  app.get("/task", async (req, res) => {
     try {
       pool.connect().then((client) => {
         return client
-          .query("select * from tb_project")
+          .query("select * from tb_task")
           .then((result) => {
             client.release();
             // console.table(result.rows);
@@ -98,28 +99,28 @@ export default function register(app) {
     }
   });
 
-  app.post("/project", async (req, res) => {
+  app.post("/task", async (req, res) => {
     try {
-      const project = req.body;
-      let { id } = await createProject(project);
+      const task = req.body;
+      let { id } = await createTask(task);
 
-      let projectInfo = {
+      let taskInfo = {
         id: id,
-        description: project.description,
-        team_id: project.team_id, //TODO: get team by ID
-        leader_id: project.leader_id, //TODO: get leader
+        description: task.description,
+        team_id: task.team_id, //TODO: get team by ID
+        leader_id: task.leader_id, //TODO: get leader
       };
 
-      return res.status(200).send(projectInfo);
+      return res.status(200).send(taskInfo);
     } catch (err) {
       throw err;
     }
   });
 
-  app.put("/project", async (req, res) => {
+  app.put("/task", async (req, res) => {
     try {
-      const project = req.body;
-      await updateProject(project);
+      const task = req.body;
+      await updateTask(task);
 
       return res.sendStatus(200);
     } catch (err) {
@@ -127,10 +128,10 @@ export default function register(app) {
     }
   });
 
-  app.delete("/project/:id", async (req, res) => {
+  app.delete("/task/:id", async (req, res) => {
     try {
       const id = req.params.id;
-      await deleteProject(id);
+      await deleteTask(id);
 
       return res.sendStatus(200);
     } catch (err) {
