@@ -1,19 +1,19 @@
 import { pool } from "../../db/connection";
 
-const createTask = async (task) => {
-  let taskResult = null;
+const createAction = async (action) => {
+  let actionResult = null;
 
   await pool
     .connect()
     .then(async (client) => {
       await client
         .query(
-          "insert into tb_task (description, status, difficulty, points_rewarded) values ($1, $2, $3, $4) returning *",
-          [task.description, task.status, task.difficulty, task.points_rewarded]
+          "insert into tb_action (description, points_awarded, points_required) values ($1, $2, $3) returning *",
+          [action.description, action.points_awarded, action.points_required]
         )
         .then((result) => {
           client.release();
-          taskResult = result.rows[0];
+          actionResult = result.rows[0];
         })
         .catch((err) => {
           client.release();
@@ -25,22 +25,21 @@ const createTask = async (task) => {
       throw err;
     });
 
-  return taskResult;
+  return actionResult;
 };
 
-const updateTask = async (task) => {
+const updateAction = async (action) => {
   await pool
     .connect()
     .then(async (client) => {
       await client
         .query(
-          "update tb_task set description=$1, status=$2, difficulty=$3, points_rewarded=$4 where id=$5",
+          "update tb_action set description=$1, points_awarded=$2, points_required=$3 where id=$3",
           [
-            task.description,
-            task.status,
-            task.difficulty,
-            task.points_rewarded,
-            task.id,
+            action.description,
+            action.points_awarded,
+            action.points_required,
+            action.id,
           ]
         )
         .then((result) => {
@@ -57,12 +56,12 @@ const updateTask = async (task) => {
     });
 };
 
-const deleteTask = async (id) => {
+const deleteAction = async (id) => {
   await pool
     .connect()
     .then(async (client) => {
       await client
-        .query("delete from tb_task where id=$1", [id])
+        .query("delete from tb_action where id=$1", [id])
         .then((result) => {
           client.release();
         })
@@ -78,11 +77,11 @@ const deleteTask = async (id) => {
 };
 
 export default function register(app) {
-  app.get("/task", async (req, res) => {
+  app.get("/action", async (req, res) => {
     try {
       pool.connect().then((client) => {
         return client
-          .query("select * from tb_task")
+          .query("select * from tb_action")
           .then((result) => {
             client.release();
             // console.table(result.rows);
@@ -104,29 +103,29 @@ export default function register(app) {
     }
   });
 
-  app.post("/task", async (req, res) => {
+  app.post("/action", async (req, res) => {
     try {
-      const task = req.body;
-      let { id } = await createTask(task);
+      const action = req.body;
+      let { id } = await createAction(action);
 
-      let taskInfo = {
+      let actionInfo = {
         id: id,
-        description: task.description,
-        status: task.status, 
-        difficulty: task.difficulty, 
-        points_rewarded: task.points_rewarded
+        description: action.description,
+        status: action.status, 
+        difficulty: action.difficulty, 
+        points_rewarded: action.points_rewarded
       };
 
-      return res.status(200).send(taskInfo);
+      return res.status(200).send(actionInfo);
     } catch (err) {
       throw err;
     }
   });
 
-  app.put("/task", async (req, res) => {
+  app.put("/action", async (req, res) => {
     try {
-      const task = req.body;
-      await updateTask(task);
+      const action = req.body;
+      await updateAction(action);
 
       return res.sendStatus(200);
     } catch (err) {
@@ -134,10 +133,10 @@ export default function register(app) {
     }
   });
 
-  app.delete("/task/:id", async (req, res) => {
+  app.delete("/action/:id", async (req, res) => {
     try {
       const id = req.params.id;
-      await deleteTask(id);
+      await deleteAction(id);
 
       return res.sendStatus(200);
     } catch (err) {
