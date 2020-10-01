@@ -1,6 +1,11 @@
 {
   "menus": {
-    "home": "Início",
+    "home": {
+      "title": "Início",
+      "tabs": {
+        "projects": "Projetos"
+      }
+    },
     "dashboard": "Dashboard",
     "scrollable": "Rolável",
     "todos": "Tarefas",

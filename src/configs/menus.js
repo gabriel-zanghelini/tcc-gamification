@@ -4,7 +4,7 @@ export const DEFAULT_PATH = "/home";
 
 export const MENUS = [
   {
-    name: "menus.home",
+    name: "menus.home.title",
     icon: "home",
     path: "/home",
     view: lazy(() => import("views/HomeView")),

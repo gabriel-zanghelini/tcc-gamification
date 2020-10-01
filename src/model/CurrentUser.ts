@@ -6,6 +6,8 @@ export default class CurrentUser {
   @observable reputationPoints?: number;
 
   constructor(user: CurrentUser) {
+    console.log("CURRENT USER", user, typeof user);
+
     this.name = user.name;
     this.email = user.email;
     this.reputationPoints = user.reputationPoints;

@@ -1,6 +1,11 @@
 {
   "menus": {
-    "home": "Home",
+    "home": {
+      "title": "Home",
+      "tabs": {
+        "projects": "Projects"
+      }
+    },
     "dashboard": "Dashboard",
     "scrollable": "Scrollable",
     "todos": "Todos",

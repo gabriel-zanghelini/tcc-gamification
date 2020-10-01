@@ -48,12 +48,11 @@ const SignInForm = ({ onOk }) => {
           password: formState.password.value,
         })
         .then(({ data }) => {
-          console.log(data);
           onLogin(data);
         });
     } catch ({ response }) {
       setLoading(false);
-      switch (response.data) {
+      switch (response) {
         case "Incorrect Password":
           formState.password.error = "login.error.wrong_password";
           break;
