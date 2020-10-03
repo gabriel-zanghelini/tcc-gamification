@@ -1,29 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { Tabs, Typography } from "antd";
 import { ContentTabs, ContentWrapper } from "styles/components";
-import * as Styled from "./styled";
-import axios from "axios";
 import ProjectTable from "components/MainLayout/ProjectTable";
 import CurrentUserStore from "stores/CurrentUserStore";
 import LoginForm from "components/MainLayout/LoginForm";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react";
+import ProjectForm from "components/Project/ProjectForm";
 
-const { Title, Text } = Typography;
-
-const fetcher = axios.create({
-  baseURL: "/api/user",
-});
-
-const onClick = async () => {
-  await fetcher
-    .get("")
-    .then(({ data }) => {
-      console.table(data);
-    })
-    .catch((err) => console.error);
-};
+const { Title } = Typography;
 
 const HomeView = () => {
   const { t } = useTranslation();
@@ -39,42 +25,14 @@ const HomeView = () => {
           >
             <>
               <ContentWrapper width="40%" column={true}>
-                <Title
-                  level={3}
-                  style={{ marginLeft: "20%", marginBottom: "25px" }}
-                >
-                  Criar projeto
-                </Title>
-                <Styled.ProjectInput size="large" placeholder="Título" />
-                <Styled.ProjectInput size="large" placeholder="Descrição" />
-
-                <ContentWrapper justifyContent={"flex-end"}>
-                  <Text
-                    strong
-                    style={{
-                      fontSize: "20px",
-                      marginRight: "10px",
-                      marginTop: "4px",
-                    }}
-                  >
-                    Criar
-                  </Text>
-                  <Styled.CreateProjectButton
-                    type="primary"
-                    shape="round"
-                    icon="arrow-right"
-                    size={"large"}
-                    style={{ marginRight: "20%" }}
-                    onClick={onClick}
-                  />
-                </ContentWrapper>
+                <ProjectForm />
               </ContentWrapper>
               <ContentWrapper width="60%" column={true}>
                 <Title
                   level={3}
                   style={{ marginBottom: "25px", marginLeft: "10%" }}
                 >
-                  Projetos criados
+                  {t("menus.home.tabs.created_projects")}
                 </Title>
                 <ProjectTable style={{ width: "80%", alignSelf: "center" }} />
               </ContentWrapper>

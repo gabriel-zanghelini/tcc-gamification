@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 
-import { Divider, Spin } from "antd";
+import { Divider } from "antd";
 import { observer } from "mobx-react";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";

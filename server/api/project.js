@@ -101,6 +101,7 @@ export default function register(app) {
   app.post("/project", async (req, res) => {
     try {
       const project = req.body;
+      console.log('/project', project);
       let { id } = await createProject(project);
 
       let projectInfo = {

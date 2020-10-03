@@ -11,7 +11,11 @@ const Sider = () => {
   const { t } = useTranslation();
 
   const siderMenus = useMemo(
-    () => MENUS.map((menu) => ({ ...menu, name: t(menu.name) })),
+    () =>
+      MENUS.filter((menu) => menu.sider).map((menu) => ({
+        ...menu,
+        name: t(menu.name),
+      })),
     [t]
   );
 

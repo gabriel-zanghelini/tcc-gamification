@@ -3,7 +3,8 @@
     "home": {
       "title": "Início",
       "tabs": {
-        "projects": "Projetos"
+        "projects": "Projetos",
+        "created_projects": "Projetos criados"
       }
     },
     "dashboard": "Dashboard",
@@ -45,6 +46,25 @@
       "name": "Nome",
       "email": "E-mail",
       "reputation_points": "Reputação"
+    }
+  },
+  "project_form": {
+    "title": "Criar projeto",
+    "create_button": "Criar"
+  },
+  "project_steps_view": {
+    "step_1": {
+      "title": "Finalizado",
+      "description": "Informações básicas"
+    },
+    "step_2": {
+      "title": "Em progresso",
+      "sub_title": "Tarefas",
+      "description": "Adicionar tarefas"
+    },
+    "step_3": {
+      "title": "Finalizar",
+      "description": "xxxxxxx"
     }
   }
 }

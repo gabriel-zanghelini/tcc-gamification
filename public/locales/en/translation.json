@@ -3,7 +3,8 @@
     "home": {
       "title": "Home",
       "tabs": {
-        "projects": "Projects"
+        "projects": "Projects",
+        "created_projects": "Created projects"
       }
     },
     "dashboard": "Dashboard",
@@ -45,6 +46,25 @@
       "name": "Name",
       "email": "E-mail",
       "reputation_points": "Reputation"
+    }
+  },
+  "project_form": {
+    "title": "Create project",
+    "create_button": "Create"
+  },
+  "project_steps_view": {
+    "step_1": {
+      "title": "Finished",
+      "description": "Basic info"
+    },
+    "step_2": {
+      "title": "In progress",
+      "sub_title": "Tasks",
+      "description": "Add tasks"
+    },
+    "step_3": {
+      "title": "Waiting",
+      "description": "xxxxxxx"
     }
   }
 }
