@@ -8,8 +8,8 @@ const createProject = async (project) => {
     .then(async (client) => {
       await client
         .query(
-          "insert into tb_project (description, leader_id, team_id) values ($1, $2, $3) returning *",
-          [project.description, project.leader_id, 0]
+          "insert into tb_project (title, description, leader_id, team_id) values ($1, $2, $3, $4) returning *",
+          [project.title, project.description, project.leader_id, 0]
         )
         .then((result) => {
           client.release();
@@ -34,8 +34,8 @@ const updateProject = async (project) => {
     .then(async (client) => {
       await client
         .query(
-          "update tb_project set description=$1, leader_id=$2, team_id=$3 where id=$4",
-          [project.description, project.leader_id, project.team_id, project.id]
+          "update tb_project set title=$1 description=$2, leader_id=$3, team_id=$4 where id=$5",
+          [project.title, project.description, project.leader_id, project.team_id, project.id]
         )
         .then((result) => {
           client.release();
@@ -101,11 +101,12 @@ export default function register(app) {
   app.post("/project", async (req, res) => {
     try {
       const project = req.body;
-      console.log('/project', project);
+      console.log("/project", project);
       let { id } = await createProject(project);
 
       let projectInfo = {
         id: id,
+        title: project.title,
         description: project.description,
         team_id: project.team_id, //TODO: get team by ID
         leader_id: project.leader_id, //TODO: get leader

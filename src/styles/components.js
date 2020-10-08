@@ -12,8 +12,8 @@ export const ContentWrapper = styled.div`
 
   border: ${({ cardStyle }) => (cardStyle ? "1px solid #e8e8e8" : "0")};
   padding: ${({ cardStyle }) => (cardStyle ? "36px" : "var(--sm-pad)")};
-  background: var(--main-white);
 `;
+// background: var(--main-white);
 
 export const ContentTabs = styled(Tabs)`
   padding: var(--sm-pad);

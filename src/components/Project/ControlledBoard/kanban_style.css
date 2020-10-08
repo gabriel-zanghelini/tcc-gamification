@@ -1,0 +1,53 @@
+.react-kanban-board {
+  margin: auto;
+  /* align-items: stretch; */
+}
+
+.react-kanban-column {
+  /* width: 30em; */
+  background-color: #fff;
+}
+
+.react-kanban-card {
+	width: 25em;
+	max-width: 100%;
+  min-width: 100%;
+  background-color: #ac59ce;
+}
+
+.react-kanban-card__title {
+	color: white;
+  font-size: large;
+  /* text-decoration: underline; */
+  /* font-style: italic; */
+}
+
+.react-kanban-card__description {
+	color: white;
+
+}
+
+
+.react-kanban-card--dragging {
+  /* transform: rotate(90deg);
+  background-color: yellow;
+  color: purple; */
+}
+
+/*
+react-kanban-board
+react-kanban-card
+react-kanban-card-skeleton
+react-kanban-card--dragging
+react-kanban-card__description
+react-kanban-card__title
+react-kanban-column
+react-kanban-card-adder-form
+react-kanban-card-adder-button
+react-kanban-card-adder-form__title
+react-kanban-card-adder-form__description
+react-kanban-card-adder-form__button
+react-kanban-column-header
+react-kanban-column-header__button
+react-kanban-column-adder-button
+*/

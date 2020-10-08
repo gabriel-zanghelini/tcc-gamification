@@ -94,7 +94,7 @@ const ProjectForm = () => {
           </ContentWrapper>
         </>
       ) : (
-        <Redirect to={`/create/project/${redirectId}`} />
+        <Redirect to={`/project/edit/${redirectId}`} />
       )}
     </>
   );

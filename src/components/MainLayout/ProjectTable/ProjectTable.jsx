@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Table, Tabs, Tooltip, Typography } from "antd";
+import { Button, Divider, Icon, Table, Tabs, Tooltip, Typography } from "antd";
 import axios from "axios";
+import { Link, useRouteMatch, Redirect } from "react-router-dom";
 
 const fetcher = axios.create({
   baseURL: "/api/project",
@@ -17,6 +18,7 @@ const ProjectTable = ({ style }) => {
           data?.map((p) => {
             return {
               key: p.id,
+              title: p.title,
               description: p.description,
               leader: p.leader_id,
               team: p.team_id,
@@ -33,14 +35,17 @@ const ProjectTable = ({ style }) => {
     {
       tooltip: "Abrir",
       icon: "folder-open",
+      route: "/project/open/",
     },
     {
       tooltip: "Editar",
       icon: "edit",
+      route: "/project/edit/",
     },
     {
       tooltip: "Excluir",
       icon: "delete",
+      route: "/project/delete/",
     },
   ];
 
@@ -49,6 +54,11 @@ const ProjectTable = ({ style }) => {
       title: "Id",
       dataIndex: "key",
       key: "id",
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
     },
     {
       title: "Description",
@@ -61,11 +71,6 @@ const ProjectTable = ({ style }) => {
       key: "leader",
     },
     {
-      title: "Team",
-      dataIndex: "team",
-      key: "team",
-    },
-    {
       title: "Action",
       dataIndex: "",
       key: "action",
@@ -73,11 +78,20 @@ const ProjectTable = ({ style }) => {
         return (
           <span>
             {actions.map((a, i) => {
+              console.log(record);
               return (
                 <>
                   <Tooltip title={a.tooltip}>
-                    <Button type="link" icon={a.icon} />
+                    <Link
+                      to={(location) => ({
+                        ...location,
+                        pathname: a.route + record.key,
+                      })}
+                    >
+                      <Icon type={a.icon} />
+                    </Link>
                   </Tooltip>
+                  {/* <Button type="link" icon={a.icon} /> */}
                   {i < actions.length - 1 ? <Divider type="vertical" /> : null}
                 </>
               );

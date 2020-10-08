@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Tabs, Typography, Steps, Button, message } from "antd";
 import { useTranslation } from "react-i18next";
 import ControlledBoard from "components/Project/ControlledBoard";
+import ProjectForm from "components/Project/ProjectForm";
 
 const { Step } = Steps;
 
@@ -14,13 +15,21 @@ const ProjectStepsView = () => {
       key: 1,
       title: "project_steps_view.step_1.title",
       description: "project_steps_view.step_1.description",
-      content: "First-content",
+      content: (
+        <div style={{ width: "50%", marginLeft: "25%" }}>
+          <ProjectForm />
+        </div>
+      ),
     },
     {
       key: 2,
       title: "project_steps_view.step_2.title",
       description: "project_steps_view.step_2.description",
-      content: "Second-content",
+      content: (
+        <div style={{ width: "90%", marginLeft: "5%" }}>
+          <ControlledBoard />
+        </div>
+      ),
     },
     {
       key: 3,
@@ -32,12 +41,17 @@ const ProjectStepsView = () => {
 
   return (
     <>
-      <Steps current={currentStep} onChange={(curr) => setCurrentStep(curr)}>
+      <Steps
+        current={currentStep}
+        onChange={(curr) => setCurrentStep(curr)}
+        style={{ minHeight: "0%" }}
+      >
         {steps.map((item) => (
           <Step
             key={item.title}
             title={t(item.title)}
             description={t(item.description)}
+            style={{ minHeight: "0%" }}
           />
         ))}
       </Steps>
