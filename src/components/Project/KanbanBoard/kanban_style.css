@@ -1,32 +1,42 @@
-.react-kanban-board {
+.react-kanban-board,
+#root
+  > section
+  > section
+  > section
+  > main
+  > div:nth-child(2)
+  > div
+  > div
+  > div {
   margin: auto;
+  width: auto;
+  display: block;
   /* align-items: stretch; */
 }
 
 .react-kanban-column {
-  /* width: 30em; */
   background-color: #fff;
 }
 
 .react-kanban-card {
-	width: 25em;
-	max-width: 100%;
+  width: 25em;
+  max-width: 100%;
   min-width: 100%;
   background-color: #ac59ce;
 }
 
 .react-kanban-card__title {
-	color: white;
+  /* border-bottom: 1px solid #fff; */
+  border-bottom: 1px dotted #fff;
+  color: white;
   font-size: large;
   /* text-decoration: underline; */
   /* font-style: italic; */
 }
 
 .react-kanban-card__description {
-	color: white;
-
+  color: white;
 }
-
 
 .react-kanban-card--dragging {
   /* transform: rotate(90deg);

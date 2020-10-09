@@ -53,6 +53,11 @@
     "create_button": "Create"
   },
   "project_steps_view": {
+    "actions": {
+      "next": "Next",
+      "previous": "Previous",
+      "done": "Done"
+    },
     "step_1": {
       "title": "Finished",
       "description": "Basic info"
@@ -66,5 +71,10 @@
       "title": "Waiting",
       "description": "xxxxxxx"
     }
+  },
+  "kanban_board": {
+    "todo": "To do",
+    "doing": "Doing",
+    "done": "Done"
   }
 }

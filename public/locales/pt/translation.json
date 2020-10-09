@@ -53,6 +53,11 @@
     "create_button": "Criar"
   },
   "project_steps_view": {
+    "actions": {
+      "next": "Avançar",
+      "previous": "Voltar",
+      "done": "Finalizar"
+    },
     "step_1": {
       "title": "Finalizado",
       "description": "Informações básicas"
@@ -66,5 +71,10 @@
       "title": "Finalizar",
       "description": "xxxxxxx"
     }
+  },
+  "kanban_board": {
+    "todo": "A fazer",
+    "doing": "Fazendo",
+    "done": "Feito"
   }
 }
