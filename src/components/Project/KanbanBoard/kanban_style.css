@@ -1,17 +1,8 @@
-.react-kanban-board,
-#root
-  > section
-  > section
-  > section
-  > main
-  > div:nth-child(2)
-  > div
-  > div
-  > div {
+.react-kanban-board {
   margin: auto;
-  width: auto;
-  display: block;
-  /* align-items: stretch; */
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .react-kanban-column {

@@ -104,6 +104,38 @@ export default function register(app) {
     }
   });
 
+  app.get("project/:id/task/:status", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const status = req.params.status;
+
+      pool.connect().then((client) => {
+        return client
+          .query("select * from tb_task where status=$1 and id=$2", [
+            status,
+            id,
+          ])
+          .then((result) => {
+            client.release();
+            // console.table(result.rows);
+
+            return res.status(200).send(result.rows);
+          })
+          .catch((err) => {
+            client.release();
+            console.log(err.stack);
+            throw err;
+          });
+      });
+    } catch (err) {
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
+    }
+  });
+
   app.post("/task", async (req, res) => {
     try {
       const task = req.body;
@@ -112,9 +144,9 @@ export default function register(app) {
       let taskInfo = {
         id: id,
         description: task.description,
-        status: task.status, 
-        difficulty: task.difficulty, 
-        points_rewarded: task.points_rewarded
+        status: task.status,
+        difficulty: task.difficulty,
+        points_rewarded: task.points_rewarded,
       };
 
       return res.status(200).send(taskInfo);

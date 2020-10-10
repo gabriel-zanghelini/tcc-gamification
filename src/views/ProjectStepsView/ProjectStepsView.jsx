@@ -11,7 +11,7 @@ const ProjectStepsView = () => {
   const { t } = useTranslation();
   let { id } = useParams();
   const [currentStep, setCurrentStep] = useState(1);
-  
+
   const steps = [
     {
       key: 1,
@@ -31,7 +31,6 @@ const ProjectStepsView = () => {
         <div style={{ width: "100%", marginLeft: "0" }}>
           <KanbanBoard
             allowRemoveCard
-            allowAddCard
             projectId={id}
             columns={["todo"]}
           />
@@ -55,7 +54,7 @@ const ProjectStepsView = () => {
   };
 
   return (
-    <>
+    <div>
       <Steps
         current={currentStep}
         onChange={(curr) => setCurrentStep(curr)}
@@ -91,7 +90,7 @@ const ProjectStepsView = () => {
           </Button>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
