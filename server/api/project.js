@@ -1,4 +1,5 @@
 import { pool } from "../../db/connection";
+import { createTask } from "./task";
 
 const createProject = async (project) => {
   let projectResult = null;
@@ -35,7 +36,13 @@ const updateProject = async (project) => {
       await client
         .query(
           "update tb_project set title=$1 description=$2, leader_id=$3, team_id=$4 where id=$5",
-          [project.title, project.description, project.leader_id, project.team_id, project.id]
+          [
+            project.title,
+            project.description,
+            project.leader_id,
+            project.team_id,
+            project.id,
+          ]
         )
         .then((result) => {
           client.release();
@@ -95,6 +102,115 @@ export default function register(app) {
       }
 
       return res.sendStatus(500);
+    }
+  });
+
+  app.get("/project/:id", async (req, res) => {
+    try {
+      const projectId = req.params.id;
+
+      pool.connect().then((client) => {
+        return client
+          .query("select * from tb_project where id=$1", [projectId])
+          .then((result) => {
+            client.release();
+            // console.table(result.rows);
+
+            return res.status(200).send(result.rows);
+          })
+          .catch((err) => {
+            client.release();
+            console.log(err.stack);
+            throw err;
+          });
+      });
+    } catch (err) {
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
+    }
+  });
+
+  app.get("/project/:id/task/:status/", async (req, res) => {
+    try {
+      const projectId = req.params.id;
+      const status = req.params.status;
+
+      pool.connect().then((client) => {
+        return client
+          .query("select * from tb_task where status=$1 and project_id=$2", [
+            status,
+            projectId,
+          ])
+          .then((result) => {
+            client.release();
+            // console.table(result.rows);
+
+            return res.status(200).send(result.rows);
+          })
+          .catch((err) => {
+            client.release();
+            console.log(err.stack);
+            throw err;
+          });
+      });
+    } catch (err) {
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
+    }
+  });
+
+  app.get("/project/:id/task", async (req, res) => {
+    try {
+      const id = req.params.id;
+
+      pool.connect().then((client) => {
+        return client
+          .query("select * from tb_task where project_id=$1", [id])
+          .then((result) => {
+            client.release();
+            // console.table(result.rows);
+
+            return res.status(200).send(result.rows);
+          })
+          .catch((err) => {
+            client.release();
+            console.log(err.stack);
+            throw err;
+          });
+      });
+    } catch (err) {
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
+    }
+  });
+
+  app.post("/project/:id/task", async (req, res) => {
+    try {
+      const projectId = req.params.id;
+      const task = req.body;
+      let { taskId } = await createTask(task, projectId);
+
+      let taskInfo = {
+        id: taskId,
+        description: task.description,
+        status: task.status,
+        difficulty: task.difficulty,
+        points_rewarded: task.points_rewarded,
+        project_id: projectId,
+      };
+
+      return res.status(200).send(taskInfo);
+    } catch (err) {
+      throw err;
     }
   });
 

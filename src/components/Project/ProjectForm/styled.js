@@ -1,6 +1,6 @@
-import { Input, Button } from "antd";
+import { Button } from "antd";
 import styled from "@emotion/styled";
-import { FormInput } from "components/MainLayout/LoginForm/FormInput/FormInput";
+import FormInput from "components/Common/FormInput";
 
 export const ProjectInput = styled(FormInput)`
 	width: 60%;

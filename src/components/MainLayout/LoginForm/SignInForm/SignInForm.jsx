@@ -4,7 +4,7 @@ import { useLocalStore, observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 
 import CurrentUserStore from "stores/CurrentUserStore";
-import { FormInput } from "../FormInput/FormInput";
+import FormInput from "components/Common/FormInput/FormInput";
 import axios from "axios";
 
 const { Title } = Typography;

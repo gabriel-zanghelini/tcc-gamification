@@ -1,6 +1,6 @@
 import { pool } from "../../db/connection";
 
-const createTask = async (task) => {
+export const createTask = async (task, projectId) => {
   let taskResult = null;
 
   await pool
@@ -8,8 +8,14 @@ const createTask = async (task) => {
     .then(async (client) => {
       await client
         .query(
-          "insert into tb_task (description, status, difficulty, points_rewarded) values ($1, $2, $3, $4) returning *",
-          [task.description, task.status, task.difficulty, task.points_rewarded]
+          "insert into tb_task (description, status, difficulty, points_rewarded, project_id) values ($1, $2, $3, $4, $5) returning *",
+          [
+            task.description,
+            task.status,
+            task.difficulty,
+            task.points_rewarded,
+            projectId,
+          ]
         )
         .then((result) => {
           client.release();
@@ -101,57 +107,6 @@ export default function register(app) {
       }
 
       return res.sendStatus(500);
-    }
-  });
-
-  app.get("project/:id/task/:status", async (req, res) => {
-    try {
-      const id = req.params.id;
-      const status = req.params.status;
-
-      pool.connect().then((client) => {
-        return client
-          .query("select * from tb_task where status=$1 and id=$2", [
-            status,
-            id,
-          ])
-          .then((result) => {
-            client.release();
-            // console.table(result.rows);
-
-            return res.status(200).send(result.rows);
-          })
-          .catch((err) => {
-            client.release();
-            console.log(err.stack);
-            throw err;
-          });
-      });
-    } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
-      }
-
-      return res.sendStatus(500);
-    }
-  });
-
-  app.post("/task", async (req, res) => {
-    try {
-      const task = req.body;
-      let { id } = await createTask(task);
-
-      let taskInfo = {
-        id: id,
-        description: task.description,
-        status: task.status,
-        difficulty: task.difficulty,
-        points_rewarded: task.points_rewarded,
-      };
-
-      return res.status(200).send(taskInfo);
-    } catch (err) {
-      throw err;
     }
   });
 

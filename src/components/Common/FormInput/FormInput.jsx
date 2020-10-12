@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 import { Form, Icon, Input } from "antd";
 
-export const FormInput = observer(({ formState, name, icon, ...props }) => {
+const FormInput = ({ formState, name, icon, label, formItemStyle, ...props }) => {
   const { t } = useTranslation();
 
   const { value, error, dirty } = formState[name];
@@ -20,7 +20,12 @@ export const FormInput = observer(({ formState, name, icon, ...props }) => {
   };
 
   return (
-    <Form.Item validateStatus={status} help={errorMessage}>
+    <Form.Item
+      validateStatus={status}
+      help={errorMessage}
+      label={label}
+      style={formItemStyle}
+    >
       <Input
         name={name}
         prefix={<Icon type={icon} />}
@@ -30,4 +35,6 @@ export const FormInput = observer(({ formState, name, icon, ...props }) => {
       />
     </Form.Item>
   );
-});
+};
+
+export default observer(FormInput);
