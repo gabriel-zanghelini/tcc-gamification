@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "antd";
+
 import Board from "@lourenci/react-kanban";
+import KanbanCard from "./KanbanCard";
+import AddTaskModal from "./AddTaskModal";
+
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
 import "@lourenci/react-kanban/dist/styles.css";
 import "./kanban_style.css";
-import { Button } from "antd";
-import AddTaskModal from "./AddTaskModal";
 
 const fetcher = axios.create({
   baseURL: "/api",
@@ -28,6 +31,7 @@ const KanbanBoard = ({
     fetcher
       .get(`/project/${projectId}/task/todo`)
       .then(({ data }) => {
+        console.log("LOADING TODO", data);
         setTodo(data); //TODO: Testar essa merda aqui
       })
       .catch((err) => console.error);
@@ -35,14 +39,14 @@ const KanbanBoard = ({
     fetcher
       .get(`/project/${projectId}/task/doing`)
       .then(({ data }) => {
-        setTodo(data); //TODO: Testar essa merda aqui
+        setDoing(data); //TODO: Testar essa merda aqui
       })
       .catch((err) => console.error);
 
     fetcher
       .get(`/project/${projectId}/task/done`)
       .then(({ data }) => {
-        setTodo(data); //TODO: Testar essa merda aqui
+        setDone(data); //TODO: Testar essa merda aqui
       })
       .catch((err) => console.error);
   }, []);
@@ -70,8 +74,6 @@ const KanbanBoard = ({
         : undefined,
     ],
   };
-
-  console.log("BOARD", board);
 
   const boardExample = {
     columns: [
@@ -162,6 +164,9 @@ const KanbanBoard = ({
     setModalVisible(false);
   };
 
+  console.log("BOARD", board);
+  console.log("BOARD EXAMPLE", boardExample);
+
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -179,10 +184,19 @@ const KanbanBoard = ({
         />
       </div>
       <Board
-        initialBoard={board}
+        initialBoard={boardExample}
         disableColumnDrag
         allowRemoveCard={allowRemoveCard}
         allowAddCard={allowAddCard ? { on: "top" } : false}
+        renderCard={(task, { removeCard, dragging }) => {
+          return (
+            <KanbanCard
+              task={task}
+              removeCard={removeCard}
+              dragging={dragging}
+            />
+          );
+        }}
         onCardRemove={console.log}
         onNewCardConfirm={onNewCardConfirm}
         onCardNew={console.log}
