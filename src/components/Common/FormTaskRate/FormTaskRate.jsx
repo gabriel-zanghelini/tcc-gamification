@@ -7,7 +7,6 @@ import { Form, Rate } from "antd";
 export const FormTaskRate = ({
   formState,
   name,
-  icon,
   label,
   formItemStyle,
   ...props
@@ -36,7 +35,7 @@ export const FormTaskRate = ({
       style={formItemStyle}
     >
       <span>
-        <Rate tooltips={desc} onChange={onChange} value={value} {...props} />
+        <Rate tooltips={desc} onChange={onChange} value={value}  />
         {value ? <span className="ant-rate-text">{desc[value - 1]}</span> : ""}
       </span>
     </Form.Item>

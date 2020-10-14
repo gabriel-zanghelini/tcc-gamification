@@ -27,10 +27,17 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
     <Modal
       visible={visible}
       title="New Task"
-      onOk={onAdd}
-      onCancel={onCancel}
+      // onOk={onAdd}
+      // onCancel={onCancel}
       footer={[
-        <Button key="back" onClick={onCancel}>
+        <Button
+          key="back"
+          onClick={() => {
+            formState.description.value = "";
+            formState.difficulty.value = -1;
+            onCancel();
+          }}
+        >
           Cancel
         </Button>,
         <Button
@@ -60,6 +67,8 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
         label="Difficulty"
         formItemStyle={{ margin: "0 15%", width: "70%" }}
       />
+      {/* {formState.description.value}
+      {formState.difficulty.value} */}
     </Modal>
   );
 };

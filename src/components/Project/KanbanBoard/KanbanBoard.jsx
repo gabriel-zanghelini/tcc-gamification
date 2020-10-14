@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 
-import Board from "@lourenci/react-kanban";
+import Board, { addColumn } from "@lourenci/react-kanban";
 import KanbanCard from "./KanbanCard";
 import AddTaskModal from "./AddTaskModal";
 
@@ -22,111 +22,54 @@ const KanbanBoard = ({
   columns = ["todo", "doing", "done"],
 }) => {
   const { t } = useTranslation();
-  const [todo, setTodo] = useState([]);
-  const [doing, setDoing] = useState([]);
-  const [done, setDone] = useState([]);
+  // const [todo, setTodo] = useState([]);
+  // const [doing, setDoing] = useState([]);
+  // const [done, setDone] = useState([]);
+  const [board, setBoard] = useState({ columns: [] });
   const [modalVisible, setModalVisible] = useState(false);
 
+  const updateColumn = async (status) => {
+    console.log(status);
+    let { data } = await fetcher
+      .get(`/project/${projectId}/task/${status}`)
+      .catch((err) => {
+        console.error(`Can't get ${status} tasks: ${err}`);
+      });
+
+    // .then(({ data }) => {
+    //   console.log("LOADING ", status, data);
+    //   switch (status) {
+    //     case "todo":
+    //       setTodo(data);
+    //       break;
+    //     case "doing":
+    //       setDoing(data);
+    //       break;
+    //     case "done":
+    //       setDone(data);
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // })
+
+    console.log("COLUMN DATA", data);
+    return data;
+  };
+
   useEffect(() => {
-    fetcher
-      .get(`/project/${projectId}/task/todo`)
-      .then(({ data }) => {
-        console.log("LOADING TODO", data);
-        setTodo(data); //TODO: Testar essa merda aqui
-      })
-      .catch((err) => console.error);
+    columns.map(async (c) => {
+      let newColumn = {
+        id: c,
+        key: c,
+        title: t(`kanban_board.${c}`),
+        cards: await updateColumn(c),
+      };
 
-    fetcher
-      .get(`/project/${projectId}/task/doing`)
-      .then(({ data }) => {
-        setDoing(data); //TODO: Testar essa merda aqui
-      })
-      .catch((err) => console.error);
-
-    fetcher
-      .get(`/project/${projectId}/task/done`)
-      .then(({ data }) => {
-        setDone(data); //TODO: Testar essa merda aqui
-      })
-      .catch((err) => console.error);
+      const newBoard = addColumn(board, newColumn);
+      setBoard(newBoard);
+    });
   }, []);
-
-  const board = {
-    columns: [
-      columns.includes("todo")
-        ? {
-            id: "todo'",
-            title: t("kanban_board.todo"),
-            cards: todo,
-          }
-        : columns.includes("doing")
-        ? {
-            id: "doing'",
-            title: t("kanban_board.doing"),
-            cards: doing,
-          }
-        : columns.includes("doing")
-        ? {
-            id: "doing'",
-            title: t("kanban_board.doing"),
-            cards: doing,
-          }
-        : undefined,
-    ],
-  };
-
-  const boardExample = {
-    columns: [
-      {
-        id: "todo",
-        title: t("kanban_board.todo"),
-        cards: [
-          {
-            id: 1,
-            title: "Card title 1",
-            description: "Card content",
-          },
-          {
-            id: 2,
-            title: "Card title 2",
-            description: "Card content",
-          },
-          {
-            id: 3,
-            title: "Card title 3",
-            description: "Card content",
-          },
-        ],
-      },
-      {
-        id: "doing",
-        title: t("kanban_board.doing"),
-        cards: [
-          {
-            id: 9,
-            title: "Card title 9",
-            description: "Card content",
-          },
-        ],
-      },
-      {
-        id: "done",
-        title: t("kanban_board.done"),
-        cards: [
-          {
-            id: 12,
-            title: "Card title 12",
-            description: "Card content",
-          },
-          {
-            id: 13,
-            title: "Card title 13",
-            description: "Card content",
-          },
-        ],
-      },
-    ],
-  };
 
   const onNewCardConfirm = (draftCard) => ({
     id: new Date().getTime(),
@@ -134,46 +77,54 @@ const KanbanBoard = ({
   });
 
   const addTask = (title, difficulty, status) => {
-    let task = { title, difficulty, status };
-    let taskList = null;
+    let task = {
+      title,
+      difficulty,
+      status,
+      points_required: 10,
+      project_id: projectId,
+    };
 
-    switch (status) {
-      case "todo":
-        taskList = [...todo];
-        taskList.push(task);
-        setTodo(taskList);
-        break;
-      case "doing":
-        taskList = [...doing];
-        taskList.push(task);
-        setDoing(taskList);
-        break;
-      case "done":
-        taskList = [...done];
-        taskList.push(task);
-        setDone(taskList);
-        break;
-      default:
-        taskList = null;
-    }
+    fetcher.post(`/project/${projectId}/task`, task).then((result) => {
+      console.log(result);
+      updateColumn(result.status); //TODO: use react-kanban functions
+    });
+
+    // switch (status) {
+    //   case "todo":
+    //     let newTodo = [...todo];
+    //     console.log("newTODO", newTodo);
+    //     newTodo.push(task);
+    //     setTodo(newTodo);
+    //     break;
+    //   case "doing":
+    //     let newDoing = [...doing];
+    //     newDoing.push(task);
+    //     setDoing(newDoing);
+    //     break;
+    //   case "done":
+    //     let newDone = [...done];
+    //     newDone.push(task);
+    //     setDone(newDone);
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     setModalVisible(false);
   };
 
   const onCancel = () => {
+    console.log("CANCEL");
     setModalVisible(false);
   };
 
   console.log("BOARD", board);
-  console.log("BOARD EXAMPLE", boardExample);
 
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          style={{ width: "27.2em" }}
-          onClick={() => setModalVisible(true)}
-        >
+        <Button style={{ width: 330 }} onClick={() => setModalVisible(true)}>
           ADD
         </Button>
         <AddTaskModal
@@ -183,24 +134,26 @@ const KanbanBoard = ({
           status="todo"
         />
       </div>
-      <Board
-        initialBoard={boardExample}
-        disableColumnDrag
-        allowRemoveCard={allowRemoveCard}
-        allowAddCard={allowAddCard ? { on: "top" } : false}
-        renderCard={(task, { removeCard, dragging }) => {
-          return (
+      {board ? (
+        <Board
+          // initialBoard={board}
+          disableColumnDrag
+          allowRemoveCard={allowRemoveCard}
+          allowAddCard={allowAddCard ? { on: "top" } : false}
+          renderCard={(task, { removeCard, dragging }) => (
             <KanbanCard
               task={task}
               removeCard={removeCard}
               dragging={dragging}
             />
-          );
-        }}
-        onCardRemove={console.log}
-        onNewCardConfirm={onNewCardConfirm}
-        onCardNew={console.log}
-      />
+          )}
+          onCardNew={console.log}
+          onCardRemove={console.log}
+          onNewCardConfirm={onNewCardConfirm}
+        >
+          {board}
+        </Board>
+      ) : null}
     </>
   );
 };

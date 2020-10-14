@@ -4,7 +4,14 @@ import { observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 import { Form, Icon, Input } from "antd";
 
-const FormInput = ({ formState, name, icon, label, formItemStyle, ...props }) => {
+const FormInput = ({
+  formState,
+  name,
+  icon,
+  label,
+  formItemStyle,
+  ...props
+}) => {
   const { t } = useTranslation();
 
   const { value, error, dirty } = formState[name];
@@ -28,7 +35,7 @@ const FormInput = ({ formState, name, icon, label, formItemStyle, ...props }) =>
     >
       <Input
         name={name}
-        prefix={<Icon type={icon} />}
+        prefix={icon ? <Icon type={icon} /> : null}
         {...props}
         value={value}
         onChange={onChange}
