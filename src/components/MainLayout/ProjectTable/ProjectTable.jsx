@@ -80,7 +80,7 @@ const ProjectTable = ({ style }) => {
             {actions.map((a, i) => {
               console.log(record);
               return (
-                <>
+                <span>
                   <Tooltip title={a.tooltip}>
                     <Link
                       to={(location) => ({
@@ -93,7 +93,7 @@ const ProjectTable = ({ style }) => {
                   </Tooltip>
                   {/* <Button type="link" icon={a.icon} /> */}
                   {i < actions.length - 1 ? <Divider type="vertical" /> : null}
-                </>
+                </span>
               );
             })}
           </span>

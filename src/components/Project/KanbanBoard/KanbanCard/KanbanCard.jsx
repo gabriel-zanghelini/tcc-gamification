@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card, Icon } from "antd";
 
 const KanbanCard = ({ task, dragging, removeCard }) => {
+  console.log("KanbanCard", task, dragging, removeCard);
   return (
     <Card
       title="title"
@@ -12,13 +13,11 @@ const KanbanCard = ({ task, dragging, removeCard }) => {
       style={{ width: 300, color: "#fff", padding: 5 }}
       extra={
         <Button
-          type="ghost"
+          type="link"
           size="small"
           onClick={removeCard}
           style={{ color: "#fff" }}
-          children={
-            <Icon type="delete" theme="filled" style={{ color: "#fff" }} />
-          }
+          children={<Icon type="close" />}
         />
       }
     >

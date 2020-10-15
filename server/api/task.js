@@ -117,7 +117,7 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      throw err;
+      return res.sendStatus(500);
     }
   });
 
@@ -128,7 +128,7 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      throw err;
+      return res.sendStatus(500);
     }
   });
 }
