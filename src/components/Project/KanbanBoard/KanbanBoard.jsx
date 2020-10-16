@@ -1,17 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-
-import Board, {
-  addColumn,
-  addCard,
-  changeColumn,
-  removeCard,
-} from "@lourenci/react-kanban";
-import KanbanCard from "./KanbanCard";
-import AddTaskModal from "./AddTaskModal";
-
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import Board, {
+  addCard,
+  moveCard,
+  removeCard,
+  addColumn,
+  changeColumn,
+} from "@lourenci/react-kanban";
+
+import KanbanCard from "./KanbanCard";
+import AddTaskModal from "./AddTaskModal";
 
 import "@lourenci/react-kanban/dist/styles.css";
 import "./kanban_style.css";
@@ -35,17 +36,17 @@ const KanbanBoard = ({
   columns = ["todo", "doing", "done"],
 }) => {
   const { t } = useTranslation();
-  const [todo, setTodo] = useState([]);
-  const [doing, setDoing] = useState([]);
-  const [done, setDone] = useState([]);
+  const [todo, setTodo] = useState(null);
+  const [doing, setDoing] = useState(null);
+  const [done, setDone] = useState(null);
   const [board, setBoard] = useState({ columns: [] });
   const [modalVisible, setModalVisible] = useState(false);
 
-  const updateColumn = async (status) => {
+  const getTasksByStatus = async (status) => {
+    console.log("LOADING ", status);
     await fetcher
       .get(`/project/${projectId}/task/${status}`)
       .then(({ data }) => {
-        console.log("LOADING ", status, data);
         switch (status) {
           case "todo":
             setTodo(data);
@@ -65,115 +66,51 @@ const KanbanBoard = ({
       });
   };
 
-  useEffect(() => {
-    const STATUS = "todo";
+  const setColumnTasks = (status, key, tasks) => {
+    let column = board.columns.find((c) => c.id === status);
+    console.log(column, status, tasks);
 
-    let column = board.columns.find((c) => c.id === STATUS);
     if (column) {
-      let newColumn = column;
-      newColumn.cards = todo;
+      let newColumn = { ...column };
+      newColumn.cards = tasks;
       console.log(column, newColumn);
 
-      const newBoard = changeColumn(board, column, newColumn);
+      const newBoard = changeColumn(board, column, newColumn); //update state
       setBoard(newBoard);
     } else {
       let newColumn = {
-        id: STATUS,
-        key: STATUS,
-        title: t(`kanban_board.${STATUS}`),
-        cards: todo,
+        id: status,
+        key: key,
+        title: t(`kanban_board.${status}`),
+        cards: tasks,
       };
 
-      const newBoard = addColumn(board, newColumn);
+      const newBoard = addColumn(board, newColumn); //update state
       setBoard(newBoard);
     }
+  };
+
+  useEffect(() => {
+    console.log("useEffect TODO", todo);
+    if (todo) setColumnTasks("todo", 1, todo);
   }, [todo]);
 
   useEffect(() => {
-    const STATUS = "doing";
-
-    let column = board.columns.find((c) => c.id === STATUS);
-    if (column) {
-      let newColumn = column;
-
-      newColumn.cards = doing;
-      console.log(column, newColumn);
-
-      const newBoard = changeColumn(board, column, newColumn);
-      setBoard(newBoard);
-    } else {
-      let newColumn = {
-        id: STATUS,
-        key: STATUS,
-        title: t(`kanban_board.${STATUS}`),
-        cards: doing,
-      };
-
-      const newBoard = addColumn(board, newColumn);
-      setBoard(newBoard);
-    }
+    console.log("useEffect DOING", doing);
+    if (doing) setColumnTasks("doing", 2, doing);
   }, [doing]);
 
   useEffect(() => {
-    const STATUS = "done";
-
-    let column = board.columns.find((c) => c.id === STATUS);
-    if (column) {
-      let newColumn = column;
-
-      newColumn.cards = done;
-      console.log(column, newColumn);
-
-      const newBoard = changeColumn(board, column, newColumn);
-      setBoard(newBoard);
-    } else {
-      let newColumn = {
-        id: STATUS,
-        key: STATUS,
-        title: t(`kanban_board.${STATUS}`),
-        cards: done,
-      };
-
-      const newBoard = addColumn(board, newColumn);
-      setBoard(newBoard);
-    }
+    console.log("useEffect DONE", done);
+    if (done) setColumnTasks("done", 3, done);
   }, [done]);
 
   useEffect(() => {
     columns.map(async (c) => {
-      await updateColumn(c);
+      console.log("UPDATING COLUMNS", c);
+      await getTasksByStatus(c);
     });
   }, []);
-
-  // useEffect(() => {
-  //   columns.map(async (c) => {
-  //     // let newColumn = {
-  //     //   id: c,
-  //     //   key: c,
-  //     //   title: t(`kanban_board.${c}`),
-  //     // };
-
-  //     switch (c) {
-  //       case "todo":
-  //         // await updateColumn(c);
-  //         // newColumn.cards = todo;
-  //         break;
-  //       case "doing":
-  //         // await updateColumn(c);
-  //         // newColumn.cards = doing;
-  //         break;
-  //       case "done":
-  //         // await updateColumn(c);
-  //         // newColumn.cards = done;
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //     console.log("CREATING COLUMNS", newColumn);
-  //     const newBoard = addColumn(board, newColumn);
-  //     setBoard(newBoard);
-  //   });
-  // }, []);
 
   const addTask = (description, difficulty, status) => {
     let task = {
@@ -184,34 +121,71 @@ const KanbanBoard = ({
       project_id: projectId,
     };
 
-    fetcher.post(`/project/${projectId}/task`, task).then(({ data }) => {
-      console.log("task added", data, board);
+    fetcher
+      .post(`/project/${projectId}/task`, task) //update database
+      .then(({ data }) => {
+        let column = board.columns.find((c) => c.id === status);
 
-      let column = board.columns.find((c) => c.id === status);
-      addCard(board, column, data, { on: "bottom" });
-      updateColumn(status);
-    });
+        console.log("task added", data, board);
+        addCard(board, column, data, { on: "bottom" }); //update state
+        getTasksByStatus(status);
+      })
+      .catch((err) => console.error(err));
 
     setModalVisible(false);
   };
 
   const removeTask = async (board, fromColumn, task) => {
     console.log(board, fromColumn, task);
-    const newBoard = removeCard(board, fromColumn, task);
-    setBoard(newBoard);
 
     await fetcher
-      .delete(`/task/${task.id}`)
-      .then((result) => console.log("task deleted", result))
+      .delete(`/task/${task.id}`) //update database
+      .then((result) => {
+        console.log("task deleted", result);
+        const newBoard = removeCard(board, fromColumn, task); //update state
+        setBoard(newBoard);
+      })
       .catch((err) => console.error(err));
   };
+
+  const moveTask = async (card, source, destination) => {
+    console.log("onCardDragEnd", card.description, source, destination);
+    let newStatus = destination.toColumnId;
+
+    if (card.status !== newStatus) {
+      card.status = newStatus;
+      await fetcher //update database
+        .put("/task", card)
+        .then((result) => {
+          console.log("task updated", result);
+        })
+        .catch((err) => console.error(err));
+    }
+
+    const newBoard = moveCard(board, source, destination); //update state
+    setBoard(newBoard);
+  };
+
+  const renderCard = (task, { dragging }) => (
+    <KanbanCard
+      task={task}
+      removeCard={() =>
+        removeTask(
+          board,
+          board.columns.find((c) => c.id === task.status),
+          task
+        )
+      }
+      dragging={dragging}
+    />
+  );
 
   const onCancel = () => {
     console.log("CANCEL");
     setModalVisible(false);
   };
 
-  console.log("BOARD", board);
+  console.log("BOARD", board, columns);
 
   return (
     <>
@@ -220,10 +194,10 @@ const KanbanBoard = ({
           ADD
         </Button>
         <AddTaskModal
-          visible={modalVisible}
+          status="todo"
           onAdd={addTask}
           onCancel={onCancel}
-          status="todo"
+          visible={modalVisible}
         />
       </div>
       {board ? (
@@ -233,23 +207,9 @@ const KanbanBoard = ({
           // disableCardDrag
           allowRemoveCard={allowRemoveCard}
           allowAddCard={allowAddCard ? { on: "top" } : false}
-          renderCard={(task, { dragging }) => (
-            <KanbanCard
-              task={task}
-              removeCard={() =>
-                removeTask(
-                  board,
-                  board.columns.find((c) => c.id === task.status),
-                  task
-                )
-              }
-              dragging={dragging}
-            />
-          )}
-          onCardDragEnd={(board, card, source, destination) => {
-            console.log("onCardDragEnd", board, card, source, destination);
-          }}
-          onCardNew={console.log}
+          renderCard={renderCard}
+          onCardDragEnd={moveTask}
+          // onCardNew={console.log}
           // onNewCardConfirm={onNewCardConfirm}
         >
           {board}

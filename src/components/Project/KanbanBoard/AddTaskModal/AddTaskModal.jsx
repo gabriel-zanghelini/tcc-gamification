@@ -1,15 +1,14 @@
 import React from "react";
 import { Button, Modal } from "antd";
 import { observer, useLocalStore } from "mobx-react";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 import FormInput from "components/Common/FormInput";
 import { FormTaskRate } from "components/Common/FormTaskRate/FormTaskRate";
 
 const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
-  //description, status, difficulty, points_required, project_id
   const formState = useLocalStore(() => ({
     description: {
       value: "",
@@ -17,27 +16,28 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
       dirty: false,
     },
     difficulty: {
-      value: -1,
+      value: 0,
       error: null,
       dirty: false,
     },
   }));
+
+  const cancel = () => {
+    formState.description.value = "";
+    formState.difficulty.value = 0;
+    onCancel();
+  };
+
+  console.log(formState.description.value, formState.difficulty.value);
 
   return (
     <Modal
       visible={visible}
       title="New Task"
       // onOk={onAdd}
-      // onCancel={onCancel}
+      onCancel={cancel}
       footer={[
-        <Button
-          key="back"
-          onClick={() => {
-            formState.description.value = "";
-            formState.difficulty.value = -1;
-            onCancel();
-          }}
-        >
+        <Button key="back" onClick={cancel}>
           Cancel
         </Button>,
         <Button
@@ -67,8 +67,6 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
         label="Difficulty"
         formItemStyle={{ margin: "0 15%", width: "70%" }}
       />
-      {/* {formState.description.value}
-      {formState.difficulty.value} */}
     </Modal>
   );
 };

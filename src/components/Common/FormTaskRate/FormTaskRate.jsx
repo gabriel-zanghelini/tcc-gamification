@@ -22,8 +22,9 @@ export const FormTaskRate = ({
   const status = showError ? "error" : undefined;
   const errorMessage = showError ? t(error) : undefined;
 
-  const onChange = (value) => {
-    formState[name].value = value;
+  const onChange = (rate) => {
+    console.log(rate, name);
+    formState[name].value = rate;
     formState[name].dirty = true;
   };
 
@@ -35,7 +36,7 @@ export const FormTaskRate = ({
       style={formItemStyle}
     >
       <span>
-        <Rate tooltips={desc} onChange={onChange} value={value}  />
+        <Rate tooltips={desc} onChange={onChange} value={value} />
         {value ? <span className="ant-rate-text">{desc[value - 1]}</span> : ""}
       </span>
     </Form.Item>
