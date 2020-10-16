@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, useParams } from "react-router-dom";
-import { Tabs, Typography, Steps, Button, message } from "antd";
+import { useParams } from "react-router-dom";
+import { Steps, Button, message } from "antd";
 import { useTranslation } from "react-i18next";
 import ProjectForm from "components/Project/ProjectForm";
 import KanbanBoard from "components/Project/KanbanBoard";

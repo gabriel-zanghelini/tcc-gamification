@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Tabs, Typography } from "antd";
+import { Typography } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import * as Styled from "./styled";
 import { ContentWrapper } from "styles/components";

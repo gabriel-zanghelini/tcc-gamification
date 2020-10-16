@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Typography } from "antd";
 import { useLocalStore, observer } from "mobx-react";
 import { useTranslation } from "react-i18next";

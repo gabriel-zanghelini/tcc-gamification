@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Icon, Table, Tabs, Tooltip, Typography } from "antd";
+import { Divider, Icon, Table, Tooltip } from "antd";
 import axios from "axios";
-import { Link, useRouteMatch, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const fetcher = axios.create({
   baseURL: "/api/project",
@@ -35,7 +35,7 @@ const ProjectTable = ({ style }) => {
     {
       tooltip: "Abrir",
       icon: "folder-open",
-      route: "/project/open/",
+      route: "/project/",
     },
     {
       tooltip: "Editar",
