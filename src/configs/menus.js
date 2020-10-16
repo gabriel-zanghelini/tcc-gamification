@@ -11,6 +11,13 @@ export const MENUS = [
     sider: true,
   },
   {
+    name: "menus.home.project",
+    icon: "project",
+    path: "/project/:id",
+    view: lazy(() => import("views/ProjectView")),
+    sider: false,
+  },
+  {
     name: "menus.home.project_steps",
     icon: "project",
     path: "/project/edit/:id",
