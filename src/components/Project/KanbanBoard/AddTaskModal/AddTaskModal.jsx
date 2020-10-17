@@ -43,13 +43,15 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
         <Button
           key="submit"
           type="primary"
-          onClick={() =>
+          onClick={() => {
             onAdd(
               formState.description.value,
               formState.difficulty.value,
               status
-            )
-          }
+            );
+            formState.description.value = "";
+            formState.difficulty.value = 0;
+          }}
         >
           Add
         </Button>,
