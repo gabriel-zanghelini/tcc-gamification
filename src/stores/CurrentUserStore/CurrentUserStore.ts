@@ -1,5 +1,6 @@
 import { observable, action, computed } from "mobx";
 import CurrentUser from "model/CurrentUser";
+import { createContext, useContext } from "react";
 
 class CurrentUserStore {
   @observable currentUser?: CurrentUser;
@@ -7,7 +8,7 @@ class CurrentUserStore {
   @action
   setUser = (user?: CurrentUser) => {
     console.log("SET USER", user);
-    
+
     if (!user) {
       this.currentUser = undefined;
     } else {
@@ -17,10 +18,14 @@ class CurrentUserStore {
 
   @computed
   get isLoggedIn() {
-    console.log("IS LOGGED IN", !!this.currentUser);
-    
+    console.log(`IS LOGGED IN: ${!!this.currentUser} |||||||||||||||||`, this.currentUser);
+
     return !!this.currentUser;
   }
 }
 
-export default new CurrentUserStore();
+export const CurrentUserStoreContext = createContext(new CurrentUserStore());
+
+export default function useCurrentUserStore() {
+  return useContext(CurrentUserStoreContext);
+}

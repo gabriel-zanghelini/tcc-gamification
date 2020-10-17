@@ -4,6 +4,7 @@ import { Steps, Button, message } from "antd";
 import { useTranslation } from "react-i18next";
 import ProjectForm from "components/Project/ProjectForm";
 import KanbanBoard from "components/Project/KanbanBoard";
+import { observer } from "mobx-react";
 
 const { Step } = Steps;
 
@@ -94,4 +95,4 @@ const ProjectStepsView = () => {
   );
 };
 
-export default ProjectStepsView;
+export default observer(ProjectStepsView);

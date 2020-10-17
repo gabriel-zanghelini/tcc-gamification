@@ -1,23 +1,25 @@
 import React from "react";
-
 import { Tabs, Typography } from "antd";
-import { ContentTabs, ContentWrapper } from "styles/components";
-import ProjectTable from "components/MainLayout/ProjectTable";
-import CurrentUserStore from "stores/CurrentUserStore";
+
 import LoginForm from "components/MainLayout/LoginForm";
+import ProjectForm from "components/Project/ProjectForm";
+import ProjectTable from "components/MainLayout/ProjectTable";
+import { ContentTabs, ContentWrapper } from "styles/components";
+
+import useCurrentUserStore from "stores/CurrentUserStore";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react";
-import ProjectForm from "components/Project/ProjectForm";
 
 const { Title } = Typography;
 
 const HomeView = () => {
   const { t } = useTranslation();
-
+  const currentUserStore = useCurrentUserStore();
+  console.log("HV", currentUserStore.isLoggedIn);
   return (
     <>
       <ContentTabs>
-        {CurrentUserStore.isLoggedIn ? (
+        {currentUserStore.isLoggedIn ? (
           <Tabs.TabPane
             tab={t("menus.home.tabs.projects")}
             key="projects"

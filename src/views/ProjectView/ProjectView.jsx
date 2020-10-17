@@ -1,21 +1,24 @@
 import React from "react";
 import { Tabs } from "antd";
 
+import LoginForm from "components/MainLayout/LoginForm";
 import KanbanBoard from "components/Project/KanbanBoard";
 import { ContentTabs, ContentWrapper } from "styles/components";
 
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import CurrentUserStore from "stores/CurrentUserStore";
-import LoginForm from "components/MainLayout/LoginForm";
+import useCurrentUserStore from "stores/CurrentUserStore";
+import { observer } from "mobx-react";
 
 const ProjectView = () => {
   const { t } = useTranslation();
   let { id } = useParams();
+  const currentUserStore = useCurrentUserStore();
 
+  console.log("PV", currentUserStore.isLoggedIn);
   return (
     <ContentTabs>
-      {CurrentUserStore.isLoggedIn ? (
+      {currentUserStore.isLoggedIn ? (
         <Tabs.TabPane
           tab={t("menus.home.tabs.projects")}
           key="projects"
@@ -40,4 +43,4 @@ const ProjectView = () => {
   );
 };
 
-export default ProjectView;
+export default observer(ProjectView);

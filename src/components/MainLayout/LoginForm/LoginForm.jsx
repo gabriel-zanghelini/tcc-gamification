@@ -6,19 +6,20 @@ import { observer } from "mobx-react";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import { ContentWrapper } from "styles/components";
-import CurrentUserStore from "stores/CurrentUserStore";
+import useCurrentUserStore from "stores/CurrentUserStore";
 
 const fetcher = axios.create({
   baseURL: "/api",
 });
 
 const LoginForm = ({ onOk, ...props }) => {
+  const currentUserStore = useCurrentUserStore();
+
   useEffect(() => {
     fetcher
       .get("login/token")
       .then(({ data }) => {
-        console.log("onLogin", data);
-        CurrentUserStore.setUser(data);
+        currentUserStore.setUser(data);
       })
       .catch((e) => console.error);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

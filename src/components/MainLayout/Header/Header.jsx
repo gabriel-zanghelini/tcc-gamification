@@ -1,7 +1,7 @@
 import React from "react";
 
 import { observer } from "mobx-react";
-import CurrentUserStore from "stores/CurrentUserStore";
+import useCurrentUserStore from "stores/CurrentUserStore";
 
 import UserCard from "components/MainLayout/UserCard";
 
@@ -10,12 +10,14 @@ import { SITE_NAME } from "configs/site";
 import * as Styled from "./styled";
 
 const Header = () => {
+  const currentUserStore = useCurrentUserStore();
+  
   return (
     <Styled.Header>
       <Styled.Content>
         <img src={APPLogo} alt="APPLogo" width={45} />
         <Styled.Title>{SITE_NAME}</Styled.Title>
-        {CurrentUserStore.isLoggedIn ? <UserCard /> : null}
+        {currentUserStore.isLoggedIn ? <UserCard /> : null}
       </Styled.Content>
       <Styled.LangSelector />
     </Styled.Header>

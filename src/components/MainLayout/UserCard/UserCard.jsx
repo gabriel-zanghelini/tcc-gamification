@@ -6,13 +6,13 @@ import { useTranslation } from "react-i18next";
 
 import UserDrawer from "components/MainLayout/UserDrawer";
 
-import CurrentUserStore from "stores/CurrentUserStore";
+import useCurrentUserStore from "stores/CurrentUserStore";
 
 import * as Styled from "./styled";
 
 const UserCard = () => {
   const { t } = useTranslation();
-  const { currentUser } = CurrentUserStore;
+  const currentUserStore = useCurrentUserStore();
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   return (
@@ -20,12 +20,12 @@ const UserCard = () => {
       <Styled.CardButton type="primary" onClick={() => setDrawerVisible(true)}>
         <span>
           <strong>{t("user_card.greeting")}, </strong>
-          {currentUser.name}
+          {currentUserStore.currentUser?.name}
         </span>
         <Avatar
           style={{ backgroundColor: "#7265e6", verticalAlign: "middle" }}
           size="large"
-          children={currentUser.name?.charAt(0)}
+          children={currentUserStore.currentUser?.name?.charAt(0)}
         />
       </Styled.CardButton>
       <UserDrawer

@@ -3,7 +3,7 @@ import { Button, Typography } from "antd";
 import { useLocalStore, observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 
-import CurrentUserStore from "stores/CurrentUserStore";
+import useCurrentUserStore from "stores/CurrentUserStore";
 import FormInput from "components/Common/FormInput/FormInput";
 import axios from "axios";
 
@@ -15,6 +15,7 @@ const fetcher = axios.create({
 
 const SignUpForm = ({ onOk }) => {
   const { t } = useTranslation();
+  const currentUserStore = useCurrentUserStore();
 
   const [loading, setLoading] = useState(false);
   const formState = useLocalStore(() => ({
@@ -73,7 +74,7 @@ const SignUpForm = ({ onOk }) => {
 
   const onLogin = (user) => {
     console.log("onLogin", user);
-    CurrentUserStore.setUser(user);
+    currentUserStore.setUser(user);
     setLoading(false);
     onOk();
   };

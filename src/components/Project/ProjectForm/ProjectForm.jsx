@@ -7,7 +7,7 @@ import { Redirect } from "react-router-dom";
 import * as Styled from "./styled";
 import { ContentWrapper } from "styles/components";
 import { useLocalStore } from "mobx-react";
-import CurrentUserStore from "stores/CurrentUserStore";
+import useCurrentUserStore from "stores/CurrentUserStore";
 
 const { Title, Text } = Typography;
 
@@ -17,7 +17,7 @@ const fetcher = axios.create({
 
 const ProjectForm = () => {
   const { t } = useTranslation();
-  const { currentUser } = CurrentUserStore;
+  const currentUserStore = useCurrentUserStore();
   const [redirectId, setRedirectId] = useState(null);
 
   const formState = useLocalStore(() => ({
@@ -38,7 +38,7 @@ const ProjectForm = () => {
       .post("/project", {
         title: formState.title.value,
         description: formState.description.value,
-        leader_id: currentUser.id,
+        leader_id: currentUserStore.id,
         team_id: 0,
       })
       .then(({ data }) => {
