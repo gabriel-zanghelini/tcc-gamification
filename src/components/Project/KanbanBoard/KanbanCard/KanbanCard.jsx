@@ -7,30 +7,52 @@ import {
   Rate,
   Statistic,
   Tag,
+  Tooltip,
   Typography,
 } from "antd";
 import { ContentWrapper } from "styles/components";
+import { useTranslation } from "react-i18next";
 
 const { Text } = Typography;
 
-const CardTitle = ({ task }) => {
-  const pointsStyle = { fontSize: 12, color: "#faad14" };
+const CardHeader = ({ task }) => {
+  const { t } = useTranslation();
+
+  const rateColors = {
+    1: "#58D68D",
+    2: "#5DADE2",
+    3: "#F4D03F",
+    4: "#f50",
+    5: "#E74C3C",
+  };
+
   return (
     <ContentWrapper padding="0">
-      <ContentWrapper width="70%" justifyContent="center" padding="0" column>
-        <Rate
-          disabled
-          defaultValue={task.difficulty}
-          count={task.difficulty}
-          style={{ fontSize: 15, marginRight: "2px" }}
-        />
+      <ContentWrapper width="80%" justifyContent="flex-start" padding="0">
+        <Tag color={rateColors[task.difficulty]}>
+          <Rate
+            disabled
+            count={task.difficulty}
+            defaultValue={task.difficulty}
+            style={{
+              fontSize: 13,
+              height: "20px",
+              marginRight: "2px",
+              color: "#fff",
+            }}
+          />
+        </Tag>
       </ContentWrapper>
-      <ContentWrapper width="30%" justifyContent="center" padding="0" column>
-        <span>
-          <Tag color="gold">
-            {task.points_rewarded} <Icon type="up-circle" />
+      <ContentWrapper width="20%" justifyContent="center" padding="0" column>
+        <Tooltip title={t("kanban_card.reputation_points_awarded")}>
+          <Tag color="magenta">
+            <span>
+              {task.points_rewarded}
+              &nbsp;
+              <Icon type="up-circle" />
+            </span>
           </Tag>
-        </span>
+        </Tooltip>
       </ContentWrapper>
     </ContentWrapper>
   );
@@ -49,6 +71,8 @@ const CardExtra = ({ removeCard }) => {
 };
 
 const CardContent = ({ task }) => {
+  const pointsStyle = { fontSize: 12, color: "#faad14" };
+
   return (
     <ContentWrapper width="100%" padding="0">
       <ContentWrapper width="90%" padding="5px">
@@ -93,11 +117,16 @@ const KanbanCard = ({ task, dragging, removeCard }) => {
     //   // }
     // >
     <Card
-      title={<CardTitle task={task} />}
+      title={<CardHeader task={task} />}
       size="small"
       dragging={dragging ? dragging : undefined}
       className="react-kanban-card"
-      headStyle={{ color: "#fff" }}
+      headStyle={{
+        color: "#fff",
+        paddingRight: "0",
+        backgroundColor: "#8f5ca5",
+        borderBottom: "0",
+      }}
       bodyStyle={{ padding: "5px" }}
       style={{ width: 300, color: "#fff", padding: 5 }}
       extra={<CardExtra removeCard={removeCard} />}

@@ -7,10 +7,10 @@
         "created_projects": "Created projects"
       }
     },
-    "dashboard": "Dashboard",
-    "scrollable": "Scrollable",
-    "todos": "Todos",
-    "user": "User"
+    "project_view": {
+      "tasks": "Tasks",
+      "rankings": "Rankings"
+    }
   },
   "footer": {
     "copyright": "© {{siteName}}"
@@ -75,6 +75,10 @@
   "kanban_board": {
     "todo": "To do",
     "doing": "Doing",
-    "done": "Done"
+    "done": "Done",
+    "add_todo_task": "Add task to do"
+  },
+  "kanban_card": {
+    "reputation_points_awarded": "Reputation Points Awarded"
   }
 }

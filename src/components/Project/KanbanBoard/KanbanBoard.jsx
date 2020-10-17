@@ -86,6 +86,7 @@ const KanbanBoard = ({
       };
 
       const newBoard = addColumn(board, newColumn); //update state
+      newBoard.columns.sort((a, b) => a.key - b.key);
       setBoard(newBoard);
     }
   };
@@ -190,8 +191,11 @@ const KanbanBoard = ({
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button style={{ width: 330 }} onClick={() => setModalVisible(true)}>
-          ADD
+        <Button
+          style={{ width: "330px" }}
+          onClick={() => setModalVisible(true)}
+        >
+          {t("kanban_board.add_todo_task")}
         </Button>
         <AddTaskModal
           status="todo"

@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs } from "antd";
+import { Icon, Tabs } from "antd";
 
 import LoginForm from "components/MainLayout/LoginForm";
 import KanbanBoard from "components/Project/KanbanBoard";
@@ -20,11 +20,16 @@ const ProjectView = () => {
     <ContentTabs>
       {currentUserStore.isLoggedIn ? (
         <Tabs.TabPane
-          tab={t("menus.home.tabs.projects")}
+          tab={
+            <span>
+              <Icon type="inbox" />
+              {t("menus.project_view.tasks")}
+            </span>
+          }
           key="projects"
           style={{ display: "flex" }}
         >
-          <ContentWrapper width="80%" column={true}>
+          <ContentWrapper width="100%" column={true}>
             <KanbanBoard allowAddCard allowRemoveCard projectId={id} />
           </ContentWrapper>
         </Tabs.TabPane>
