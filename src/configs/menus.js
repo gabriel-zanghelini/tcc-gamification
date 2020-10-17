@@ -20,7 +20,7 @@ export const MENUS = [
   {
     name: "menus.home.project_steps",
     icon: "project",
-    path: "/project/edit/:id",
+    path: "/edit/project/:id",
     view: lazy(() => import("views/ProjectStepsView")),
     sider: false,
   },

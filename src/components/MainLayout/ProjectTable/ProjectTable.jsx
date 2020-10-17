@@ -40,7 +40,7 @@ const ProjectTable = ({ style }) => {
     {
       tooltip: "Editar",
       icon: "edit",
-      route: "/project/edit/",
+      route: "/edit/project/",
     },
     {
       tooltip: "Excluir",
@@ -59,6 +59,20 @@ const ProjectTable = ({ style }) => {
       title: "Title",
       dataIndex: "title",
       key: "title",
+      render: (text, record) => {
+        return (
+          <Tooltip title={actions[0].tooltip}>
+            <Link
+              to={(location) => ({
+                ...location,
+                pathname: actions[0].route + record.key,
+              })}
+            >
+              {text}
+            </Link>
+          </Tooltip>
+        );
+      },
     },
     {
       title: "Description",
