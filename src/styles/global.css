@@ -1,3 +1,7 @@
 @import "~antd/dist/antd.css";
 @import "~flag-icon-css/css/flag-icon.css";
 @import "./variables.css";
+
+.ant-rate-star:not(:last-child) {
+  margin-right: 2px !important;
+}

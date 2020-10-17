@@ -11,7 +11,8 @@ export const ContentWrapper = styled.div`
   width: ${({ width }) => (width ? width : "100%")};
 
   border: ${({ cardStyle }) => (cardStyle ? "1px solid #e8e8e8" : "0")};
-  padding: ${({ cardStyle }) => (cardStyle ? "36px" : "var(--sm-pad)")};
+  padding: ${({ cardStyle, padding }) =>
+    padding ? padding : cardStyle ? "36px" : "var(--sm-pad)"};
 `;
 // background: var(--main-white);
 

@@ -22,11 +22,11 @@ const fetcher = axios.create({
 });
 
 const TASK_POINTS = {
-  0: 10,
-  1: 20,
-  2: 30,
-  3: 40,
-  4: 50,
+  1: 10,
+  2: 20,
+  3: 30,
+  4: 40,
+  5: 50,
 };
 
 const KanbanBoard = ({
