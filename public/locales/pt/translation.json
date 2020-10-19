@@ -80,5 +80,8 @@
   },
   "kanban_card": {
     "reputation_points_awarded": "Pontos de Reputação concedidos"
+  },
+  "reputation_points": {
+    "title": "Pontos de Reputação"
   }
 }

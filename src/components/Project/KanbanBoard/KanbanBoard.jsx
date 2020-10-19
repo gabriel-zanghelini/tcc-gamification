@@ -192,6 +192,7 @@ const KanbanBoard = ({
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Button
+          type="primary"
           style={{ width: "330px" }}
           onClick={() => setModalVisible(true)}
         >

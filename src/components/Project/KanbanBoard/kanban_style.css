@@ -7,11 +7,11 @@
 
 .react-kanban-column {
   background-color: #F8F9F9;
-  min-width: 330px;
+  min-width: 400px;
 }
 
 .react-kanban-card {
-  width: 300px;
+  width: 370px;
   max-width: 100%;
   min-width: 100%;
   margin-bottom: 15px;

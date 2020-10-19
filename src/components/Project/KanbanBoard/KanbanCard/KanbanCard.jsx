@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Badge,
   Button,
   Card,
   Icon,
+  Modal,
   Rate,
   Statistic,
   Tag,
@@ -12,6 +13,7 @@ import {
 } from "antd";
 import { ContentWrapper } from "styles/components";
 import { useTranslation } from "react-i18next";
+import RepPointsTag from "components/Common/RepPointsTag";
 
 const { Text } = Typography;
 
@@ -43,27 +45,51 @@ const CardHeader = ({ task }) => {
           />
         </Tag>
       </ContentWrapper>
-      <ContentWrapper width="20%" justifyContent="center" padding="0" column>
-        <Tooltip title={t("kanban_card.reputation_points_awarded")}>
-          <Tag color="magenta">
-            <span>
-              {task.points_rewarded}
-              &nbsp;
-              <Icon type="up-circle" />
-            </span>
-          </Tag>
+      <ContentWrapper width="20%" justifyContent="flex-end" padding="0">
+        <Tooltip
+          title={t("kanban_card.reputation_points_awarded")}
+          placement="top"
+        >
+          <RepPointsTag points={task.points_rewarded} action="plus" />
         </Tooltip>
       </ContentWrapper>
     </ContentWrapper>
   );
 };
 
-const CardExtra = ({ removeCard }) => {
+const CardExtra = ({ task, removeCard }) => {
+  const { confirm } = Modal;
+  let pointsLost = task.points_rewarded / 2;
+  let confirmContent = (
+    <span>
+      {"Você perderá "}
+      &nbsp;
+      <RepPointsTag points={pointsLost} />
+    </span>
+  );
+
+  function showConfirm() {
+    confirm({
+      title: "Tem certeza que deseja remover essa tarefa?",
+      content: confirmContent,
+      onOk() {
+        removeCard();
+      },
+      onCancel() {},
+      okText: (
+        <span>
+          OK &nbsp;
+          <RepPointsTag points={pointsLost} action="minus" />
+        </span>
+      ),
+    });
+  }
+
   return (
     <Button
       type="link"
       size="small"
-      onClick={removeCard}
+      onClick={showConfirm}
       style={{ color: "#fff" }}
       children={<Icon type="close" />}
     />
@@ -71,34 +97,9 @@ const CardExtra = ({ removeCard }) => {
 };
 
 const CardContent = ({ task }) => {
-  const pointsStyle = { fontSize: 12, color: "#faad14" };
-
   return (
-    <ContentWrapper width="100%" padding="0">
-      <ContentWrapper width="90%" padding="5px">
-        <span>{task.description}</span>
-      </ContentWrapper>
-      {/* <ContentWrapper
-      width="30%"
-      justifyContent="flex-end"
-      padding="5px 0"
-      column
-    >
-      <ContentWrapper justifyContent="flex-start" padding="5px 0">
-        <Rate
-          disabled
-          defaultValue={task.difficulty}
-          style={{ fontSize: "10px", marginRight: "2px" }}
-        />
-      </ContentWrapper>
-      <ContentWrapper column justifyContent="flex-start" padding="5px 0">
-        <Statistic
-          valueStyle={{ color: "#fff" }}
-          value={task.points_rewarded}
-          suffix="pts"
-        />
-      </ContentWrapper>
-    </ContentWrapper> */}
+    <ContentWrapper width="90%" padding="5px">
+      <span>{task.description}</span>
     </ContentWrapper>
   );
 };
@@ -106,16 +107,6 @@ const CardContent = ({ task }) => {
 const KanbanCard = ({ task, dragging, removeCard }) => {
   // console.log("KanbanCard", task, dragging, removeCard);
   return (
-    // <Badge
-    //   style={{ backgroundColor: "#52c41a" }}
-    //   count={task.points_rewarded}
-    //   // count={
-    //   //   <span>
-    //   //     {task.points_rewarded}
-    //   //     <Icon type="clock-circle" />
-    //   //   </span>
-    //   // }
-    // >
     <Card
       title={<CardHeader task={task} />}
       size="small"
@@ -128,8 +119,8 @@ const KanbanCard = ({ task, dragging, removeCard }) => {
         borderBottom: "0",
       }}
       bodyStyle={{ padding: "5px" }}
-      style={{ width: 300, color: "#fff", padding: 5 }}
-      extra={<CardExtra removeCard={removeCard} />}
+      style={{ color: "#fff", padding: 5 }}
+      extra={<CardExtra task={task} removeCard={removeCard} />}
     >
       <CardContent task={task} />
     </Card>
