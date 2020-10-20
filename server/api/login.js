@@ -18,7 +18,7 @@ export default function register(app) {
           id: id,
           name: authData.name,
           email: authData.email,
-          reputationPoints: 0,
+          reputationPoints: 20,
         };
 
         return res

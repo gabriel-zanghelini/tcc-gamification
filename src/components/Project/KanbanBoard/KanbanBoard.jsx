@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Board, {
@@ -16,6 +16,8 @@ import AddTaskModal from "./AddTaskModal";
 
 import "@lourenci/react-kanban/dist/styles.css";
 import "./kanban_style.css";
+import useCurrentUserStore from "stores/CurrentUserStore";
+import RepPointsTag from "components/Common/RepPointsTag";
 
 const fetcher = axios.create({
   baseURL: "/api",
@@ -41,6 +43,7 @@ const KanbanBoard = ({
   const [done, setDone] = useState(null);
   const [board, setBoard] = useState({ columns: [] });
   const [modalVisible, setModalVisible] = useState(false);
+  const currentUserStore = useCurrentUserStore();
 
   const getTasksByStatus = async (status) => {
     console.log("LOADING ", status);
@@ -150,17 +153,51 @@ const KanbanBoard = ({
   };
 
   const moveTask = async (card, source, destination) => {
-    console.log("onCardDragEnd", card.description, source, destination);
+    // console.log("onCardDragEnd", card.description, source, destination);
+    let userRepPoints = currentUserStore.currentUser.reputationPoints;
     let newStatus = destination.toColumnId;
 
+    console.log(card.status, newStatus);
     if (card.status !== newStatus) {
-      card.status = newStatus;
-      await fetcher //update database
-        .put("/task", card)
-        .then((result) => {
-          console.log("task updated", result);
-        })
-        .catch((err) => console.error(err));
+      if (newStatus === "done") {
+        if (userRepPoints < card.points_rewarded) {
+          let msg = (
+            <span>
+              <span>Você precisa ter pelo menos </span>
+              <RepPointsTag points={card.points_rewarded} />
+              <span> para concluir essa tarefa!</span>
+            </span>
+          );
+          message.error(msg, 3);
+          return;
+        } else {
+          card.status = newStatus;
+          await fetcher //update database
+            .put("/task", card)
+            .then(async (result) => {
+              try {
+                console.log("task updated", result);
+                let userId = currentUserStore.currentUser.id;
+                let newRepPoints = userRepPoints + card.points_rewarded;
+
+                currentUserStore.currentUser.reputationPoints = newRepPoints;
+
+                await fetcher
+                  .put(`/user/${userId}/add/${newRepPoints}`)
+                  .then(() => {
+                    let msg = (
+                      <span>
+                        <span>Você ganhou </span>
+                        <RepPointsTag points={card.points_rewarded} />
+                      </span>
+                    );
+                    message.info(msg, 3);
+                  });
+              } catch (err) {}
+            })
+            .catch((err) => console.error(err));
+        }
+      }
     }
 
     const newBoard = moveCard(board, source, destination); //update state
@@ -186,14 +223,12 @@ const KanbanBoard = ({
     setModalVisible(false);
   };
 
-  console.log("BOARD", board, columns);
-
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Button
           type="primary"
-          style={{ width: "330px" }}
+          style={{ width: "400px" }}
           onClick={() => setModalVisible(true)}
         >
           {t("kanban_board.add_todo_task")}

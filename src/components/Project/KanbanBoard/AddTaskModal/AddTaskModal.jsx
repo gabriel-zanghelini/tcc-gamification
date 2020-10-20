@@ -28,8 +28,6 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
     onCancel();
   };
 
-  console.log(formState.description.value, formState.difficulty.value);
-
   return (
     <Modal
       visible={visible}
@@ -69,6 +67,8 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
         label="Difficulty"
         formItemStyle={{ margin: "0 15%", width: "70%" }}
       />
+      <span style={{display: "none"}}>{formState.description.value}</span>
+      <span style={{display: "none"}}>{formState.difficulty.value}</span>
     </Modal>
   );
 };

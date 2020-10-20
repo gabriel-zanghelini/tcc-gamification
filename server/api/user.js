@@ -53,12 +53,35 @@ export const createUser = async (user) => {
   return userResult;
 };
 
+const setUserPoints = async (userId, points) => {
+  await pool
+    .connect()
+    .then(async (client) => {
+      await client
+        .query("update tb_user set reputation_points=$1 where id=$2", [
+          userId,
+          points,
+        ])
+        .then((result) => {
+          client.release();
+        })
+        .catch((err) => {
+          client.release();
+          throw err;
+        });
+    })
+    .catch((err) => {
+      console.log(err.stack);
+      throw err;
+    });
+};
+
 export default function register(app) {
   app.get("/user", async (req, res) => {
     try {
       pool.connect().then((client) => {
         return client
-          .query("select id, name from tb_user") 
+          .query("select id, name from tb_user")
           .then((result) => {
             client.release();
             console.table(result.rows);
@@ -91,6 +114,18 @@ export default function register(app) {
         return res.status(err.response.status).send(err.response.data);
       }
 
+      return res.sendStatus(500);
+    }
+  });
+
+  app.put("/user/:id/add/:points", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const points = req.params.points;
+      await setUserPoints(id, points);
+
+      return res.sendStatus(200);
+    } catch (err) {
       return res.sendStatus(500);
     }
   });
