@@ -51,6 +51,7 @@ export default function register(app) {
           .compare(authData.password, registeredUser.password)
           .then((result) => {
             if (result) {
+              console.log(registeredUser.reputation_points);
               let userInfo = {
                 id: registeredUser.id,
                 name: registeredUser.name,

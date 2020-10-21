@@ -58,7 +58,7 @@ const SignUpForm = ({ onOk }) => {
           password: formState.password.value,
         })
         .then(({ data }) => {
-          console.log(data);
+          console.log("SIGN UP", data);
           onLogin(data);
         });
     } catch ({ response }) {

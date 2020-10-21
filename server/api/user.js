@@ -59,8 +59,8 @@ const setUserPoints = async (userId, points) => {
     .then(async (client) => {
       await client
         .query("update tb_user set reputation_points=$1 where id=$2", [
-          userId,
           points,
+          userId,
         ])
         .then((result) => {
           client.release();
@@ -118,10 +118,11 @@ export default function register(app) {
     }
   });
 
-  app.put("/user/:id/add/:points", async (req, res) => {
+  app.put("/user/:id/points/:points", async (req, res) => {
     try {
       const id = req.params.id;
       const points = req.params.points;
+      console.log(id, points);
       await setUserPoints(id, points);
 
       return res.sendStatus(200);

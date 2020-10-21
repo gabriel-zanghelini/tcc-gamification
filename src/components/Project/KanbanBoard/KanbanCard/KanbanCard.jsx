@@ -1,21 +1,8 @@
-import React, { useState } from "react";
-import {
-  Badge,
-  Button,
-  Card,
-  Icon,
-  Modal,
-  Rate,
-  Statistic,
-  Tag,
-  Tooltip,
-  Typography,
-} from "antd";
+import React from "react";
+import { Button, Card, Icon, Modal, Rate, Tag, Tooltip } from "antd";
 import { ContentWrapper } from "styles/components";
 import { useTranslation } from "react-i18next";
 import RepPointsTag from "components/Common/RepPointsTag";
-
-const { Text } = Typography;
 
 const CardHeader = ({ task }) => {
   const { t } = useTranslation();

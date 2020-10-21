@@ -140,12 +140,34 @@ const KanbanBoard = ({
   };
 
   const removeTask = async (board, fromColumn, task) => {
-    console.log(board, fromColumn, task);
+    // console.log(board, fromColumn, task);
 
     await fetcher
       .delete(`/task/${task.id}`) //update database
-      .then((result) => {
-        console.log("task deleted", result);
+      .then(async (result) => {
+        try {
+          let userId = currentUserStore.currentUser?.id;
+          let userRepPoints = currentUserStore.currentUser?.reputationPoints;
+          let pointsLost = task.points_rewarded / 2;
+          let newRepPoints = userRepPoints - pointsLost;
+
+          currentUserStore.currentUser.reputationPoints = newRepPoints;
+
+          await fetcher
+            .put(`/user/${userId}/points/${newRepPoints}`)
+            .then(() => {
+              let msg = (
+                <span>
+                  <span>Você perdeu </span>
+                  <RepPointsTag points={pointsLost} />
+                </span>
+              );
+              message.info(msg, 3);
+            });
+        } catch (err) {
+          console.error(err);
+        }
+
         const newBoard = removeCard(board, fromColumn, task); //update state
         setBoard(newBoard);
       })
@@ -172,6 +194,7 @@ const KanbanBoard = ({
           return;
         } else {
           card.status = newStatus;
+
           await fetcher //update database
             .put("/task", card)
             .then(async (result) => {
@@ -183,7 +206,7 @@ const KanbanBoard = ({
                 currentUserStore.currentUser.reputationPoints = newRepPoints;
 
                 await fetcher
-                  .put(`/user/${userId}/add/${newRepPoints}`)
+                  .put(`/user/${userId}/points/${newRepPoints}`)
                   .then(() => {
                     let msg = (
                       <span>
@@ -193,7 +216,9 @@ const KanbanBoard = ({
                     );
                     message.info(msg, 3);
                   });
-              } catch (err) {}
+              } catch (err) {
+                console.error(err);
+              }
             })
             .catch((err) => console.error(err));
         }
