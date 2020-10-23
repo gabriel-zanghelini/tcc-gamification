@@ -41,7 +41,7 @@ const UserDrawer = ({ visible, onClose }) => {
         />
         <Entry
           label={t("user_drawer.labels.reputation_points")}
-          value={currentUserStore.currentUser?.reputationPoints}
+          value={currentUserStore.currentUser?.reputation_points}
         />
       </Styled.Division>
 

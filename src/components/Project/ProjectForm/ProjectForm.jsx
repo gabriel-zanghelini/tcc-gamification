@@ -38,7 +38,7 @@ const ProjectForm = () => {
       .post("/project", {
         title: formState.title.value,
         description: formState.description.value,
-        leader_id: currentUserStore.id,
+        leader_id: currentUserStore.currentUser?.id,
         team_id: 0,
       })
       .then(({ data }) => {
@@ -94,7 +94,7 @@ const ProjectForm = () => {
           </ContentWrapper>
         </>
       ) : (
-        <Redirect to={`/project/edit/${redirectId}`} />
+        <Redirect to={`/edit/project/${redirectId}`} />
       )}
     </>
   );

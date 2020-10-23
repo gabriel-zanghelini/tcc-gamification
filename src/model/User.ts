@@ -5,13 +5,13 @@ class User {
   @observable id = null;
   @observable name = null;
   @observable email = null;
-  @observable reputationPoints = null;
+  @observable reputation_points = null;
 
   constructor(user: User) {
     this.id = user.id;
     this.name = user.name;
     this.email = user.email;
-    this.reputationPoints = user.reputationPoints;
+    this.reputation_points = user.reputation_points;
   }
 
   // static getAll = async () => {

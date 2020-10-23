@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { getUserByEmail } from "../api/user";
 
 import { TOKEN_KEY, TOKEN_NAME } from "./constants";
 
@@ -14,12 +15,15 @@ export function verifyToken(token) {
   }
 }
 
-export function validate(req, res, next) {
+export async function validate(req, res, next) {
   const token = req.cookies[TOKEN_NAME];
   const { success, data } = verifyToken(token);
-  console.log('validate jwt', success);
-  if (success) req.user = data;
-  else res.clearCookie(TOKEN_NAME);
+  console.log("validate jwt", success);
+  if (success) {
+    req.user = await getUserByEmail(data.email);
+  } else {
+    res.clearCookie(TOKEN_NAME);
+  }
   next();
 }
 

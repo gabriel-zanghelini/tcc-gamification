@@ -6,9 +6,12 @@
 }
 
 .react-kanban-column {
-  background-color: #F8F9F9;
   min-width: 400px;
 }
+
+/* .react-kanban-column-header {
+  background-color: #52c41a4d;
+} */
 
 .react-kanban-card {
   width: 370px;

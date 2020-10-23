@@ -18,6 +18,8 @@ import "@lourenci/react-kanban/dist/styles.css";
 import "./kanban_style.css";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import RepPointsTag from "components/Common/RepPointsTag";
+import useKanbanBoardStore from "stores/KanbanBoardStore";
+import { toJS } from "mobx";
 
 const fetcher = axios.create({
   baseURL: "/api",
@@ -38,27 +40,28 @@ const KanbanBoard = ({
   columns = ["todo", "doing", "done"],
 }) => {
   const { t } = useTranslation();
-  const [todo, setTodo] = useState(null);
-  const [doing, setDoing] = useState(null);
-  const [done, setDone] = useState(null);
-  const [board, setBoard] = useState({ columns: [] });
   const [modalVisible, setModalVisible] = useState(false);
+  const kanbanBoardStore = useKanbanBoardStore();
   const currentUserStore = useCurrentUserStore();
+  console.log(kanbanBoardStore.board);
 
   const getTasksByStatus = async (status) => {
-    console.log("LOADING ", status);
+    console.log("getTasksByStatus ", status);
     await fetcher
       .get(`/project/${projectId}/task/${status}`)
       .then(({ data }) => {
         switch (status) {
           case "todo":
-            setTodo(data);
+            kanbanBoardStore.setTodo(data);
+            console.log("todo", toJS(kanbanBoardStore.todo));
             break;
           case "doing":
-            setDoing(data);
+            kanbanBoardStore.setDoing(data);
+            console.log("doing", toJS(kanbanBoardStore.doing));
             break;
           case "done":
-            setDone(data);
+            kanbanBoardStore.setDone(data);
+            console.log("done", toJS(kanbanBoardStore.done));
             break;
           default:
             break;
@@ -70,16 +73,16 @@ const KanbanBoard = ({
   };
 
   const setColumnTasks = (status, key, tasks) => {
-    let column = board.columns.find((c) => c.id === status);
-    console.log(column, status, tasks);
+    let column = kanbanBoardStore.board.columns.find((c) => c.id === status);
+    // console.log("setColumnTasks", column, status, tasks);
 
     if (column) {
       let newColumn = { ...column };
       newColumn.cards = tasks;
       console.log(column, newColumn);
 
-      const newBoard = changeColumn(board, column, newColumn); //update state
-      setBoard(newBoard);
+      const newBoard = changeColumn(kanbanBoardStore.board, column, newColumn); //update state
+      kanbanBoardStore.setBoard(newBoard);
     } else {
       let newColumn = {
         id: status,
@@ -88,33 +91,34 @@ const KanbanBoard = ({
         cards: tasks,
       };
 
-      const newBoard = addColumn(board, newColumn); //update state
+      const newBoard = addColumn(kanbanBoardStore.board, newColumn); //update state
+      console.log(newBoard);
       newBoard.columns.sort((a, b) => a.key - b.key);
-      setBoard(newBoard);
+      kanbanBoardStore.setBoard(newBoard);
     }
   };
 
   useEffect(() => {
-    console.log("useEffect TODO", todo);
-    if (todo) setColumnTasks("todo", 1, todo);
-  }, [todo]);
-
-  useEffect(() => {
-    console.log("useEffect DOING", doing);
-    if (doing) setColumnTasks("doing", 2, doing);
-  }, [doing]);
-
-  useEffect(() => {
-    console.log("useEffect DONE", done);
-    if (done) setColumnTasks("done", 3, done);
-  }, [done]);
-
-  useEffect(() => {
     columns.map(async (c) => {
-      console.log("UPDATING COLUMNS", c);
       await getTasksByStatus(c);
     });
   }, []);
+
+  // useEffect(() => {
+  //   console.log("useEffect TODO", kanbanBoardStore.todo);
+  //   if (kanbanBoardStore.todo) setColumnTasks("todo", 1, kanbanBoardStore.todo);
+  // }, [kanbanBoardStore]);
+
+  // useEffect(() => {
+  //   console.log("useEffect DOING", kanbanBoardStore.doing);
+  //   if (kanbanBoardStore.doing)
+  //     setColumnTasks("doing", 2, kanbanBoardStore.doing);
+  // }, [kanbanBoardStore]);
+
+  // useEffect(() => {
+  //   console.log("useEffect DONE", kanbanBoardStore.done);
+  //   if (kanbanBoardStore.done) setColumnTasks("done", 3, kanbanBoardStore.done);
+  // }, [kanbanBoardStore]);
 
   const addTask = (description, difficulty, status) => {
     let task = {
@@ -128,10 +132,14 @@ const KanbanBoard = ({
     fetcher
       .post(`/project/${projectId}/task`, task) //update database
       .then(({ data }) => {
-        let column = board.columns.find((c) => c.id === status);
+        let column = kanbanBoardStore.board.columns.find(
+          (c) => c.id === status
+        );
 
-        console.log("task added", data, board);
-        addCard(board, column, data, { on: "bottom" }); //update state
+        console.log("task added", data, kanbanBoardStore.board);
+        addCard(kanbanBoardStore.board, column, data, {
+          on: "bottom",
+        }); //update state
         getTasksByStatus(status);
       })
       .catch((err) => console.error(err));
@@ -147,11 +155,11 @@ const KanbanBoard = ({
       .then(async (result) => {
         try {
           let userId = currentUserStore.currentUser?.id;
-          let userRepPoints = currentUserStore.currentUser?.reputationPoints;
+          let userRepPoints = currentUserStore.currentUser?.reputation_points;
           let pointsLost = task.points_rewarded / 2;
           let newRepPoints = userRepPoints - pointsLost;
 
-          currentUserStore.currentUser.reputationPoints = newRepPoints;
+          currentUserStore.setRepPoints(newRepPoints);
 
           await fetcher
             .put(`/user/${userId}/points/${newRepPoints}`)
@@ -169,14 +177,14 @@ const KanbanBoard = ({
         }
 
         const newBoard = removeCard(board, fromColumn, task); //update state
-        setBoard(newBoard);
+        kanbanBoardStore.setBoard(newBoard);
       })
       .catch((err) => console.error(err));
   };
 
   const moveTask = async (card, source, destination) => {
     // console.log("onCardDragEnd", card.description, source, destination);
-    let userRepPoints = currentUserStore.currentUser.reputationPoints;
+    let userRepPoints = currentUserStore.currentUser.reputation_points;
     let newStatus = destination.toColumnId;
 
     console.log(card.status, newStatus);
@@ -203,7 +211,7 @@ const KanbanBoard = ({
                 let userId = currentUserStore.currentUser.id;
                 let newRepPoints = userRepPoints + card.points_rewarded;
 
-                currentUserStore.currentUser.reputationPoints = newRepPoints;
+                currentUserStore.setRepPoints(newRepPoints);
 
                 await fetcher
                   .put(`/user/${userId}/points/${newRepPoints}`)
@@ -225,8 +233,8 @@ const KanbanBoard = ({
       }
     }
 
-    const newBoard = moveCard(board, source, destination); //update state
-    setBoard(newBoard);
+    const newBoard = moveCard(kanbanBoardStore.board, source, destination); //update state
+    kanbanBoardStore.setBoard(newBoard);
   };
 
   const renderCard = (task, { dragging }) => (
@@ -234,8 +242,8 @@ const KanbanBoard = ({
       task={task}
       removeCard={() =>
         removeTask(
-          board,
-          board.columns.find((c) => c.id === task.status),
+          kanbanBoardStore.board,
+          kanbanBoardStore.board.columns.find((c) => c.id === task.status),
           task
         )
       }
@@ -248,6 +256,7 @@ const KanbanBoard = ({
     setModalVisible(false);
   };
 
+  console.log(kanbanBoardStore.board);
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -265,7 +274,8 @@ const KanbanBoard = ({
           visible={modalVisible}
         />
       </div>
-      {board ? (
+      <div>{kanbanBoardStore.board.columns.map((c) => c.key)}</div>
+      {kanbanBoardStore.board ? (
         <Board
           // initialBoard={board}
           disableColumnDrag
@@ -277,7 +287,7 @@ const KanbanBoard = ({
           // onCardNew={console.log}
           // onNewCardConfirm={onNewCardConfirm}
         >
-          {board}
+          {kanbanBoardStore.board}
         </Board>
       ) : null}
     </>
