@@ -5,13 +5,13 @@ import useKanbanBoardStore from "stores/KanbanBoardStore";
 const ProgressBar = () => {
   const kanbanBoardStore = useKanbanBoardStore();
 
-  // console.log(kanbanBoardStore.done, kanbanBoardStore.todoColumn);
+  console.log(kanbanBoardStore.done);
   return (
     <Tooltip title="3 done / 3 in progress / 4 to do">
       <Progress
         strokeWidth={20}
         strokeLinecap="square"
-        percent={60}
+        percent={kanbanBoardStore.done ? kanbanBoardStore.done.length : 0}
         successPercent={
           kanbanBoardStore.done ? kanbanBoardStore.done.length : 0
         }
