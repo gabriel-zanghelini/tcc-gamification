@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Button, message } from "antd";
+import { Button, message, Progress, Tooltip } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Board, {
@@ -18,6 +18,7 @@ import "@lourenci/react-kanban/dist/styles.css";
 import "./kanban_style.css";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import RepPointsTag from "components/Common/RepPointsTag";
+import ProgressBar from "./ProgressBoard";
 
 const fetcher = axios.create({
   baseURL: "/api",
@@ -192,14 +193,17 @@ const KanbanBoard = ({
           );
           message.error(msg, 3);
           return;
-        } else {
-          card.status = newStatus;
+        }
+      } else {
+        card.status = newStatus;
 
-          await fetcher //update database
-            .put("/task", card)
-            .then(async (result) => {
-              try {
-                console.log("task updated", result);
+        await fetcher //update database
+          .put("/task", card)
+          .then(async (result) => {
+            try {
+              console.log("task updated", result);
+
+              if (newStatus === "done") {
                 let userId = currentUserStore.currentUser.id;
                 let newRepPoints = userRepPoints + card.points_rewarded;
 
@@ -216,17 +220,18 @@ const KanbanBoard = ({
                     );
                     message.info(msg, 3);
                   });
-              } catch (err) {
-                console.error(err);
               }
-            })
-            .catch((err) => console.error(err));
-        }
+            } catch (err) {
+              console.error(err);
+            }
+          })
+          .catch((err) => console.error(err));
       }
     }
 
     const newBoard = moveCard(board, source, destination); //update state
     setBoard(newBoard);
+    console.log("newBoard", newBoard);
   };
 
   const renderCard = (task, { dragging }) => (
@@ -250,6 +255,9 @@ const KanbanBoard = ({
 
   return (
     <>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <ProgressBar todo={todo} doing={doing} done={done} />
+      </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Button
           type="primary"
