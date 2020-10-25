@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { Steps, Button, message } from "antd";
+import { useParams, Redirect, Link } from "react-router-dom";
+import { Steps, Button, message, Result } from "antd";
 import { useTranslation } from "react-i18next";
 import ProjectForm from "components/Project/ProjectForm";
 import KanbanBoard from "components/Project/KanbanBoard";
@@ -30,11 +30,7 @@ const ProjectStepsView = () => {
       description: "project_steps_view.step_2.description",
       content: (
         <div style={{ width: "100%", marginLeft: "0" }}>
-          <KanbanBoard
-            allowRemoveCard
-            projectId={id}
-            columns={["todo"]}
-          />
+          <KanbanBoard allowRemoveCard projectId={id} columns={["todo"]} />
         </div>
       ),
     },
@@ -42,7 +38,19 @@ const ProjectStepsView = () => {
       key: 3,
       title: "project_steps_view.step_3.title",
       description: "project_steps_view.step_3.description",
-      content: "TODO: Add specific users",
+      content: (
+        <Result
+          status="success"
+          title="Projeto criado com sucesso!"
+          // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+          // extra={[
+          //   <Button type="primary" key="console">
+          //     Go Console
+          //   </Button>,
+          //   <Button key="buy">Buy Again</Button>,
+          // ]}
+        />
+      ),
     },
   ];
 
@@ -78,11 +86,15 @@ const ProjectStepsView = () => {
           </Button>
         )}
         {currentStep === steps.length - 1 && (
-          <Button
-            type="primary"
-            onClick={() => message.success("Processing complete!")}
-          >
-            {t("project_steps_view.actions.done")}
+          <Button type="primary" onClick={() => {}}>
+            <Link
+              to={(location) => ({
+                ...location,
+                pathname: "/project/" + id,
+              })}
+            >
+              {t("project_steps_view.actions.done")}
+            </Link>
           </Button>
         )}
         {currentStep < steps.length - 1 && (

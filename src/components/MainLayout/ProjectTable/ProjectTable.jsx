@@ -15,15 +15,18 @@ const ProjectTable = ({ style }) => {
       .get("")
       .then(({ data }) => {
         setDataSource(
-          data?.map((p) => {
-            return {
-              key: p.id,
-              title: p.title,
-              description: p.description,
-              leader: p.leader_id,
-              team: p.team_id,
-            };
-          })
+          data
+            ?.filter((p) => p.status === "open")
+            ?.map((p) => {
+              return {
+                key: p.id,
+                title: p.title,
+                description: p.description,
+                leader: p.leader_id,
+                team: p.team_id,
+                status: p.status,
+              };
+            })
         );
       })
       .catch((err) => {
@@ -45,7 +48,7 @@ const ProjectTable = ({ style }) => {
     {
       tooltip: "Excluir",
       icon: "delete",
-      route: "/project/delete/",
+      route: "/project",
     },
   ];
 

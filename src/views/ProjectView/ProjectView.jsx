@@ -17,7 +17,7 @@ const ProjectView = () => {
 
   console.log("PV", currentUserStore.isLoggedIn);
   return (
-    <ContentTabs>
+    <ContentTabs tabBarStyle={{ marginBottom: "0" }}>
       {currentUserStore.isLoggedIn ? (
         <Tabs.TabPane
           tab={
@@ -29,7 +29,7 @@ const ProjectView = () => {
           key="projects"
           style={{ display: "flex" }}
         >
-          <ContentWrapper width="100%" column={true}>
+          <ContentWrapper width="100%" column={true} padding="var(--xs-pad)">
             <KanbanBoard allowAddCard allowRemoveCard projectId={id} />
           </ContentWrapper>
         </Tabs.TabPane>

@@ -9,7 +9,7 @@ const RepPointsTag = ({ points, action }) => {
       ? "down-circle"
       : "crown";
   return (
-    <Tag color="magenta" style={{ marginRight: "0" }}>
+    <Tag color="#FF7043" style={{ marginRight: "0" }}>
       <span>
         {points}
         &nbsp;

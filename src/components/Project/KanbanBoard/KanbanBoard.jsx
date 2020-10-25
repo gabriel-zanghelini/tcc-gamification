@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Button, message, Progress, Tooltip } from "antd";
+import { Button, message, Progress, Result, Tooltip } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Board, {
@@ -18,7 +18,7 @@ import "@lourenci/react-kanban/dist/styles.css";
 import "./kanban_style.css";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import RepPointsTag from "components/Common/RepPointsTag";
-import ProgressBar from "./ProgressBoard";
+import ProgressBar from "./ProgressBar";
 
 const fetcher = axios.create({
   baseURL: "/api",
@@ -43,11 +43,12 @@ const KanbanBoard = ({
   const [doing, setDoing] = useState(null);
   const [done, setDone] = useState(null);
   const [board, setBoard] = useState({ columns: [] });
+  const [boardStatus, setBoardStatus] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const currentUserStore = useCurrentUserStore();
 
   const getTasksByStatus = async (status) => {
-    console.log("LOADING ", status);
+    // console.log("LOADING ", status);
     await fetcher
       .get(`/project/${projectId}/task/${status}`)
       .then(({ data }) => {
@@ -72,7 +73,7 @@ const KanbanBoard = ({
 
   const setColumnTasks = (status, key, tasks) => {
     let column = board.columns.find((c) => c.id === status);
-    console.log(column, status, tasks);
+    // console.log(column, status, tasks);
 
     if (column) {
       let newColumn = { ...column };
@@ -96,19 +97,57 @@ const KanbanBoard = ({
   };
 
   useEffect(() => {
-    console.log("useEffect TODO", todo);
-    if (todo) setColumnTasks("todo", 1, todo);
+    // console.log("useEffect TODO", todo);
+    if (todo) {
+      setColumnTasks("todo", 1, todo);
+    }
   }, [todo]);
 
   useEffect(() => {
-    console.log("useEffect DOING", doing);
-    if (doing) setColumnTasks("doing", 2, doing);
+    // console.log("useEffect DOING", doing);
+    if (doing) {
+      setColumnTasks("doing", 2, doing);
+    }
   }, [doing]);
 
   useEffect(() => {
-    console.log("useEffect DONE", done);
-    if (done) setColumnTasks("done", 3, done);
+    // console.log("useEffect DONE", done);
+    if (done) {
+      setColumnTasks("done", 3, done);
+    }
   }, [done]);
+
+  useEffect(() => {
+    if (board) {
+      const todoCnt =
+        board.columns?.find((c) => c.id === "todo")?.cards?.length || 0;
+      const doingCnt =
+        board.columns?.find((c) => c.id === "doing")?.cards?.length || 0;
+      const doneCnt =
+        board.columns?.find((c) => c.id === "done")?.cards?.length || 0;
+      console.log(
+        "EFFECT PROGRESS BAR",
+        board.columns,
+        todoCnt,
+        doingCnt,
+        doneCnt
+      );
+
+      let totalCnt = todoCnt + doingCnt + doneCnt;
+
+      let percent = ((doingCnt + doneCnt) / totalCnt) * 100 || 0;
+      let doingPercent = (doingCnt / totalCnt) * 100 || 0;
+      let donePercent = (doneCnt / totalCnt) * 100 || 0;
+      let status = donePercent === 100 ? "success" : "normal";
+
+      setBoardStatus({
+        percent,
+        doingPercent,
+        donePercent,
+        status,
+      });
+    }
+  }, [board.columns]);
 
   useEffect(() => {
     columns.map(async (c) => {
@@ -180,7 +219,7 @@ const KanbanBoard = ({
     let userRepPoints = currentUserStore.currentUser.reputationPoints;
     let newStatus = destination.toColumnId;
 
-    console.log(card.status, newStatus);
+    console.log(`task "${card.description}" | ${card.status} -> ${newStatus}`);
     if (card.status !== newStatus) {
       if (newStatus === "done") {
         if (userRepPoints < card.points_rewarded) {
@@ -194,39 +233,39 @@ const KanbanBoard = ({
           message.error(msg, 3);
           return;
         }
-      } else {
-        card.status = newStatus;
-
-        await fetcher //update database
-          .put("/task", card)
-          .then(async (result) => {
-            try {
-              console.log("task updated", result);
-
-              if (newStatus === "done") {
-                let userId = currentUserStore.currentUser.id;
-                let newRepPoints = userRepPoints + card.points_rewarded;
-
-                currentUserStore.currentUser.reputationPoints = newRepPoints;
-
-                await fetcher
-                  .put(`/user/${userId}/points/${newRepPoints}`)
-                  .then(() => {
-                    let msg = (
-                      <span>
-                        <span>Você ganhou </span>
-                        <RepPointsTag points={card.points_rewarded} />
-                      </span>
-                    );
-                    message.info(msg, 3);
-                  });
-              }
-            } catch (err) {
-              console.error(err);
-            }
-          })
-          .catch((err) => console.error(err));
       }
+
+      card.status = newStatus;
+
+      await fetcher //update database
+        .put("/task", card)
+        .then(async (result) => {
+          try {
+            console.log("task updated", result);
+
+            if (newStatus === "done") {
+              let userId = currentUserStore.currentUser.id;
+              let newRepPoints = userRepPoints + card.points_rewarded;
+
+              currentUserStore.currentUser.reputationPoints = newRepPoints;
+
+              await fetcher
+                .put(`/user/${userId}/points/${newRepPoints}`)
+                .then(() => {
+                  let msg = (
+                    <span>
+                      <span>Você ganhou </span>
+                      <RepPointsTag points={card.points_rewarded} />
+                    </span>
+                  );
+                  message.info(msg, 3);
+                });
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        })
+        .catch((err) => console.error(err));
     }
 
     const newBoard = moveCard(board, source, destination); //update state
@@ -253,12 +292,27 @@ const KanbanBoard = ({
     setModalVisible(false);
   };
 
-  return (
-    <>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <ProgressBar todo={todo} doing={doing} done={done} />
-      </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+  const ProjectKanbanBoard = () => {
+    return (
+      <Board
+        // initialBoard={board}
+        disableColumnDrag
+        // disableCardDrag
+        allowRemoveCard={allowRemoveCard}
+        allowAddCard={allowAddCard ? { on: "top" } : false}
+        renderCard={renderCard}
+        onCardDragEnd={moveTask}
+        // onCardNew={console.log}
+        // onNewCardConfirm={onNewCardConfirm}
+      >
+        {board}
+      </Board>
+    );
+  };
+
+  const AddTaskButton = () => {
+    return (
+      <>
         <Button
           type="primary"
           style={{ width: "400px" }}
@@ -272,23 +326,40 @@ const KanbanBoard = ({
           onCancel={onCancel}
           visible={modalVisible}
         />
-      </div>
-      {board ? (
-        <Board
-          // initialBoard={board}
-          disableColumnDrag
-          // disableCardDrag
-          allowRemoveCard={allowRemoveCard}
-          allowAddCard={allowAddCard ? { on: "top" } : false}
-          renderCard={renderCard}
-          onCardDragEnd={moveTask}
-          // onCardNew={console.log}
-          // onNewCardConfirm={onNewCardConfirm}
-        >
-          {board}
-        </Board>
+      </>
+    );
+  };
+
+  console.log(boardStatus.status, "|", board);
+  return (
+    <>
+      {boardStatus.status === "success" ? (
+        <Result
+          status="success"
+          icon={<ConpleteProjectButton />}
+          title="Projeto Concluído!"
+          // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+        />
+      ) : board ? (
+        <>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ProgressBar boardStatus={boardStatus} />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <AddTaskButton />
+          </div>
+          <ProjectKanbanBoard />
+        </>
       ) : null}
     </>
+  );
+};
+
+const ConpleteProjectButton = () => {
+  return (
+    <Button type="primary" icon="check" size="large">
+      <RepPointsTag points={500} action="plus" />
+    </Button>
   );
 };
 

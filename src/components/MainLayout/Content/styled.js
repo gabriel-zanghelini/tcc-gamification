@@ -10,7 +10,7 @@ export const Content = styled(Layout.Content)`
   min-width: 100%;
   max-width: 100%;
 
-  padding: var(--lg-pad);
+  padding: var(--md-pad);
   padding-bottom: 0;
 
   display: grid;
