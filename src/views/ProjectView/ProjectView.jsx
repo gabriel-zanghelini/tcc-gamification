@@ -9,13 +9,13 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import { observer } from "mobx-react";
+import ProgressBar from "components/Project/KanbanBoard/ProgressBar";
 
 const ProjectView = () => {
   const { t } = useTranslation();
   let { id } = useParams();
   const currentUserStore = useCurrentUserStore();
 
-  console.log("PV", currentUserStore.isLoggedIn);
   return (
     <ContentTabs tabBarStyle={{ marginBottom: "0" }}>
       {currentUserStore.isLoggedIn ? (

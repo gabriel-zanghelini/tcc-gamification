@@ -33,7 +33,7 @@ export const createUser = async (user) => {
         await client
           .query(
             "insert into tb_user (name, email, password, reputation_points) values ($1, $2, $3, $4) returning *",
-            [user.name, user.email, hash, 0]
+            [user.name, user.email, hash, 20]
           )
           .then((result) => {
             client.release();

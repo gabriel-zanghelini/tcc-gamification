@@ -12,15 +12,15 @@ export default function register(app) {
       const registeredUser = await getUserByEmail(authData.email);
 
       if (!registeredUser) {
-        let { id } = await createUser(authData);
+        let { id, reputation_points } = await createUser(authData);
 
         let userInfo = {
           id: id,
           name: authData.name,
           email: authData.email,
-          reputationPoints: 20,
+          reputation_points: reputation_points,
         };
-
+        
         return res
           .cookie(TOKEN_NAME, createToken(userInfo), {
             httpOnly: true,
@@ -56,7 +56,7 @@ export default function register(app) {
                 id: registeredUser.id,
                 name: registeredUser.name,
                 email: registeredUser.email,
-                reputationPoints: registeredUser.reputation_points,
+                reputation_points: registeredUser.reputation_points,
               };
 
               return res
@@ -81,6 +81,7 @@ export default function register(app) {
   });
 
   app.get("/login/token", authorize, async (req, res) => {
+    console.log("/login/token", req.user);
     res.status(200).send(req.user);
   });
 }

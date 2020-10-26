@@ -24,7 +24,7 @@ const UserCard = () => {
           children={currentUserStore.currentUser?.name?.charAt(0)}
         /> */}
         {currentUserStore.currentUser?.name}
-        <RepPointsTag points={currentUserStore.currentUser?.reputationPoints} />
+        <RepPointsTag points={currentUserStore.currentUser?.reputation_points} />
       </Styled.CardButton>
       <UserDrawer
         visible={drawerVisible}

@@ -7,7 +7,7 @@ class CurrentUserStore {
 
   @action
   setUser = (user?: CurrentUser) => {
-    console.log("SET USER", user);
+    // console.log("SET USER", user);
 
     if (!user) {
       this.currentUser = undefined;
@@ -16,9 +16,20 @@ class CurrentUserStore {
     }
   };
 
+  @action
+  setRepPoints = (points: number) => {
+    if (this.currentUser) {
+      console.log("setRepPoints", points);
+      this.currentUser.reputation_points = points;
+    }
+  };
+
   @computed
   get isLoggedIn() {
-    console.log(`IS LOGGED IN: ${!!this.currentUser} |||||||||||||||||`, this.currentUser);
+    // console.log(
+    //   `IS LOGGED IN: ${!!this.currentUser} |||||||||||||||||`,
+    //   this.currentUser
+    // );
 
     return !!this.currentUser;
   }
