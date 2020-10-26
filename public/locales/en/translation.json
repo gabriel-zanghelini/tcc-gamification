@@ -56,7 +56,7 @@
     "actions": {
       "next": "Next",
       "previous": "Previous",
-      "done": "Done"
+      "start": "Start"
     },
     "step_1": {
       "title": "Finished",
