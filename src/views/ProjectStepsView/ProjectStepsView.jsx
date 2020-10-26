@@ -1,17 +1,29 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { Steps, Button, message } from "antd";
+import axios from "axios";
+import { useParams, Redirect, Link } from "react-router-dom";
+import { Steps, Button, message, Result } from "antd";
 import { useTranslation } from "react-i18next";
 import ProjectForm from "components/Project/ProjectForm";
 import KanbanBoard from "components/Project/KanbanBoard";
 import { observer } from "mobx-react";
+import useCurrentUserStore from "stores/CurrentUserStore";
+import RepPointsTag from "components/Common/RepPointsTag";
 
 const { Step } = Steps;
+
+const fetcher = axios.create({
+  baseURL: "/api",
+});
 
 const ProjectStepsView = () => {
   const { t } = useTranslation();
   let { id } = useParams();
+  const currentUserStore = useCurrentUserStore();
   const [currentStep, setCurrentStep] = useState(1);
+  const newProjectReputation = 50;
+  const userId = currentUserStore.currentUser.id;
+  const newRepPoints =
+    currentUserStore.currentUser.reputationPoints + newProjectReputation;
 
   const steps = [
     {
@@ -30,11 +42,7 @@ const ProjectStepsView = () => {
       description: "project_steps_view.step_2.description",
       content: (
         <div style={{ width: "100%", marginLeft: "0" }}>
-          <KanbanBoard
-            allowRemoveCard
-            projectId={id}
-            columns={["todo"]}
-          />
+          <KanbanBoard allowRemoveCard projectId={id} columns={["todo"]} />
         </div>
       ),
     },
@@ -42,7 +50,7 @@ const ProjectStepsView = () => {
       key: 3,
       title: "project_steps_view.step_3.title",
       description: "project_steps_view.step_3.description",
-      content: "TODO: Add specific users",
+      content: <Result status="success" title="Projeto criado com sucesso!" />,
     },
   ];
 
@@ -80,9 +88,30 @@ const ProjectStepsView = () => {
         {currentStep === steps.length - 1 && (
           <Button
             type="primary"
-            onClick={() => message.success("Processing complete!")}
+            onClick={async () => {
+              await fetcher
+                .put(`/user/${userId}/points/${newRepPoints}`)
+                .then(() => {
+                  let msg = (
+                    <span>
+                      <span>Você ganhou </span>
+                      <RepPointsTag points={newProjectReputation} />
+                    </span>
+                  );
+                  message.info(msg, 3);
+                });
+            }}
           >
-            {t("project_steps_view.actions.done")}
+            <Link
+              to={(location) => ({
+                ...location,
+                pathname: "/project/" + id,
+              })}
+            >
+              {t("project_steps_view.actions.start")}
+              &nbsp;
+              <RepPointsTag points={newProjectReputation} action="plus" />
+            </Link>
           </Button>
         )}
         {currentStep < steps.length - 1 && (

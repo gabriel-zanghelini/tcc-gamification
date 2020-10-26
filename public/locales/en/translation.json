@@ -56,7 +56,7 @@
     "actions": {
       "next": "Next",
       "previous": "Previous",
-      "done": "Done"
+      "start": "Start"
     },
     "step_1": {
       "title": "Finished",
@@ -76,7 +76,18 @@
     "todo": "To do",
     "doing": "Doing",
     "done": "Done",
-    "add_todo_task": "Add task to do"
+    "add_todo_task": "Add task to do",
+    "progress_bar": {
+      "tooltipTodo_0": "No task to do ",
+      "tooltipTodo": "{{count}} task to do ",
+      "tooltipTodo_plural": "{{count}} tasks to do ",
+      "tooltipDoing_0": "No task is in progress",
+      "tooltipDoing": "{{count}} task in progress",
+      "tooltipDoing_plural": "{{count}} tasks in progress",
+      "tooltipDone_0": "No task done yet.",
+      "tooltipDone": "{{count}} task done",
+      "tooltipDone_plural": "{{count}} tasks done"
+    }
   },
   "kanban_card": {
     "reputation_points_awarded": "Reputation Points Awarded"
