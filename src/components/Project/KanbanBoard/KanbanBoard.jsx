@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, message, Progress, Result, Tooltip } from "antd";
 import axios from "axios";
-import { useTranslation } from "react-i18next";
+import { Redirect } from "react-router-dom";
 import Board, {
   addCard,
   moveCard,
@@ -12,24 +12,26 @@ import Board, {
 } from "@lourenci/react-kanban";
 
 import KanbanCard from "./KanbanCard";
+import ProgressBar from "./ProgressBar";
 import AddTaskModal from "./AddTaskModal";
+import RepPointsTag from "components/Common/RepPointsTag";
+
+import { useTranslation } from "react-i18next";
+import useCurrentUserStore from "stores/CurrentUserStore";
 
 import "@lourenci/react-kanban/dist/styles.css";
 import "./kanban_style.css";
-import useCurrentUserStore from "stores/CurrentUserStore";
-import RepPointsTag from "components/Common/RepPointsTag";
-import ProgressBar from "./ProgressBar";
 
 const fetcher = axios.create({
   baseURL: "/api",
 });
 
 const TASK_POINTS = {
-  1: 10,
-  2: 20,
-  3: 30,
-  4: 40,
-  5: 50,
+  1: 20,
+  2: 40,
+  3: 60,
+  4: 80,
+  5: 100,
 };
 
 const KanbanBoard = ({
@@ -336,7 +338,7 @@ const KanbanBoard = ({
       {boardStatus.status === "success" ? (
         <Result
           status="success"
-          icon={<ConpleteProjectButton />}
+          icon={<CompleteProjectButton id={projectId} />}
           title="Projeto Concluído!"
           // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
         />
@@ -355,12 +357,59 @@ const KanbanBoard = ({
   );
 };
 
-const ConpleteProjectButton = () => {
-  return (
-    <Button type="primary" icon="check" size="large">
-      <RepPointsTag points={500} action="plus" />
-    </Button>
-  );
+const CompleteProjectButton = ({ id }) => {
+  const [completed, setCompleted] = useState(false);
+  const currentUserStore = useCurrentUserStore();
+  let completeProjReputation = 500;
+
+  const completeProject = async () => {
+    await fetcher //update database
+      .put(`/project/${id}/complete`)
+      .then(async (result) => {
+        try {
+          console.log("project completed", result);
+
+          let userId = currentUserStore.currentUser.id;
+          let newRepPoints =
+            currentUserStore.currentUser.reputationPoints +
+            completeProjReputation;
+
+          currentUserStore.currentUser.reputationPoints = newRepPoints;
+
+          await fetcher
+            .put(`/user/${userId}/points/${newRepPoints}`)
+            .then(() => {
+              let msg = (
+                <span>
+                  <span>Você ganhou </span>
+                  <RepPointsTag points={completeProjReputation} />
+                </span>
+              );
+              message.info(msg, 3);
+
+              setCompleted(true);
+            });
+        } catch (err) {
+          console.error(err);
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+  if (completed) {
+    return <Redirect to="/home" />;
+  } else {
+    return (
+      <Button
+        type="primary"
+        icon="check"
+        size="large"
+        onClick={() => completeProject(id)}
+      >
+        <RepPointsTag points={500} action="plus" />
+      </Button>
+    );
+  }
 };
 
 export default KanbanBoard;

@@ -10,7 +10,13 @@ const createProject = async (project) => {
       await client
         .query(
           "insert into tb_project (title, description, leader_id, team_id, status) values ($1, $2, $3, $4, $5) returning *",
-          [project.title, project.description, project.leader_id, 0, project.status]
+          [
+            project.title,
+            project.description,
+            project.leader_id,
+            0,
+            project.status,
+          ]
         )
         .then((result) => {
           client.release();
@@ -65,6 +71,26 @@ const deleteProject = async (id) => {
     .then(async (client) => {
       await client
         .query("delete from tb_project where id=$1", [id])
+        .then((result) => {
+          client.release();
+        })
+        .catch((err) => {
+          client.release();
+          throw err;
+        });
+    })
+    .catch((err) => {
+      console.log(err.stack);
+      throw err;
+    });
+};
+
+const completeProject = async (id) => {
+  await pool
+    .connect()
+    .then(async (client) => {
+      await client
+        .query("update tb_project set status=$1 where id=$2", ["completed", id])
         .then((result) => {
           client.release();
         })
@@ -240,6 +266,17 @@ export default function register(app) {
     try {
       const project = req.body;
       await updateProject(project);
+
+      return res.sendStatus(200);
+    } catch (err) {
+      throw err;
+    }
+  });
+
+  app.put("/project/:id/complete", async (req, res) => {
+    try {
+      const id = req.params.id;
+      await completeProject(id);
 
       return res.sendStatus(200);
     } catch (err) {
