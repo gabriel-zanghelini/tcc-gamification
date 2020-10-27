@@ -17,34 +17,38 @@ const ProjectView = () => {
   const currentUserStore = useCurrentUserStore();
 
   return (
-    <ContentTabs tabBarStyle={{ marginBottom: "0" }}>
-      {currentUserStore.isLoggedIn ? (
-        <Tabs.TabPane
-          tab={
-            <span>
-              <Icon type="inbox" />
-              {t("menus.project_view.tasks")}
-            </span>
-          }
-          key="projects"
-          style={{ display: "flex" }}
-        >
-          <ContentWrapper width="100%" column={true} padding="var(--xs-pad)">
-            <KanbanBoard allowAddCard allowRemoveCard projectId={id} />
-          </ContentWrapper>
-        </Tabs.TabPane>
-      ) : (
-        <Tabs.TabPane
-          tab={t("login.title")}
-          key="login"
-          style={{ display: "flex" }}
-        >
-          <ContentWrapper width="100%" justifyContent="center">
-            <LoginForm />
-          </ContentWrapper>
-        </Tabs.TabPane>
-      )}
-    </ContentTabs>
+    <ContentWrapper width="100%" column={true}>
+      <ProgressBar />
+
+      <ContentTabs>
+        {currentUserStore.isLoggedIn ? (
+          <Tabs.TabPane
+            tab={
+              <span>
+                <Icon type="inbox" />
+                {t("menus.project_view.tasks")}
+              </span>
+            }
+            key="projects"
+            style={{ display: "flex" }}
+          >
+            <ContentWrapper width="100%" column={true}>
+              <KanbanBoard allowAddCard allowRemoveCard projectId={id} />
+            </ContentWrapper>
+          </Tabs.TabPane>
+        ) : (
+          <Tabs.TabPane
+            tab={t("login.title")}
+            key="login"
+            style={{ display: "flex" }}
+          >
+            <ContentWrapper width="100%" justifyContent="center">
+              <LoginForm />
+            </ContentWrapper>
+          </Tabs.TabPane>
+        )}
+      </ContentTabs>
+    </ContentWrapper>
   );
 };
 

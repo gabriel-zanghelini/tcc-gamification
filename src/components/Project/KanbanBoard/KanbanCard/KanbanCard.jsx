@@ -72,23 +72,15 @@ const CardExtra = ({ task, removeCard }) => {
     });
   }
 
-  if (task.status === "done") {
-    return (
-      <span style={{margin: "5px", color: "#52c41a"}}>
-        <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-      </span>
-    )
-  } else {
-    return (
-      <Button
-        type="link"
-        size="small"
-        onClick={showConfirm}
-        style={{ color: "#fff" }}
-        children={<Icon type="close" />}
-      />
-    );
-  }
+  return (
+    <Button
+      type="link"
+      size="small"
+      onClick={showConfirm}
+      style={{ color: "#fff" }}
+      children={<Icon type="close" />}
+    />
+  );
 };
 
 const CardContent = ({ task }) => {

@@ -56,7 +56,7 @@
     "actions": {
       "next": "Avançar",
       "previous": "Voltar",
-      "start": "Iniciar"
+      "done": "Finalizar"
     },
     "step_1": {
       "title": "Finalizado",
@@ -76,18 +76,7 @@
     "todo": "A fazer",
     "doing": "Fazendo",
     "done": "Feito",
-    "add_todo_task": "Adicionar tarefa a fazer",
-    "progress_bar": {
-      "tooltipTodo_0": "Nenhuma tarefa a fazer ",
-      "tooltipTodo": "{{count}} tarefa a fazer ",
-      "tooltipTodo_plural": "{{count}} tarefas a fazer ",
-      "tooltipDoing_0": "Nenhuma tarefa está em andamento",
-      "tooltipDoing": "{{count}} tarefas em andamento",
-      "tooltipDoing_plural": "{{count}} tarefa em andamento",
-      "tooltipDone_0": "Nenhuma tarefa foi concluída ainda...",
-      "tooltipDone": "{{count}} tarefa concluída",
-      "tooltipDone_plural": "{{count}} tarefas concluídas"
-    }
+    "add_todo_task": "Adicionar tarefa a fazer"
   },
   "kanban_card": {
     "reputation_points_awarded": "Pontos de Reputação concedidos"

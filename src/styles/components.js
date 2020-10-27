@@ -17,7 +17,7 @@ export const ContentWrapper = styled.div`
 // background: var(--main-white);
 
 export const ContentTabs = styled(Tabs)`
-  padding: var(--xs-pad);
+  padding: var(--sm-pad);
   padding-top: 0;
 
   background: var(--main-white);

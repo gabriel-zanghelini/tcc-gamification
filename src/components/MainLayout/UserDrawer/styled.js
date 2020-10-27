@@ -8,7 +8,6 @@ export const Title = styled.h1`
 export const SubTitle = styled.h2`
   color: var(--black-highlight);
   font-weight: normal;
-  font-size: 24px;
 `;
 
 export const Avatar = styled.div`
@@ -17,10 +16,9 @@ export const Avatar = styled.div`
 `;
 
 export const Division = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  font-size: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--md-pad);
 `;
 
 export const Entry = styled.div`

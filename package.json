@@ -28,7 +28,6 @@
     "mobx-react": "^6.2.5",
     "pg": "^8.3.3",
     "react": "^16.13.1",
-    "react-border-wrapper": "^1.0.3",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.3.4",
     "react-router-dom": "^5.1.2",

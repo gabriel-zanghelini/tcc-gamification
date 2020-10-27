@@ -6,6 +6,6 @@
   margin-right: 2px !important;
 }
 
-.kanban-progress .ant-progress-inner {
-  border-radius: 3px !important;
+.ant-progress-inner {
+  background-color: #ddd;
 }

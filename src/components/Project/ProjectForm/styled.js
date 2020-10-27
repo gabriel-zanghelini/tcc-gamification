@@ -9,7 +9,7 @@ export const ProjectInput = styled(FormInput)`
 `;
 
 export const CreateProjectButton = styled(Button)`
-	margin-right: 20%;
+	width: 60%;
 	margin-bottom: 20px;
 	align-self: flex-end;
 `;
