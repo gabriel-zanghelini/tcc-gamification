@@ -12,6 +12,8 @@ import StarterBorder from "../ReputationBorders/StarterBorder";
 import GoldBorder from "../ReputationBorders/GoldBorder";
 import SilverBorder from "../ReputationBorders/SilverBorder";
 import BronzeBorder from "../ReputationBorders/BronzeBorder";
+import PlatinumBorder from "../ReputationBorders/PlatinumBorder";
+import DiamondBorder from "../ReputationBorders/DiamondBorder";
 
 const { Text, Title } = Typography;
 
@@ -22,8 +24,8 @@ const ProfileBorder = ({ children }) => {
     250: BronzeBorder,
     750: SilverBorder,
     1500: GoldBorder,
-    3000: null,
-    5000: null,
+    3000: PlatinumBorder,
+    5000: DiamondBorder,
   };
 
   let Border = StarterBorder;
