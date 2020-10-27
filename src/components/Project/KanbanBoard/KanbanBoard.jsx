@@ -41,11 +41,13 @@ const KanbanBoard = ({
   columns = ["todo", "doing", "done"],
 }) => {
   const { t } = useTranslation();
-  const currentUserStore = useCurrentUserStore();
-  const kanbanBoardStore = useKanbanBoardStore();
+  const [todo, setTodo] = useState(null);
+  const [doing, setDoing] = useState(null);
+  const [done, setDone] = useState(null);
   const [board, setBoard] = useState({ columns: [] });
   const [boardStatus, setBoardStatus] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
+  const currentUserStore = useCurrentUserStore();
 
   const getTasksByStatus = async (status) => {
     // console.log("LOADING ", status);
@@ -73,26 +75,25 @@ const KanbanBoard = ({
 
   const setColumnTasks = (status, key, tasks) => {
     let column = board.columns.find((c) => c.id === status);
+    // console.log(column, status, tasks);
 
     if (column) {
       let newColumn = { ...column };
-      newColumn.cards = toJS(tasks);
+      newColumn.cards = tasks;
       console.log(column, newColumn);
 
       const newBoard = changeColumn(board, column, newColumn); //update state
-      console.log("changeColumn", board, newBoard);
       setBoard(newBoard);
     } else {
       let newColumn = {
         id: status,
         key: key,
         title: t(`kanban_board.${status}`),
-        cards: toJS(tasks),
+        cards: tasks,
       };
 
       const newBoard = addColumn(board, newColumn); //update state
       newBoard.columns.sort((a, b) => a.key - b.key);
-      console.log("addColumn", status, board, newBoard);
       setBoard(newBoard);
     }
   };
@@ -172,9 +173,7 @@ const KanbanBoard = ({
         let column = board.columns.find((c) => c.id === status);
 
         console.log("task added", data, board);
-        addCard(board, column, data, {
-          on: "bottom",
-        }); //update state
+        addCard(board, column, data, { on: "bottom" }); //update state
         getTasksByStatus(status);
       })
       .catch((err) => console.error(err));
@@ -194,7 +193,7 @@ const KanbanBoard = ({
           let pointsLost = task.points_rewarded / 2;
           let newRepPoints = userRepPoints - pointsLost;
 
-          currentUserStore.setRepPoints(newRepPoints);
+          currentUserStore.currentUser.reputation_points = newRepPoints;
 
           await fetcher
             .put(`/user/${userId}/points/${newRepPoints}`)
@@ -250,7 +249,7 @@ const KanbanBoard = ({
               let userId = currentUserStore.currentUser.id;
               let newRepPoints = userRepPoints + card.points_rewarded;
 
-              currentUserStore.currentUser.reputationPoints = newRepPoints;
+              currentUserStore.currentUser.reputation_points = newRepPoints;
 
               await fetcher
                 .put(`/user/${userId}/points/${newRepPoints}`)
@@ -332,7 +331,6 @@ const KanbanBoard = ({
       </>
     );
   };
-
   console.log(boardStatus.status, "|", board);
   return (
     <>
@@ -357,26 +355,21 @@ const KanbanBoard = ({
     </>
   );
 };
-
 const CompleteProjectButton = ({ id }) => {
   const [completed, setCompleted] = useState(false);
   const currentUserStore = useCurrentUserStore();
   let completeProjReputation = 500;
-
   const completeProject = async () => {
     await fetcher //update database
       .put(`/project/${id}/complete`)
       .then(async (result) => {
         try {
           console.log("project completed", result);
-
           let userId = currentUserStore.currentUser.id;
           let newRepPoints =
-            currentUserStore.currentUser.reputationPoints +
+            currentUserStore.currentUser.reputation_points +
             completeProjReputation;
-
-          currentUserStore.currentUser.reputationPoints = newRepPoints;
-
+          currentUserStore.currentUser.reputation_points = newRepPoints;
           await fetcher
             .put(`/user/${userId}/points/${newRepPoints}`)
             .then(() => {
@@ -387,7 +380,6 @@ const CompleteProjectButton = ({ id }) => {
                 </span>
               );
               message.info(msg, 3);
-
               setCompleted(true);
             });
         } catch (err) {
@@ -396,7 +388,6 @@ const CompleteProjectButton = ({ id }) => {
       })
       .catch((err) => console.error(err));
   };
-
   if (completed) {
     return <Redirect to="/home" />;
   } else {

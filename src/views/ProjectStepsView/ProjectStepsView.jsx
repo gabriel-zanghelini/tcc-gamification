@@ -21,9 +21,6 @@ const ProjectStepsView = () => {
   const currentUserStore = useCurrentUserStore();
   const [currentStep, setCurrentStep] = useState(1);
   const newProjectReputation = 50;
-  const userId = currentUserStore.currentUser.id;
-  const newRepPoints =
-    currentUserStore.currentUser.reputationPoints + newProjectReputation;
 
   const steps = [
     {
@@ -89,6 +86,11 @@ const ProjectStepsView = () => {
           <Button
             type="primary"
             onClick={async () => {
+              let userId = currentUserStore.currentUser.id;
+              let newRepPoints =
+                currentUserStore.currentUser.reputation_points +
+                newProjectReputation;
+
               await fetcher
                 .put(`/user/${userId}/points/${newRepPoints}`)
                 .then(() => {

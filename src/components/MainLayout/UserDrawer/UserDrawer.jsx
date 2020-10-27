@@ -29,7 +29,7 @@ const ProfileBorder = ({ children }) => {
   let Border = StarterBorder;
 
   Object.keys(reputationBorders).forEach((b) => {
-    let repPoints = currentUserStore.currentUser.reputationPoints;
+    let repPoints = currentUserStore.currentUser.reputation_points;
 
     console.log(repPoints, parseInt(b));
     if (repPoints >= parseInt(b)) {
@@ -74,7 +74,7 @@ const UserDrawer = ({ visible, onClose }) => {
           <Styled.Division>
             <RepPointsTag
               style={{ fontSize: 16, padding: 3, marginTop: 30 }}
-              points={currentUserStore.currentUser?.reputationPoints}
+              points={currentUserStore.currentUser?.reputation_points}
             />
           </Styled.Division>
         </div>
