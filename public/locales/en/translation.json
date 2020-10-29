@@ -87,7 +87,11 @@
       "tooltipDone_0": "No task done yet.",
       "tooltipDone": "{{count}} task done",
       "tooltipDone_plural": "{{count}} tasks done"
-    }
+    },
+    "addTaskFeedback": "You have earned",
+    "moveTaskFeedback1": "You need at least",
+    "moveTaskFeedback2": "to complete this task!",
+    "removeTaskFeedback": "You lost"
   },
   "kanban_card": {
     "reputation_points_awarded": "Reputation Points Awarded"

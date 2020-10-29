@@ -87,7 +87,11 @@
       "tooltipDone_0": "Nenhuma tarefa foi concluída ainda...",
       "tooltipDone": "{{count}} tarefa concluída",
       "tooltipDone_plural": "{{count}} tarefas concluídas"
-    }
+    },
+    "addTaskFeedback": "Você ganhou",
+    "moveTaskFeedback1": "Você precisa ter pelo menos",
+    "moveTaskFeedback2": "para concluir essa tarefa!",
+    "removeTaskFeedback": "Você perdeu"
   },
   "kanban_card": {
     "reputation_points_awarded": "Pontos de Reputação concedidos"
