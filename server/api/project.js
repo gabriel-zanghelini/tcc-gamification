@@ -41,7 +41,7 @@ const updateProject = async (project) => {
     .then(async (client) => {
       await client
         .query(
-          "update tb_project set title=$1 description=$2, leader_id=$3, team_id=$4, status=$5 where id=$6",
+          "update tb_project set title=$1, description=$2, leader_id=$3, team_id=$4, status=$5 where id=$6",
           [
             project.title,
             project.description,
@@ -237,7 +237,11 @@ export default function register(app) {
 
       return res.status(200).send(taskInfo);
     } catch (err) {
-      throw err;
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
     }
   });
 
@@ -258,7 +262,11 @@ export default function register(app) {
 
       return res.status(200).send(projectInfo);
     } catch (err) {
-      throw err;
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
     }
   });
 
@@ -269,7 +277,11 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      throw err;
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
     }
   });
 
@@ -280,7 +292,11 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      throw err;
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
     }
   });
 
@@ -291,7 +307,11 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      throw err;
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
     }
   });
 }
