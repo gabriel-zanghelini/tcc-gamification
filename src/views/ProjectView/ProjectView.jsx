@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Tabs } from "antd";
+import { Icon, Table, Tabs } from "antd";
 
 import LoginForm from "components/MainLayout/LoginForm";
 import KanbanBoard from "components/Project/KanbanBoard";
@@ -16,9 +16,54 @@ const ProjectView = () => {
   let { id } = useParams();
   const currentUserStore = useCurrentUserStore();
 
-  return (
-    <ContentTabs tabBarStyle={{ marginBottom: "0" }}>
-      {currentUserStore.isLoggedIn ? (
+  // const KanbanTab = () => {
+  //   return (
+
+  //   );
+  // };
+
+  // const RankingTab = () => {
+  const dataSource = [
+    {
+      key: "1",
+      name: "Mike",
+      age: 32,
+      address: "10 Downing Street",
+    },
+    {
+      key: "2",
+      name: "John",
+      age: 42,
+      address: "10 Downing Street",
+    },
+  ];
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+  ];
+
+  //   return (
+
+  //   );
+  // };
+
+  if (currentUserStore.isLoggedIn) {
+    return (
+      <ContentTabs tabBarStyle={{ marginBottom: "0" }}>
         <Tabs.TabPane
           tab={
             <span>
@@ -26,14 +71,32 @@ const ProjectView = () => {
               {t("menus.project_view.tasks")}
             </span>
           }
-          key="projects"
+          key="tasks"
           style={{ display: "flex" }}
         >
           <ContentWrapper width="100%" column={true} padding="var(--xs-pad)">
             <KanbanBoard allowAddCard allowRemoveCard projectId={id} />
           </ContentWrapper>
         </Tabs.TabPane>
-      ) : (
+        <Tabs.TabPane
+          tab={
+            <span>
+              <Icon type="trophy" />
+              {t("menus.project_view.rankings")}
+            </span>
+          }
+          key="ranking"
+          style={{ display: "flex" }}
+        >
+          <ContentWrapper width="100%" column={true} padding="var(--xs-pad)">
+            <Table dataSource={dataSource} columns={columns} />
+          </ContentWrapper>
+        </Tabs.TabPane>
+      </ContentTabs>
+    );
+  } else {
+    return (
+      <ContentTabs tabBarStyle={{ marginBottom: "0" }}>
         <Tabs.TabPane
           tab={t("login.title")}
           key="login"
@@ -43,9 +106,9 @@ const ProjectView = () => {
             <LoginForm />
           </ContentWrapper>
         </Tabs.TabPane>
-      )}
-    </ContentTabs>
-  );
+      </ContentTabs>
+    );
+  }
 };
 
 export default observer(ProjectView);
