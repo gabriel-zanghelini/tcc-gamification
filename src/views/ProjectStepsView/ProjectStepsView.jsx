@@ -8,6 +8,8 @@ import KanbanBoard from "components/Project/KanbanBoard";
 import { observer } from "mobx-react";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import RepPointsTag from "components/Common/RepPointsTag";
+import LoginForm from "components/MainLayout/LoginForm";
+import { ContentWrapper } from "styles/components";
 
 const { Step } = Steps;
 
@@ -59,71 +61,81 @@ const ProjectStepsView = () => {
     setCurrentStep(currentStep + 1);
   };
 
-  return (
-    <div>
-      <Steps
-        current={currentStep}
-        onChange={(curr) => setCurrentStep(curr)}
-        style={{ minHeight: "0%", height: "70px", maxHeight: "70px" }}
-      >
-        {steps.map((item) => (
-          <Step
-            key={item.title}
-            title={t(item.title)}
-            description={t(item.description)}
-            style={{ minHeight: "0%" }}
-          />
-        ))}
-      </Steps>
-      <div>{steps[currentStep].content}</div>
-      <div className="steps-action">
-        {currentStep > 0 && (
-          <Button style={{ marginRight: 8 }} onClick={() => previous()}>
-            {t("project_steps_view.actions.previous")}
-          </Button>
-        )}
-        {currentStep === steps.length - 1 && (
-          <Button
-            type="primary"
-            onClick={async () => {
-              let userId = currentUserStore.currentUser.id;
-              let newRepPoints =
-                currentUserStore.currentUser.reputation_points +
-                newProjectReputation;
+  if (currentUserStore.isLoggedIn) {
+    return (
+      <div>
+        <Steps
+          current={currentStep}
+          onChange={(curr) => setCurrentStep(curr)}
+          style={{ minHeight: "0%", height: "70px", maxHeight: "70px" }}
+        >
+          {steps.map((item) => (
+            <Step
+              key={item.title}
+              title={t(item.title)}
+              description={t(item.description)}
+              style={{ minHeight: "0%" }}
+            />
+          ))}
+        </Steps>
+        <div>{steps[currentStep].content}</div>
+        <div className="steps-action">
+          {currentStep > 0 && (
+            <Button style={{ marginRight: 8 }} onClick={() => previous()}>
+              {t("project_steps_view.actions.previous")}
+            </Button>
+          )}
+          {currentStep === steps.length - 1 && (
+            <Button
+              type="primary"
+              onClick={async () => {
+                let userId = currentUserStore.currentUser.id;
+                let newReputation =
+                  currentUserStore.currentUser.reputation_points +
+                  newProjectReputation;
 
-              await fetcher
-                .put(`/user/${userId}/points/${newRepPoints}`)
-                .then(() => {
-                  let msg = (
-                    <span>
-                      <span>Você ganhou </span>
-                      <RepPointsTag points={newProjectReputation} />
-                    </span>
-                  );
-                  message.info(msg, 3);
-                });
-            }}
-          >
-            <Link
-              to={(location) => ({
-                ...location,
-                pathname: "/project/" + id,
-              })}
+                await fetcher
+                  .put(`/user/${userId}/points/${newReputation}`)
+                  .then(() => {
+                    currentUserStore.currentUser.reputation_points = newReputation;
+
+                    let msg = (
+                      <span>
+                        <span>Você ganhou </span>
+                        <RepPointsTag points={newProjectReputation} />
+                      </span>
+                    );
+                    message.info(msg, 3);
+                  });
+              }}
             >
-              {t("project_steps_view.actions.start")}
-              &nbsp;
-              <RepPointsTag points={newProjectReputation} action="plus" />
-            </Link>
-          </Button>
-        )}
-        {currentStep < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
-            {t("project_steps_view.actions.next")}
-          </Button>
-        )}
+              <Link
+                to={(location) => ({
+                  ...location,
+                  pathname: "/project/" + id,
+                })}
+              >
+                {t("project_steps_view.actions.start")}
+                &nbsp;
+                <RepPointsTag points={newProjectReputation} action="plus" />
+              </Link>
+            </Button>
+          )}
+          {currentStep < steps.length - 1 && (
+            <Button type="primary" onClick={() => next()}>
+              {t("project_steps_view.actions.next")}
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <ContentWrapper width="80%" justifyContent="center">
+        <LoginForm />
+      </ContentWrapper>
+    );
+  }
 };
 
 export default observer(ProjectStepsView);
