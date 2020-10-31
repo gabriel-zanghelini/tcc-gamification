@@ -61,7 +61,8 @@ const SignUpForm = ({ onOk }) => {
           console.log("SIGN UP", data);
           onLogin(data);
         });
-    } catch ({ response }) {
+    } catch (response) {
+      console.log('err', response);
       setLoading(false);
       switch (response.data) {
         case "Email Already In Use":
@@ -76,7 +77,7 @@ const SignUpForm = ({ onOk }) => {
     console.log("onLogin", user);
     currentUserStore.setUser(user);
     setLoading(false);
-    onOk();
+    // onOk();
   };
 
   return (

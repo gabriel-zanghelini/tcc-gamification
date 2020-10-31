@@ -119,7 +119,7 @@ const KanbanBoard = ({
         console.log("addUserPontuation: +", points);
       })
       .catch((err) => {
-        console.error("couldn't addUserPontuation: +", points);
+        console.error("can't addUserPontuation: +" + points, err);
       });
   };
 
