@@ -25,7 +25,12 @@ const LoginForm = ({ onOk, ...props }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <ContentWrapper cardStyle={true} width="60%" justifyContent="center">
+    <ContentWrapper
+      cardStyle={true}
+      width="60%"
+      justifyContent="center"
+      style={{ background: "var(--main-white)" }}
+    >
       <SignInForm />
       <Divider style={{ height: "15em", marginTop: "24px" }} type="vertical" />
       <SignUpForm />
