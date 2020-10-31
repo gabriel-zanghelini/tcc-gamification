@@ -130,4 +130,31 @@ export default function register(app) {
       return res.sendStatus(500);
     }
   });
+
+  app.get("/user/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      pool.connect().then((client) => {
+        return client
+          .query("select * from tb_user where id = $1", [id])
+          .then((result) => {
+            client.release();
+            console.table(result.rows[0]);
+
+            return res.status(200).send(result.rows[0]);
+          })
+          .catch((err) => {
+            client.release();
+            console.log(err.stack);
+            throw err;
+          });
+      });
+    } catch (err) {
+      if (err.response) {
+        return res.status(err.response.status).send(err.response.data);
+      }
+
+      return res.sendStatus(500);
+    }
+  });
 }

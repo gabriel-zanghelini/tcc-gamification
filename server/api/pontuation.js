@@ -26,7 +26,19 @@ const getPontuationByProject = async (projectId) => {
   let pontuation = null;
   await pool.connect().then((client) => {
     return client
-      .query("select * from tb_pontuation where project_id = $1", [projectId])
+      .query(
+        `SELECT 
+          tb_pontuation.id, 
+          user_id, 
+          project_id, 
+          pontuation, 
+          tb_user."name" as user_name, 
+          tb_user."email" as user_email 
+        FROM public.tb_pontuation 
+        INNER JOIN tb_user ON tb_user.id = user_id
+        WHERE project_id = $1`,
+        [projectId]
+      )
       .then((result) => {
         client.release();
         pontuation = result.rows;
@@ -153,12 +165,12 @@ export default function register(app) {
     }
   });
 
-  app.get("/pontuation/user/:id", async (req, res) => {
+  app.get("/pontuation/project/:id", async (req, res) => {
     try {
       let projectId = req.params.id;
       let pontuation = await getPontuationByProject(projectId);
 
-      return res.status(200).send(pontuation); 
+      return res.status(200).send(pontuation);
     } catch (err) {
       if (err.response) {
         return res.status(err.response.status).send(err.response.data);
