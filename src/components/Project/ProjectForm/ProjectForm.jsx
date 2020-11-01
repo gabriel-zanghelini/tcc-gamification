@@ -32,6 +32,11 @@ const ProjectForm = () => {
       error: null,
       dirty: false,
     },
+    deadline: {
+      value: "",
+      error: null,
+      dirty: false,
+    },
   }));
 
   const createProject = async () => {
@@ -42,6 +47,7 @@ const ProjectForm = () => {
         leader_id: currentUserStore.currentUser.id,
         team_id: 0,
         status: "open",
+        deadline: formState.deadline.value,
       })
       .then(({ data }) => {
         console.table(data);
@@ -79,8 +85,16 @@ const ProjectForm = () => {
             formState={formState}
             name="description"
           />
+          <Styled.ProjectDatePicker
+            size="large"
+            placeholder="Data de Conclusão"
+            formState={formState}
+            name="deadline"
+          />
+
           {formState.title.value}
           {formState.description.value}
+          {formState.deadline.value}
           <ContentWrapper justifyContent={"flex-end"}>
             <Text
               strong

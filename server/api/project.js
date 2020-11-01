@@ -9,13 +9,14 @@ const createProject = async (project) => {
     .then(async (client) => {
       await client
         .query(
-          "insert into tb_project (title, description, leader_id, team_id, status) values ($1, $2, $3, $4, $5) returning *",
+          "insert into tb_project (title, description, leader_id, team_id, status, deadline) values ($1, $2, $3, $4, $5) returning *",
           [
             project.title,
             project.description,
             project.leader_id,
             0,
             project.status,
+            project.deadline,
           ]
         )
         .then((result) => {
@@ -41,7 +42,7 @@ const updateProject = async (project) => {
     .then(async (client) => {
       await client
         .query(
-          "update tb_project set title=$1, description=$2, leader_id=$3, team_id=$4, status=$5 where id=$6",
+          "update tb_project set title=$1, description=$2, leader_id=$3, team_id=$4, status=$5, deadline=$6 where id=$7",
           [
             project.title,
             project.description,
@@ -49,6 +50,7 @@ const updateProject = async (project) => {
             project.team_id,
             project.status,
             project.id,
+            project.deadline,
           ]
         )
         .then((result) => {
@@ -258,6 +260,7 @@ export default function register(app) {
         team_id: project.team_id, //TODO: get team by ID
         leader_id: project.leader_id, //TODO: get leader
         status: project.status, //TODO: get leader
+        deadline: project.deadline,
       };
 
       return res.status(200).send(projectInfo);
