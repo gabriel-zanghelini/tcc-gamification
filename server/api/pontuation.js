@@ -142,8 +142,8 @@ export default function register(app) {
       return res.sendStatus(200);
     } catch (err) {
       console.log(err);
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.status(500).send(err);
@@ -157,8 +157,8 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -172,8 +172,8 @@ export default function register(app) {
 
       return res.status(200).send(pontuation);
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
