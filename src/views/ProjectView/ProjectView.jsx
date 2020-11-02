@@ -4,14 +4,12 @@ import { Icon, Table, Tabs } from "antd";
 
 import LoginForm from "components/MainLayout/LoginForm";
 import KanbanBoard from "components/Project/KanbanBoard";
-import { ContentTabs, ContentWrapper } from "styles/components";
+import { ContentTabs, FlexDiv } from "styles/components";
 
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import { observer } from "mobx-react";
-import ProgressBar from "components/Project/KanbanBoard/ProgressBar";
-import { toJS } from "mobx";
 
 const fetcher = axios.create({
   baseURL: "/api",
@@ -27,7 +25,6 @@ const ProjectView = () => {
     await fetcher
       .get(`pontuation/project/${id}`)
       .then(({ data }) => {
-        console.log("project pontuation", data);
         let datasource = data
           ?.map((p) => {
             return {
@@ -41,7 +38,6 @@ const ProjectView = () => {
           })
           .sort((a, b) => b.pontuation - a.pontuation);
 
-        console.log("DATASOURCE", datasource);
         setDataSource(datasource);
       })
       .catch((err) => {
@@ -102,9 +98,9 @@ const ProjectView = () => {
           key="tasks"
           style={{ display: "flex" }}
         >
-          <ContentWrapper width="100%" column={true} padding="var(--xs-pad)">
+          <FlexDiv width="100%" column={true} padding="var(--xs-pad)">
             <KanbanBoard allowAddCard allowRemoveCard projectId={id} />
-          </ContentWrapper>
+          </FlexDiv>
         </Tabs.TabPane>
         <Tabs.TabPane
           tab={
@@ -116,7 +112,7 @@ const ProjectView = () => {
           key="ranking"
           style={{ display: "flex" }}
         >
-          <ContentWrapper
+          <FlexDiv
             width="100%"
             justifyContent="center"
             padding="var(--xs-pad)"
@@ -138,7 +134,7 @@ const ProjectView = () => {
                 }
               }}
             />
-          </ContentWrapper>
+          </FlexDiv>
         </Tabs.TabPane>
       </ContentTabs>
     );
@@ -150,9 +146,9 @@ const ProjectView = () => {
           key="login"
           style={{ display: "flex" }}
         >
-          <ContentWrapper width="100%" justifyContent="center">
+          <FlexDiv width="100%" justifyContent="center">
             <LoginForm />
-          </ContentWrapper>
+          </FlexDiv>
         </Tabs.TabPane>
       </ContentTabs>
     );

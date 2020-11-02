@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Badge, Icon, Typography } from "antd";
+import { Typography } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
 
 import * as Styled from "./styled";
-import { ContentWrapper } from "styles/components";
+import { FlexDiv } from "styles/components";
 import { useLocalStore } from "mobx-react";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import RepPointsTag from "components/Common/RepPointsTag";
@@ -33,7 +33,7 @@ const ProjectForm = () => {
       dirty: false,
     },
     deadline: {
-      value: "",
+      value: null,
       error: null,
       dirty: false,
     },
@@ -92,10 +92,10 @@ const ProjectForm = () => {
             name="deadline"
           />
 
-          {formState.title.value}
-          {formState.description.value}
-          {formState.deadline.value}
-          <ContentWrapper justifyContent={"flex-end"}>
+          {/* {formState.title.value} */}
+          {/* {formState.description.value} */}
+          {/* {formState.deadline.value?.format()} */}
+          <FlexDiv justifyContent={"flex-end"}>
             <Text
               strong
               style={{
@@ -114,7 +114,7 @@ const ProjectForm = () => {
               size={"large"}
               onClick={createProject}
             />
-          </ContentWrapper>
+          </FlexDiv>
         </>
       ) : (
         <Redirect to={`/edit/project/${redirectId}`} />

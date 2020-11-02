@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-
-import { Avatar, Badge, Tooltip } from "antd";
 import { observer } from "mobx-react";
-import { useTranslation } from "react-i18next";
 
 import UserDrawer from "components/MainLayout/UserDrawer";
+import RepPointsTag from "components/Common/RepPointsTag";
 
 import useCurrentUserStore from "stores/CurrentUserStore";
 
 import * as Styled from "./styled";
-import RepPointsTag from "components/Common/RepPointsTag";
 
 const UserCard = () => {
   const currentUserStore = useCurrentUserStore();

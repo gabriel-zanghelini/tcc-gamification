@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Icon, List, Popover, Tag, Tooltip } from "antd";
+import { Alert, Icon, Popover, Tag } from "antd";
 
 const PopoverContent = ({ infoMsg, alertMsg }) => {
   const alertStyle = { marginBottom: 10 };

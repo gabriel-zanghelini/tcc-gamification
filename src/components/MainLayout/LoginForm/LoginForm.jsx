@@ -5,7 +5,7 @@ import { Divider } from "antd";
 import { observer } from "mobx-react";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
-import { ContentWrapper } from "styles/components";
+import { FlexDiv } from "styles/components";
 import useCurrentUserStore from "stores/CurrentUserStore";
 
 const fetcher = axios.create({
@@ -25,7 +25,7 @@ const LoginForm = ({ onOk, ...props }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <ContentWrapper
+    <FlexDiv
       cardStyle={true}
       width="60%"
       justifyContent="center"
@@ -34,7 +34,7 @@ const LoginForm = ({ onOk, ...props }) => {
       <SignInForm />
       <Divider style={{ height: "15em", marginTop: "24px" }} type="vertical" />
       <SignUpForm />
-    </ContentWrapper>
+    </FlexDiv>
   );
 };
 

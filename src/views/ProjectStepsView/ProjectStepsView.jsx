@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useParams, Redirect, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Steps, Button, message, Result } from "antd";
 import { useTranslation } from "react-i18next";
 import ProjectForm from "components/Project/ProjectForm";
@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import RepPointsTag from "components/Common/RepPointsTag";
 import LoginForm from "components/MainLayout/LoginForm";
-import { ContentWrapper } from "styles/components";
+import { FlexDiv } from "styles/components";
 
 const { Step } = Steps;
 
@@ -131,9 +131,9 @@ const ProjectStepsView = () => {
     );
   } else {
     return (
-      <ContentWrapper width="80%" justifyContent="center">
+      <FlexDiv width="80%" justifyContent="center">
         <LoginForm />
-      </ContentWrapper>
+      </FlexDiv>
     );
   }
 };

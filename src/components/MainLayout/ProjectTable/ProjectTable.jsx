@@ -95,9 +95,8 @@ const ProjectTable = ({ style }) => {
         return (
           <span>
             {actions.map((a, i) => {
-              console.log(record);
               return (
-                <span>
+                <span key={i}>
                   <Tooltip title={a.tooltip}>
                     <Link
                       to={(location) => ({

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Drawer, Avatar, Divider, Typography, Tag, Icon } from "antd";
+import { Drawer, Avatar, Divider, Typography } from "antd";
 import { observer } from "mobx-react";
 
 import { useTranslation } from "react-i18next";
@@ -66,7 +66,6 @@ const UserDrawer = ({ visible, onClose }) => {
             />
           </Styled.Avatar>
           <Divider />
-          {/* <Styled.SubTitle>{t("user_drawer.personal_data")}</Styled.SubTitle> */}
           <Styled.Division>
             <Title level={3}>{currentUserStore.currentUser?.name}</Title>
           </Styled.Division>
@@ -86,10 +85,3 @@ const UserDrawer = ({ visible, onClose }) => {
 };
 
 export default observer(UserDrawer);
-
-const Entry = ({ label, value, span }) => (
-  <Styled.Entry span={span}>
-    <Styled.Label>{label}:</Styled.Label>
-    <span>{value}</span>
-  </Styled.Entry>
-);
