@@ -9,7 +9,7 @@ const createProject = async (project) => {
     .then(async (client) => {
       await client
         .query(
-          "insert into tb_project (title, description, leader_id, team_id, status, deadline) values ($1, $2, $3, $4, $5) returning *",
+          "insert into tb_project (title, description, leader_id, team_id, status, deadline) values ($1, $2, $3, $4, $5, $6) returning *",
           [
             project.title,
             project.description,
@@ -126,8 +126,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -145,7 +145,7 @@ export default function register(app) {
             client.release();
             // console.table(result.rows);
 
-            return res.status(200).send(result.rows);
+            return res.status(200).send(result.rows[0]);
           })
           .catch((err) => {
             client.release();
@@ -154,8 +154,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -186,8 +186,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -214,8 +214,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -239,8 +239,8 @@ export default function register(app) {
 
       return res.status(200).send(taskInfo);
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -265,8 +265,8 @@ export default function register(app) {
 
       return res.status(200).send(projectInfo);
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -280,8 +280,8 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -295,8 +295,8 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -310,8 +310,8 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);

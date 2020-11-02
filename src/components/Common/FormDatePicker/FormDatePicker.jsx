@@ -3,6 +3,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 import { Form, DatePicker } from "antd";
+import i18n, { EN_DATE_FORMAT, PT_DATE_FORMAT } from "configs/language";
 
 const FormDatePicker = ({
   formState,
@@ -27,6 +28,7 @@ const FormDatePicker = ({
     formState[name].dirty = true;
   };
 
+  console.log(i18n.language);
   return (
     <Form.Item
       validateStatus={status}
@@ -38,7 +40,7 @@ const FormDatePicker = ({
         name={name}
         onChange={onChange}
         value={value}
-        format="DD/MM/YYYY"
+        format={i18n.language === "pt-BR" ? PT_DATE_FORMAT : EN_DATE_FORMAT}
         {...props}
       />
     </Form.Item>

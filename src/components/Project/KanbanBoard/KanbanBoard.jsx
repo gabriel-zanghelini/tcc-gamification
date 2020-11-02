@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Button, message, Progress, Result, Tooltip } from "antd";
+import { Alert, Button, message, Result } from "antd";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 import Board, {
@@ -48,6 +48,7 @@ const KanbanBoard = ({
   const [boardStatus, setBoardStatus] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const currentUserStore = useCurrentUserStore();
+  const [projectInfo, setProjectInfo] = useState(null);
 
   const getTasksByStatus = async (status) => {
     // console.log("LOADING ", status);
@@ -151,7 +152,7 @@ const KanbanBoard = ({
                   <span>
                     {t("kanban_board.addTaskFeedback")}
                     &nbsp;
-                    <RepPointsTag points={card.points_rewarded} />,
+                    <RepPointsTag points={card.points_rewarded} />
                   </span>
                 );
                 message.info(msg, 3);
@@ -166,8 +167,6 @@ const KanbanBoard = ({
       })
       .catch((err) => console.error(err));
   };
-
-  const deleteTask = async () => {};
 
   useEffect(() => {
     // console.log("useEffect TODO", todo);
@@ -218,6 +217,9 @@ const KanbanBoard = ({
         doingPercent,
         donePercent,
         status,
+        todoCnt,
+        doingCnt,
+        doneCnt,
       });
     }
   }, [board.columns]);
@@ -229,13 +231,35 @@ const KanbanBoard = ({
     });
   }, []);
 
-  const addTask = (description, difficulty, status) => {
+  useEffect(() => {
+    fetcher
+      .get(`project/${projectId}`)
+      .then(({ data }) => {
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let deadline = new Date(data.deadline);
+
+        if (today.getTime() > deadline.getTime()) data["isDelayed"] = true;
+        else data["isDelayed"] = false;
+
+        data["reputationOnComplete"] = data.isDelayed ? 150 : 500;
+
+        console.log("PROJECT INFO", data);
+        setProjectInfo(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [projectId]);
+
+  const addTask = (description, difficulty, deadline, status) => {
     let task = {
       description,
       difficulty,
       status,
       points_rewarded: TASK_POINTS[difficulty],
       project_id: projectId,
+      deadline: deadline,
     };
 
     fetcher
@@ -296,7 +320,7 @@ const KanbanBoard = ({
           let msg = (
             <span>
               {t("kaban_board.moveTaskFeedback1")}
-              <RepPointsTag points={card.points_rewarded} />,
+              <RepPointsTag points={card.points_rewarded} />
               {t("kaban_board.moveTaskFeedback2")}
             </span>
           );
@@ -371,20 +395,48 @@ const KanbanBoard = ({
       </>
     );
   };
-  console.log(boardStatus.status, "|", board);
+
+  // console.log(boardStatus.status, "|", board);
   return (
     <>
       {boardStatus.status === "success" ? (
         <Result
+          style={{ width: "30%", margin: "auto" }}
           status="success"
-          icon={<CompleteProjectButton id={projectId} />}
+          icon={<CompleteProjectButton projectInfo={projectInfo} />}
           title="Projeto Concluído!"
-          // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+          subTitle={
+            projectInfo?.isDelayed ? (
+              <Alert
+                message={
+                  <span>
+                    {t("kanban_board.projectResultDelayed")}
+                    &nbsp;
+                    <RepPointsTag points={projectInfo?.reputationOnComplete} />
+                  </span>
+                }
+                type="warning"
+                showIcon
+              />
+            ) : (
+              <Alert
+                message={
+                  <span>
+                    {t("kanban_board.projectResultOnTime")}
+                    &nbsp;
+                    <RepPointsTag points={projectInfo?.reputationOnComplete} />
+                  </span>
+                }
+                type="success"
+                showIcon
+              />
+            )
+          }
         />
       ) : board ? (
         <>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <ProgressBar boardStatus={boardStatus} />
+            <ProgressBar projectInfo={projectInfo} boardStatus={boardStatus} />
           </div>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <AddTaskButton />
@@ -395,28 +447,34 @@ const KanbanBoard = ({
     </>
   );
 };
-const CompleteProjectButton = ({ id }) => {
+
+const CompleteProjectButton = ({ projectInfo }) => {
+  const { t } = useTranslation();
   const [completed, setCompleted] = useState(false);
   const currentUserStore = useCurrentUserStore();
-  let completeProjReputation = 500;
+  console.log("projectInfo", projectInfo);
+
   const completeProject = async () => {
     await fetcher //update database
-      .put(`/project/${id}/complete`)
+      .put(`/project/${projectInfo.id}/complete`)
       .then(async (result) => {
         try {
           console.log("project completed", result);
           let userId = currentUserStore.currentUser.id;
-          let newRepPoints =
-            currentUserStore.currentUser.reputation_points +
-            completeProjReputation;
-          currentUserStore.currentUser.reputation_points = newRepPoints;
+          let userReputation = currentUserStore.currentUser.reputation_points;
+          let newReputation =
+            userReputation + projectInfo?.reputationOnComplete;
+
+          currentUserStore.currentUser.reputation_points = newReputation;
+
           await fetcher
-            .put(`/user/${userId}/points/${newRepPoints}`)
+            .put(`/user/${userId}/points/${newReputation}`)
             .then(() => {
               let msg = (
                 <span>
-                  <span>Você ganhou </span>
-                  <RepPointsTag points={completeProjReputation} />
+                  {t("kanban_board.addTaskFeedback")}
+                  &nbsp;
+                  <RepPointsTag points={projectInfo?.reputationOnComplete} />
                 </span>
               );
               message.info(msg, 3);
@@ -428,6 +486,7 @@ const CompleteProjectButton = ({ id }) => {
       })
       .catch((err) => console.error(err));
   };
+
   if (completed) {
     return <Redirect to="/home" />;
   } else {
@@ -436,9 +495,12 @@ const CompleteProjectButton = ({ id }) => {
         type="primary"
         icon="check"
         size="large"
-        onClick={() => completeProject(id)}
+        onClick={() => completeProject(projectInfo.id)}
       >
-        <RepPointsTag points={500} action="plus" />
+        <RepPointsTag
+          points={projectInfo?.reputationOnComplete}
+          action="plus"
+        />
       </Button>
     );
   }

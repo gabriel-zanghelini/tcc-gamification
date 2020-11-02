@@ -78,20 +78,23 @@
     "done": "Done",
     "add_todo_task": "Add task to do",
     "progress_bar": {
-      "tooltipTodo_0": "No task to do ",
       "tooltipTodo": "{{count}} task to do ",
+      "tooltipTodo_0": "No task to do ",
       "tooltipTodo_plural": "{{count}} tasks to do ",
-      "tooltipDoing_0": "No task is in progress",
       "tooltipDoing": "{{count}} task in progress",
+      "tooltipDoing_0": "No task is in progress",
       "tooltipDoing_plural": "{{count}} tasks in progress",
-      "tooltipDone_0": "No task done yet.",
       "tooltipDone": "{{count}} task done",
+      "tooltipDone_0": "No task done yet.",
       "tooltipDone_plural": "{{count}} tasks done"
     },
     "addTaskFeedback": "You have earned",
     "moveTaskFeedback1": "You need at least",
     "moveTaskFeedback2": "to complete this task!",
-    "removeTaskFeedback": "You lost"
+    "removeTaskFeedback": "You lost",
+    "completeProjectFeedback": "You have earned",
+    "projectResultOnTime": "Congratulations! You completed on time:",
+    "projectResultDelayed": "Good job! But you failed to complete on time:"
   },
   "kanban_card": {
     "reputation_points_awarded": "Reputation Points Awarded"

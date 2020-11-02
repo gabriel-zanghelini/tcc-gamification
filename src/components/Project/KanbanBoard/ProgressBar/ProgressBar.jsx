@@ -1,18 +1,25 @@
-import { Button, Icon, List, Popover, Progress, Result, Tooltip } from "antd";
-import RepPointsTag from "components/Common/RepPointsTag";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Icon, List, Popover, Progress, Typography } from "antd";
 import { useTranslation } from "react-i18next";
+import { getDateString, PT_DATE_FORMAT } from "configs/language";
 
-const ProgressBar = ({ boardStatus }) => {
+const { Text } = Typography;
+
+const fetcher = axios.create({
+  baseURL: "/api/project",
+});
+
+const ProgressBar = ({ boardStatus, projectInfo }) => {
   const { t } = useTranslation();
-  console.log(
-    "PROGRESS BAR",
-    boardStatus,
-    boardStatus.columns,
-    boardStatus.todoCnt,
-    boardStatus.doingCnt,
-    boardStatus.doneCnt
-  );
+
+  // console.log(
+  //   "PROGRESS BAR",
+  //   boardStatus,
+  //   boardStatus.todoCnt,
+  //   boardStatus.doingCnt,
+  //   boardStatus.doneCnt
+  // );
 
   const popoverContent = (
     <div>
@@ -23,13 +30,13 @@ const ProgressBar = ({ boardStatus }) => {
         bordered
         dataSource={[
           t("kanban_board.progress_bar.tooltipTodo", {
-            count: boardStatus.todoCnt,
+            count: boardStatus.todoCnt || 0,
           }),
           t("kanban_board.progress_bar.tooltipDoing", {
-            count: boardStatus.doingCnt,
+            count: boardStatus.doingCnt || 0,
           }),
           t("kanban_board.progress_bar.tooltipDone", {
-            count: boardStatus.doneCnt,
+            count: boardStatus.doneCnt || 0,
           }),
         ]}
         renderItem={(item) => <List.Item>{item}</List.Item>}
@@ -43,13 +50,21 @@ const ProgressBar = ({ boardStatus }) => {
         padding: "2px 2px 2px 10px",
         width: "90%",
         marginBottom: "15px",
-        // backgroundColor: "#ccc",
-        // borderRadius: "3px",
       }}
     >
       <span>
-        <Icon type="home" />
-        <Icon type="flag" style={{ float: "right", marginRight: "40px" }} />
+        <span>
+          <Icon type="home" style={{ marginRight: 5 }} />
+          <Text strong>{projectInfo?.title}</Text>
+        </span>
+        <span style={{ float: "right", marginRight: 40 }}>
+          <Text strong style={{ marginRight: 5 }}>
+            {projectInfo?.deadline
+              ? getDateString(new Date(projectInfo?.deadline))
+              : ""}
+          </Text>
+          <Icon type="flag" />
+        </span>
       </span>
       <Popover
         content={popoverContent}
@@ -69,8 +84,8 @@ const ProgressBar = ({ boardStatus }) => {
           //   return (percent - boardStatus.doingPercent).toFixed(0) + "%";
           // }}
           // style={{ backgroundColor: "#f5f5f5" }}
-          percent={boardStatus.percent?.toFixed(0)}
-          successPercent={boardStatus.donePercent?.toFixed(0)}
+          percent={boardStatus.percent?.toFixed(0) || 0}
+          successPercent={boardStatus.donePercent?.toFixed(0) || 0}
         />
       </Popover>
     </span>
