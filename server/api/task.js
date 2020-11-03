@@ -41,14 +41,13 @@ const updateTask = async (task) => {
     .then(async (client) => {
       await client
         .query(
-          "update tb_task set description=$1, status=$2, difficulty=$3, points_rewarded=$4, deadline=$5 where id=$6",
+          "update tb_task set description=$1, status=$2, difficulty=$3, deadline=$4 where id=$5",
           [
             task.description,
             task.status,
             task.difficulty,
-            task.points_rewarded,
+            task.deadline,
             task.id,
-            task.deadline
           ]
         )
         .then((result) => {

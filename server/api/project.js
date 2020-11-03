@@ -49,8 +49,8 @@ const updateProject = async (project) => {
             project.leader_id,
             project.team_id,
             project.status,
-            project.id,
             project.deadline,
+            project.id,
           ]
         )
         .then((result) => {
