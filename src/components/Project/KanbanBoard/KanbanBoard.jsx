@@ -34,6 +34,30 @@ const TASK_POINTS = {
   5: 100,
 };
 
+const setProjectDeadlineInfo = (project) => {
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let deadline = new Date(project.deadline);
+
+  if (today.getTime() > deadline.getTime()) project["isDelayed"] = true;
+  else project["isDelayed"] = false;
+
+  project["reputationOnComplete"] = project.isDelayed ? 150 : 500;
+};
+
+const setTaskDeadlineInfo = (task) => {
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let deadline = new Date(task.deadline);
+
+  if (today.getTime() > deadline.getTime()) task["isDelayed"] = true;
+  else task["isDelayed"] = false;
+
+  if (task.isDelayed) {
+    task.points_rewarded = task.points_rewarded * 0.3;
+  }
+};
+
 const KanbanBoard = ({
   allowRemoveCard,
   allowAddCard,
@@ -54,16 +78,20 @@ const KanbanBoard = ({
     // console.log("LOADING ", status);
     await fetcher
       .get(`/project/${projectId}/task/${status}`)
-      .then(({ data }) => {
+      .then(({ data: tasks }) => {
+        console.log("getTasksByStatus", tasks);
+
+        tasks.forEach((t) => setTaskDeadlineInfo(t));
+
         switch (status) {
           case "todo":
-            setTodo(data);
+            setTodo(tasks);
             break;
           case "doing":
-            setDoing(data);
+            setDoing(tasks);
             break;
           case "done":
-            setDone(data);
+            setDone(tasks);
             break;
           default:
             break;
@@ -234,18 +262,10 @@ const KanbanBoard = ({
   useEffect(() => {
     fetcher
       .get(`project/${projectId}`)
-      .then(({ data }) => {
-        let today = new Date();
-        today.setHours(0, 0, 0, 0);
-        let deadline = new Date(data.deadline);
-
-        if (today.getTime() > deadline.getTime()) data["isDelayed"] = true;
-        else data["isDelayed"] = false;
-
-        data["reputationOnComplete"] = data.isDelayed ? 150 : 500;
-
-        console.log("PROJECT INFO", data);
-        setProjectInfo(data);
+      .then(({ data: project }) => {
+        console.log("PROJECT INFO", project);
+        setProjectDeadlineInfo(project);
+        setProjectInfo(project);
       })
       .catch((err) => {
         console.error(err);

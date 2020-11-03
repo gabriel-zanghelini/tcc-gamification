@@ -104,6 +104,8 @@ const CardExtra = ({ task, removeCard }) => {
 };
 
 const CardContent = ({ task }) => {
+  let deadlineColor = task.isDelayed ? "red" : "geekblue";
+
   return (
     <FlexDiv width="100%" padding="5px">
       <FlexDiv padding="0px" width="80%">
@@ -111,7 +113,9 @@ const CardContent = ({ task }) => {
       </FlexDiv>
       {task.deadline ? (
         <FlexDiv padding="0px" width="20%" style={{ alignItems: "flex-start" }}>
-          <Tag color="#108ee9">{getDateString(new Date(task.deadline))}</Tag>
+          <Tag color={deadlineColor} style={{ borderRadius: 2 }}>
+            {getDateString(new Date(task.deadline))}
+          </Tag>
         </FlexDiv>
       ) : (
         ""
@@ -121,6 +125,13 @@ const CardContent = ({ task }) => {
 };
 
 const KanbanCard = ({ task, dragging, removeCard }) => {
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let deadline = new Date(task.deadline);
+
+  if (today.getTime() > deadline.getTime()) task["isDelayed"] = true;
+  else task["isDelayed"] = false;
+  
   // console.log("KanbanCard", task, dragging, removeCard);
   return (
     <Card
