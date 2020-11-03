@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import { observer } from "mobx-react";
+import ProfileBorder from "components/MainLayout/ProfileBorder";
 
 const fetcher = axios.create({
   baseURL: "/api",
@@ -114,11 +115,12 @@ const ProjectView = () => {
         >
           <FlexDiv
             width="100%"
-            justifyContent="center"
+            justifyContent="space-around"
             padding="var(--xs-pad)"
           >
             <Table
               dataSource={dataSource}
+              title={() => "Ranking de Projeto"}
               columns={columns}
               rowKey="key"
               bordered
@@ -134,6 +136,12 @@ const ProjectView = () => {
                 }
               }}
             />
+            <FlexDiv width="384px" column="column">
+              <span>Ranking Pessoal</span>
+              <span>
+                <ProfileBorder />
+              </span>
+            </FlexDiv>
           </FlexDiv>
         </Tabs.TabPane>
       </ContentTabs>
