@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Divider, Icon, Table, Tooltip } from "antd";
+import { Button, Divider, Icon, Table, Tooltip } from "antd";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const fetcher = axios.create({
   baseURL: "/api/project",
 });
 
 const ProjectTable = ({ style }) => {
+  const { t } = useTranslation();
   const [dataSource, setDataSource] = useState([]);
 
   useEffect(() => {
@@ -54,21 +56,21 @@ const ProjectTable = ({ style }) => {
 
   const columns = [
     {
-      title: "Id",
+      title: t("project_table.columns.id"),
       dataIndex: "key",
       key: "id",
     },
     {
-      title: "Title",
+      title: t("project_table.columns.title"),
       dataIndex: "title",
       key: "title",
       render: (text, record) => {
         return (
-          <Tooltip title={actions[0].tooltip}>
+          <Tooltip title={t("project_table.actions.open")}>
             <Link
               to={(location) => ({
                 ...location,
-                pathname: actions[0].route + record.key,
+                pathname: `/project/${record.key}`,
               })}
             >
               {text}
@@ -78,40 +80,62 @@ const ProjectTable = ({ style }) => {
       },
     },
     {
-      title: "Description",
+      title: t("project_table.columns.description"),
       dataIndex: "description",
       key: "description",
     },
     {
-      title: "Leader",
+      title: t("project_table.columns.leader"),
       dataIndex: "leader",
       key: "leader",
     },
     {
-      title: "Action",
+      title: t("project_table.columns.actions"),
       dataIndex: "",
       key: "action",
       render: (text, record) => {
         return (
           <span>
-            {actions.map((a, i) => {
-              return (
-                <span key={i}>
-                  <Tooltip title={a.tooltip}>
-                    <Link
-                      to={(location) => ({
-                        ...location,
-                        pathname: a.route + record.key,
-                      })}
-                    >
-                      <Icon type={a.icon} />
-                    </Link>
-                  </Tooltip>
-                  {/* <Button type="link" icon={a.icon} /> */}
-                  {i < actions.length - 1 ? <Divider type="vertical" /> : null}
-                </span>
-              );
-            })}
+            <span key={1}>
+              <Tooltip title={t("project_table.actions.open")}>
+                <Link
+                  to={(location) => ({
+                    ...location,
+                    pathname: `/project/${record.key}`,
+                  })}
+                >
+                  <Icon type="folder-open" />
+                </Link>
+              </Tooltip>
+              <Divider type="vertical" />
+            </span>
+            <span key={2}>
+              <Tooltip title={t("project_table.actions.edit")}>
+                <Link
+                  to={(location) => ({
+                    ...location,
+                    pathname: `/edit/project/${record.key}`,
+                  })}
+                >
+                  <Icon type="edit" />
+                </Link>
+              </Tooltip>
+              <Divider type="vertical" />
+            </span>
+            {/* <span key={3}>
+              <Tooltip title={t("project_table.actions.delete")}>
+                <Button
+                  type="link"
+                  icon="delete"
+                  size="small"
+                  onClick={async () => {
+                    console.log(record.key);
+                    await fetcher.delete(`/${record.key}`);
+                  }}
+                  style={{ width: 14, height: 19 }}
+                />
+              </Tooltip>
+            </span> */}
           </span>
         );
       },

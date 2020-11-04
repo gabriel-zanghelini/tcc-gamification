@@ -1,8 +1,10 @@
 import { Icon } from "antd";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Border from "../Border";
 
 const SilverBorder = ({ children }) => {
+  const { t } = useTranslation();
   let icon = (
     <span>
       <Icon type="crown" style={{ fontSize: 18 }} />
@@ -14,7 +16,7 @@ const SilverBorder = ({ children }) => {
     <Border
       mainColor="silver"
       secondaryColor="#c0c0c066"
-      title="Prata"
+      title={t("border.titles.silver")}
       borderIcon={icon}
     >
       {children}

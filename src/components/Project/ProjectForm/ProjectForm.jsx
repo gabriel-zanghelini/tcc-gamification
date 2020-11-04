@@ -67,7 +67,7 @@ const ProjectForm = () => {
             {t("project_form.title")}
             <span style={{ marginLeft: 10 }}>
               <RepPointsTag
-                points={100}
+                points={40}
                 action="plus"
                 style={{ fontSize: 14 }}
               />
@@ -75,19 +75,19 @@ const ProjectForm = () => {
           </Title>
           <Styled.ProjectInput
             size="large"
-            placeholder="Título"
+            placeholder={t("project_form.inputs.title")}
             formState={formState}
             name="title"
           />
           <Styled.ProjectInput
             size="large"
-            placeholder="Descrição"
+            placeholder={t("project_form.inputs.description")}
             formState={formState}
             name="description"
           />
           <Styled.ProjectDatePicker
             size="large"
-            placeholder="Data de Conclusão"
+            placeholder={t("project_form.inputs.deadline")}
             formState={formState}
             name="deadline"
           />

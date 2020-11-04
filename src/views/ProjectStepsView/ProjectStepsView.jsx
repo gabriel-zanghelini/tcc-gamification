@@ -22,7 +22,7 @@ const ProjectStepsView = () => {
   let { id } = useParams();
   const currentUserStore = useCurrentUserStore();
   const [currentStep, setCurrentStep] = useState(1);
-  const newProjectReputation = 50;
+  const newProjectReputation = 40;
 
   const steps = [
     {

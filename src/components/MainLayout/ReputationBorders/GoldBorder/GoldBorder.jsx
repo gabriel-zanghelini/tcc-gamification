@@ -1,8 +1,10 @@
 import { Icon } from "antd";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Border from "../Border";
 
 const GoldBorder = ({ children }) => {
+  const { t } = useTranslation();
   let icon = (
     <span>
       <Icon type="crown" style={{ fontSize: 18 }} />
@@ -15,7 +17,7 @@ const GoldBorder = ({ children }) => {
     <Border
       mainColor="#eab92f"
       customBackground="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)"
-      title="Ouro"
+      title={t("border.titles.gold")}
       borderIcon={icon}
     >
       {children}

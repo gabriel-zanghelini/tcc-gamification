@@ -15,19 +15,23 @@
   "footer": {
     "copyright": "© {{siteName}}"
   },
+  "header": {
+    "unify": "Unify - Project Management System"
+  },
   "spinner": {
     "loading": "Loading..."
   },
   "login": {
-    "title": "Bem Vindo",
-    "sign_in": "Already have an account? Sign In",
+    "title": "Authentication",
+    "sign_in": "Already have an account? Log In",
     "sign_up": "Create your account",
     "labels": {
       "name": "Name",
       "email": "Email",
       "password": "Password"
     },
-    "button": "Log In",
+    "login_button": "Log In",
+    "signin_button": "Sign in",
     "error": {
       "wrong_username": "Wrong Username!",
       "wrong_password": "Wrong Password!",
@@ -50,7 +54,26 @@
   },
   "project_form": {
     "title": "Create project",
-    "create_button": "Create"
+    "create_button": "Create",
+    "inputs": {
+      "title": "Title",
+      "description": "Description",
+      "deadline": "Deadline"
+    }
+  },
+  "project_table": {
+    "columns": {
+      "id": "Id",
+      "title": "Title",
+      "description": "Description",
+      "leader": "Leader",
+      "actions": "Actions"
+    },
+    "actions": {
+      "open": "Open",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
   },
   "project_steps_view": {
     "actions": {
@@ -101,5 +124,15 @@
   },
   "reputation_points": {
     "title": "Reputation Points"
+  },
+  "border": {
+    "titles": {
+      "starter": "Beginner",
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold",
+      "platinum": "Platinum",
+      "diamond": "Diamond"
+    }
   }
 }

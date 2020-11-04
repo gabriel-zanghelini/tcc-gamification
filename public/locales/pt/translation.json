@@ -12,6 +12,9 @@
       "rankings": "Rankings"
     }
   },
+  "header": {
+    "unify": "Unify - Sistema de Gerenciamento de Projeto"
+  },
   "footer": {
     "copyright": "© {{siteName}}"
   },
@@ -27,7 +30,8 @@
       "email": "Email",
       "password": "Senha"
     },
-    "button": "Entrar",
+    "login_button": "Entrar",
+    "signin_button": "Criar",
     "error": {
       "wrong_username": "Usuário Incorreto!",
       "wrong_password": "Senha Incorreta!",
@@ -50,7 +54,26 @@
   },
   "project_form": {
     "title": "Criar projeto",
-    "create_button": "Criar"
+    "create_button": "Criar",
+    "inputs": {
+      "title": "Título",
+      "description": "Descrição",
+      "deadline": "Data de Conclusão"
+    }
+  },
+  "project_table": {
+    "columns": {
+      "id": "Id",
+      "title": "Título",
+      "description": "Descrição",
+      "leader": "Líder",
+      "actions": "Ações"
+    },
+    "actions": {
+      "open": "Abrir",
+      "edit": "Editar",
+      "delete": "Excluir"
+    }
   },
   "project_steps_view": {
     "actions": {
@@ -101,5 +124,15 @@
   },
   "reputation_points": {
     "title": "Pontos de Reputação"
+  },
+  "border": {
+    "titles": {
+      "starter": "Novato",
+      "bronze": "Bronze",
+      "silver": "Prata",
+      "gold": "Ouro",
+      "platinum": "Platina",
+      "diamond": "Diamante"
+    }
   }
 }
