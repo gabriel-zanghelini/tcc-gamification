@@ -33,7 +33,7 @@ export const createUser = async (user) => {
         await client
           .query(
             "insert into tb_user (name, email, password, reputation_points) values ($1, $2, $3, $4) returning *",
-            [user.name, user.email, hash, 20]
+            [user.name, user.email, hash, user.reputation_points]
           )
           .then((result) => {
             client.release();
@@ -130,7 +130,7 @@ export default function register(app) {
       if (err) {
         return res.status(500).send(err);
       }
-      
+
       return res.sendStatus(500);
     }
   });

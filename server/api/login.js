@@ -37,7 +37,7 @@ export default function register(app) {
         return res.status(500).send(err);
       }
 
-      return res.status(500).send(err);
+      return res.status(500);
     }
   });
 
@@ -76,7 +76,7 @@ export default function register(app) {
         return res.status(401).send("Email Not Found");
       }
     } catch (err) {
-      throw err;
+      return res.status(500).send(err);
     }
   });
 
