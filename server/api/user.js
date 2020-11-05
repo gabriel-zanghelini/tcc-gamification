@@ -33,7 +33,7 @@ export const createUser = async (user) => {
         await client
           .query(
             "insert into tb_user (name, email, password, reputation_points) values ($1, $2, $3, $4) returning *",
-            [user.name, user.email, hash, 20]
+            [user.name, user.email, hash, user.reputation_points]
           )
           .then((result) => {
             client.release();
@@ -95,8 +95,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -110,8 +110,8 @@ export default function register(app) {
 
       return res.json({ user: user });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -122,11 +122,42 @@ export default function register(app) {
     try {
       const id = req.params.id;
       const points = req.params.points;
-      console.log(id, points);
+      console.log("setUserPoints", id, points);
       await setUserPoints(id, points);
 
       return res.sendStatus(200);
     } catch (err) {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      return res.sendStatus(500);
+    }
+  });
+
+  app.get("/user/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      pool.connect().then((client) => {
+        return client
+          .query("select * from tb_user where id = $1", [id])
+          .then((result) => {
+            client.release();
+            console.table(result.rows[0]);
+
+            return res.status(200).send(result.rows[0]);
+          })
+          .catch((err) => {
+            client.release();
+            console.log(err.stack);
+            throw err;
+          });
+      });
+    } catch (err) {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
       return res.sendStatus(500);
     }
   });

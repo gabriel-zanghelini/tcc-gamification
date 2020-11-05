@@ -1,5 +1,6 @@
 import React from "react";
-import { Alert, Icon, List, Popover, Tag, Tooltip } from "antd";
+import { Alert, Icon, Popover, Tag } from "antd";
+import { useTranslation } from "react-i18next";
 
 const PopoverContent = ({ infoMsg, alertMsg }) => {
   const alertStyle = { marginBottom: 10 };
@@ -16,6 +17,8 @@ const PopoverContent = ({ infoMsg, alertMsg }) => {
 };
 
 const RepPointsTag = ({ points, action, style, color }) => {
+  const { t } = useTranslation();
+
   let icon =
     action === "plus"
       ? "double-left"
@@ -25,20 +28,23 @@ const RepPointsTag = ({ points, action, style, color }) => {
 
   let plusContent = (
     <PopoverContent
-      infoMsg={`Você irá ganhar ${points} pontos ao realizar essa ação.`}
-      alertMsg={`Você precisa ter ao menos ${points} de Reputação para realizar essa ação.`}
+      infoMsg={t("reputation_tag.plus.info_message", { points })}
+      alertMsg={t("reputation_tag.plus.alert_message", { points })}
     />
   );
 
   let minusContent = (
     <PopoverContent
       infoMsg={null}
-      alertMsg={`Você irá perder ${points} pontos se realizar essa ação.`}
+      alertMsg={t("reputation_tag.minus.alert_message", { points })}
     />
   );
 
   let defaultContent = (
-    <PopoverContent infoMsg={`${points} Pontos de Reputação`} alertMsg={null} />
+    <PopoverContent
+      infoMsg={t("reputation_tag.default.info_message", { points })}
+      alertMsg={null}
+    />
   );
 
   let tooltipText =

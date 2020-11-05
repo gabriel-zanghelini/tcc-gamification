@@ -9,13 +9,14 @@ const createProject = async (project) => {
     .then(async (client) => {
       await client
         .query(
-          "insert into tb_project (title, description, leader_id, team_id, status) values ($1, $2, $3, $4, $5) returning *",
+          "insert into tb_project (title, description, leader_id, team_id, status, deadline) values ($1, $2, $3, $4, $5, $6) returning *",
           [
             project.title,
             project.description,
             project.leader_id,
             0,
             project.status,
+            project.deadline,
           ]
         )
         .then((result) => {
@@ -41,13 +42,14 @@ const updateProject = async (project) => {
     .then(async (client) => {
       await client
         .query(
-          "update tb_project set title=$1 description=$2, leader_id=$3, team_id=$4, status=$5 where id=$6",
+          "update tb_project set title=$1, description=$2, leader_id=$3, team_id=$4, status=$5, deadline=$6 where id=$7",
           [
             project.title,
             project.description,
             project.leader_id,
             project.team_id,
             project.status,
+            project.deadline,
             project.id,
           ]
         )
@@ -110,7 +112,19 @@ export default function register(app) {
     try {
       pool.connect().then((client) => {
         return client
-          .query("select * from tb_project")
+          .query(
+            `select 
+              tb_project.id,
+              title,
+              description,
+              deadline,
+              status,
+              leader_id,
+              tb_user.name as leader_name
+            from tb_project 
+            inner join tb_user 
+            on tb_user.id = tb_project.leader_id`
+          )
           .then((result) => {
             client.release();
             // console.table(result.rows);
@@ -124,8 +138,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -143,7 +157,7 @@ export default function register(app) {
             client.release();
             // console.table(result.rows);
 
-            return res.status(200).send(result.rows);
+            return res.status(200).send(result.rows[0]);
           })
           .catch((err) => {
             client.release();
@@ -152,8 +166,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -184,8 +198,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -212,8 +226,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -237,7 +251,11 @@ export default function register(app) {
 
       return res.status(200).send(taskInfo);
     } catch (err) {
-      throw err;
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      return res.sendStatus(500);
     }
   });
 
@@ -254,11 +272,16 @@ export default function register(app) {
         team_id: project.team_id, //TODO: get team by ID
         leader_id: project.leader_id, //TODO: get leader
         status: project.status, //TODO: get leader
+        deadline: project.deadline,
       };
 
       return res.status(200).send(projectInfo);
     } catch (err) {
-      throw err;
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      return res.sendStatus(500);
     }
   });
 
@@ -269,7 +292,11 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      throw err;
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      return res.sendStatus(500);
     }
   });
 
@@ -280,7 +307,11 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      throw err;
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      return res.sendStatus(500);
     }
   });
 
@@ -291,7 +322,11 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
-      throw err;
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      return res.sendStatus(500);
     }
   });
 }

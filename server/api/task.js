@@ -8,13 +8,14 @@ export const createTask = async (task, projectId) => {
     .then(async (client) => {
       await client
         .query(
-          "insert into tb_task (description, status, difficulty, points_rewarded, project_id) values ($1, $2, $3, $4, $5) returning *",
+          "insert into tb_task (description, status, difficulty, points_rewarded, project_id, deadline) values ($1, $2, $3, $4, $5, $6) returning *",
           [
             task.description,
             task.status,
             task.difficulty,
             task.points_rewarded,
             projectId,
+            task.deadline,
           ]
         )
         .then((result) => {
@@ -40,12 +41,12 @@ const updateTask = async (task) => {
     .then(async (client) => {
       await client
         .query(
-          "update tb_task set description=$1, status=$2, difficulty=$3, points_rewarded=$4 where id=$5",
+          "update tb_task set description=$1, status=$2, difficulty=$3, deadline=$4 where id=$5",
           [
             task.description,
             task.status,
             task.difficulty,
-            task.points_rewarded,
+            task.deadline,
             task.id,
           ]
         )
@@ -102,8 +103,8 @@ export default function register(app) {
           });
       });
     } catch (err) {
-      if (err.response) {
-        return res.status(err.response.status).send(err.response.data);
+      if (err) {
+        return res.status(500).send(err);
       }
 
       return res.sendStatus(500);
@@ -117,6 +118,10 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
       return res.sendStatus(500);
     }
   });
@@ -128,6 +133,10 @@ export default function register(app) {
 
       return res.sendStatus(200);
     } catch (err) {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
       return res.sendStatus(500);
     }
   });

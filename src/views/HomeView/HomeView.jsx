@@ -4,7 +4,7 @@ import { Tabs, Typography } from "antd";
 import LoginForm from "components/MainLayout/LoginForm";
 import ProjectForm from "components/Project/ProjectForm";
 import ProjectTable from "components/MainLayout/ProjectTable";
-import { ContentTabs, ContentWrapper } from "styles/components";
+import { ContentTabs, FlexDiv } from "styles/components";
 
 import useCurrentUserStore from "stores/CurrentUserStore";
 import { useTranslation } from "react-i18next";
@@ -26,10 +26,10 @@ const HomeView = () => {
             style={{ display: "flex" }}
           >
             <>
-              <ContentWrapper width="40%" column={true}>
+              <FlexDiv width="40%" column={true}>
                 <ProjectForm />
-              </ContentWrapper>
-              <ContentWrapper width="60%" column={true}>
+              </FlexDiv>
+              <FlexDiv width="60%" column={true}>
                 <Title
                   level={3}
                   style={{ marginBottom: "25px", marginLeft: "10%" }}
@@ -37,7 +37,7 @@ const HomeView = () => {
                   {t("menus.home.tabs.created_projects")}
                 </Title>
                 <ProjectTable style={{ width: "80%", alignSelf: "center" }} />
-              </ContentWrapper>
+              </FlexDiv>
             </>
           </Tabs.TabPane>
         ) : (
@@ -46,9 +46,9 @@ const HomeView = () => {
             key="login"
             style={{ display: "flex" }}
           >
-            <ContentWrapper width="100%" justifyContent="center">
+            <FlexDiv width="100%" justifyContent="center">
               <LoginForm />
-            </ContentWrapper>
+            </FlexDiv>
           </Tabs.TabPane>
         )}
       </ContentTabs>

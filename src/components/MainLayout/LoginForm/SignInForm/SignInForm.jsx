@@ -42,30 +42,30 @@ const SignInForm = ({ onOk }) => {
   const onSubmit = async () => {
     setLoading(true);
     cleanForm();
-    try {
-      await fetcher
-        .post("login", {
-          email: formState.email.value,
-          password: formState.password.value,
-        })
-        .then(({ data }) => {
-          onLogin(data);
-        });
-    } catch ({ response }) {
-      setLoading(false);
-      switch (response) {
-        case "Incorrect Password":
-          formState.password.error = "login.error.wrong_password";
-          break;
-        case "Incorrect Email":
-          formState.password.error = "login.error.wrong_email";
-          break;
-        case "Email Not Found":
-          formState.email.error = "login.error.email_not_found";
-          break;
-        default:
-      }
-    }
+
+    await fetcher
+      .post("login", {
+        email: formState.email.value,
+        password: formState.password.value,
+      })
+      .then(({ data }) => {
+        onLogin(data);
+      })
+      .catch(({ response }) => {
+        setLoading(false);
+        switch (response?.data) {
+          case "Incorrect Password":
+            formState.password.error = "login.error.wrong_password";
+            break;
+          case "Incorrect Email":
+            formState.password.error = "login.error.wrong_email";
+            break;
+          case "Email Not Found":
+            formState.email.error = "login.error.email_not_found";
+            break;
+          default:
+        }
+      });
   };
 
   const onLogin = (user) => {
@@ -98,7 +98,7 @@ const SignInForm = ({ onOk }) => {
         disabled={loading}
         onClick={onSubmit}
       >
-        {t("login.button")}
+        {t("login.login_button")}
       </Button>
     </div>
   );

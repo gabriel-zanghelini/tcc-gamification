@@ -1,8 +1,20 @@
 import React from "react";
-import { Button, Card, Icon, Modal, Rate, Tag, Tooltip } from "antd";
-import { ContentWrapper } from "styles/components";
+import {
+  Button,
+  Card,
+  Icon,
+  Modal,
+  Rate,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
+import { FlexDiv } from "styles/components";
 import { useTranslation } from "react-i18next";
 import RepPointsTag from "components/Common/RepPointsTag";
+import { getDateString } from "configs/language";
+
+const { Text } = Typography;
 
 const CardHeader = ({ task }) => {
   const { t } = useTranslation();
@@ -16,8 +28,8 @@ const CardHeader = ({ task }) => {
   };
 
   return (
-    <ContentWrapper padding="0">
-      <ContentWrapper width="80%" justifyContent="flex-start" padding="0">
+    <FlexDiv padding="0">
+      <FlexDiv width="80%" justifyContent="flex-start" padding="0">
         <Tag color={rateColors[task.difficulty]}>
           <Rate
             disabled
@@ -31,25 +43,27 @@ const CardHeader = ({ task }) => {
             }}
           />
         </Tag>
-      </ContentWrapper>
-      <ContentWrapper width="20%" justifyContent="flex-end" padding="0">
+      </FlexDiv>
+      <FlexDiv width="20%" justifyContent="flex-end" padding="0">
         <Tooltip
           title={t("kanban_card.reputation_points_awarded")}
           placement="top"
         >
           <RepPointsTag points={task.points_rewarded} action="plus" />
         </Tooltip>
-      </ContentWrapper>
-    </ContentWrapper>
+      </FlexDiv>
+    </FlexDiv>
   );
 };
 
 const CardExtra = ({ task, removeCard }) => {
+  const { t } = useTranslation();
   const { confirm } = Modal;
+
   let pointsLost = task.points_rewarded / 2;
   let confirmContent = (
     <span>
-      {"Você perderá "}
+      <span>{t("kanban_card.remove_task_pop_up.description")}</span>
       &nbsp;
       <RepPointsTag points={pointsLost} />
     </span>
@@ -57,7 +71,7 @@ const CardExtra = ({ task, removeCard }) => {
 
   function showConfirm() {
     confirm({
-      title: "Tem certeza que deseja remover essa tarefa?",
+      title: t("kanban_card.remove_task_pop_up.title"),
       content: confirmContent,
       onOk() {
         removeCard();
@@ -74,10 +88,10 @@ const CardExtra = ({ task, removeCard }) => {
 
   if (task.status === "done") {
     return (
-      <span style={{margin: "5px", color: "#52c41a"}}>
+      <span style={{ margin: "5px", color: "#52c41a" }}>
         <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
       </span>
-    )
+    );
   } else {
     return (
       <Button
@@ -92,14 +106,34 @@ const CardExtra = ({ task, removeCard }) => {
 };
 
 const CardContent = ({ task }) => {
+  let deadlineColor = task.isDelayed ? "red" : "geekblue";
+
   return (
-    <ContentWrapper width="90%" padding="5px">
-      <span>{task.description}</span>
-    </ContentWrapper>
+    <FlexDiv width="100%" padding="5px">
+      <FlexDiv padding="0px" width="80%">
+        <span>{task.description}</span>
+      </FlexDiv>
+      {task.deadline ? (
+        <FlexDiv padding="0px" width="20%" style={{ alignItems: "flex-start" }}>
+          <Tag color={deadlineColor} style={{ borderRadius: 2 }}>
+            {getDateString(new Date(task.deadline))}
+          </Tag>
+        </FlexDiv>
+      ) : (
+        ""
+      )}
+    </FlexDiv>
   );
 };
 
 const KanbanCard = ({ task, dragging, removeCard }) => {
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let deadline = new Date(task.deadline);
+
+  if (today.getTime() > deadline.getTime()) task["isDelayed"] = true;
+  else task["isDelayed"] = false;
+
   // console.log("KanbanCard", task, dragging, removeCard);
   return (
     <Card

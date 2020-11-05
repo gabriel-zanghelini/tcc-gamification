@@ -1,28 +1,21 @@
-import { Icon, Tag } from "antd";
+import { Icon } from "antd";
 import React from "react";
-import ReactBorderWrapper from "react-border-wrapper";
+import { useTranslation } from "react-i18next";
+import Border from "../Border";
 
 const StarterBorder = ({ children }) => {
+  const { t } = useTranslation();
+  let icon = <Icon type="smile" style={{ fontSize: 16 }} />;
+
   return (
-    <ReactBorderWrapper
-      style={{ backgroundColor: "#bcaaa44d" }}
-      borderColour="#BCAAA4"
-      borderWidth="12px"
-      borderRadius="5px"
-      borderType="solid"
-      innerPadding="20px"
-      rightGap="4px"
-      bottomElement={
-        <Tag color="#BCAAA4" style={{ margin: "0 3px" }}>
-          <Icon type="smile" style={{ fontSize: 16 }} />
-        </Tag>
-      }
-      bottomOffset="2px"
-      bottomPosition={0.5}
-      bottomGap="4px"
+    <Border
+      mainColor="#966F33"
+      secondaryColor="#966f3366"
+      title={t("border.titles.starter")}
+      borderIcon={icon}
     >
       {children}
-    </ReactBorderWrapper>
+    </Border>
   );
 };
 

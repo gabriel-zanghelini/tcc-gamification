@@ -3,7 +3,7 @@ import { Tabs } from "antd";
 import styled from "@emotion/styled";
 
 //NOTE: [display: "flex"] pode causar problemas no layout
-export const ContentWrapper = styled.div`
+export const FlexDiv = styled.div`
   display: flex;
   flex-direction: ${({ column }) => (column ? "column" : "row")};
   justify-content: ${({ justifyContent }) =>

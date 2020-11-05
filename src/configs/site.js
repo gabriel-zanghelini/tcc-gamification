@@ -1,1 +1,1 @@
-export const SITE_NAME = "Unify Project Management";
+export const SITE_NAME_TRN_KEY = "header.unify";

@@ -6,11 +6,10 @@
         "projects": "Projetos",
         "created_projects": "Projetos criados"
       }
-    },
-    "project_view": {
-      "tasks": "Tarefas",
-      "rankings": "Rankings"
     }
+  },
+  "header": {
+    "unify": "Unify - Sistema de Gerenciamento de Projeto"
   },
   "footer": {
     "copyright": "© {{siteName}}"
@@ -27,7 +26,8 @@
       "email": "Email",
       "password": "Senha"
     },
-    "button": "Entrar",
+    "login_button": "Entrar",
+    "signin_button": "Criar",
     "error": {
       "wrong_username": "Usuário Incorreto!",
       "wrong_password": "Senha Incorreta!",
@@ -50,7 +50,39 @@
   },
   "project_form": {
     "title": "Criar projeto",
-    "create_button": "Criar"
+    "create_button": "Criar",
+    "inputs": {
+      "title": "Título",
+      "description": "Descrição",
+      "deadline": "Data de Conclusão"
+    }
+  },
+  "project_table": {
+    "columns": {
+      "id": "Id",
+      "title": "Título",
+      "description": "Descrição",
+      "leader": "Líder",
+      "deadline": "Data de Conclusão",
+      "actions": "Ações"
+    },
+    "actions": {
+      "open": "Abrir",
+      "edit": "Editar",
+      "delete": "Excluir"
+    }
+  },
+  "project_view": {
+    "tasks": "Tarefas",
+    "rankings": "Rankings",
+    "project_ranking": {
+      "title": "Ranking do Projeto",
+      "columns": {
+        "user": "Usuário",
+        "pontuation": "Pontuação"
+      }
+    },
+    "profile_ranking": "Ranking de Perfil"
   },
   "project_steps_view": {
     "actions": {
@@ -72,27 +104,76 @@
       "description": "xxxxxxx"
     }
   },
+  "reputation_tag": {
+    "plus": {
+      "info_message": "Você irá ganhar {{points}} pontos ao realizar essa ação",
+      "alert_message": "Você precisa ter ao menos {{points}} de Reputação para realizar essa ação"
+    },
+    "minus": {
+      "alert_message": "Você irá perder {{points}} pontos se realizar essa ação"
+    },
+    "default": {
+      "info_message": "{{points}} Pontos de Reputação"
+    }
+  },
   "kanban_board": {
     "todo": "A fazer",
     "doing": "Fazendo",
     "done": "Feito",
     "add_todo_task": "Adicionar tarefa a fazer",
     "progress_bar": {
-      "tooltipTodo_0": "Nenhuma tarefa a fazer ",
       "tooltipTodo": "{{count}} tarefa a fazer ",
+      "tooltipTodo_0": "Nenhuma tarefa a fazer ",
       "tooltipTodo_plural": "{{count}} tarefas a fazer ",
+      "tooltipDoing": "{{count}} tarefa em andamento",
       "tooltipDoing_0": "Nenhuma tarefa está em andamento",
-      "tooltipDoing": "{{count}} tarefas em andamento",
-      "tooltipDoing_plural": "{{count}} tarefa em andamento",
-      "tooltipDone_0": "Nenhuma tarefa foi concluída ainda...",
+      "tooltipDoing_plural": "{{count}} tarefas em andamento",
       "tooltipDone": "{{count}} tarefa concluída",
+      "tooltipDone_0": "Nenhuma tarefa foi concluída ainda...",
       "tooltipDone_plural": "{{count}} tarefas concluídas"
-    }
+    },
+    "addTaskFeedback": "Você ganhou",
+    "moveTaskFeedback1": "Você precisa ter pelo menos",
+    "moveTaskFeedback2": "para concluir essa tarefa!",
+    "removeTaskFeedback": "Você perdeu",
+    "completeProjectFeedback": "Você ganhou",
+    "projectResultOnTime": "Parabéns! Projeto concluído dentro do prazo:",
+    "projectResultDelayed": "Bom trabalho! Mas você não conseguiu concluir dentro do prazo:"
   },
   "kanban_card": {
-    "reputation_points_awarded": "Pontos de Reputação concedidos"
+    "reputation_points_awarded": "Pontos de Reputação concedidos",
+    "remove_task_pop_up": {
+      "title": "Tem certeza que deseja remover essa tarefa?",
+      "description": "Você perderá"
+    }
+  },
+  "add_task_modal": {
+    "add_button": "Adicionar",
+    "cancel_button": "Cancelar",
+    "title": "Nova Tarefa",
+    "description": "Descrição",
+    "deadline": "Data de Conclusão",
+    "difficulty": "Dificuldade",
+    "deadline_placeholder": "Selecione uma data"
   },
   "reputation_points": {
     "title": "Pontos de Reputação"
+  },
+  "border": {
+    "titles": {
+      "starter": "Novato",
+      "bronze": "Bronze",
+      "silver": "Prata",
+      "gold": "Ouro",
+      "platinum": "Platina",
+      "diamond": "Diamante"
+    }
+  },
+  "task_rate": {
+    "very_easy": "Muito Fácil",
+    "easy": "Fácil",
+    "medium": "Média",
+    "hard": "Difícil",
+    "very_hard": "Muito Difícil"
   }
 }

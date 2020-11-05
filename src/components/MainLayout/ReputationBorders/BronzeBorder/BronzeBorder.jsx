@@ -1,29 +1,21 @@
-import { Icon, Tag } from "antd";
+import { Icon } from "antd";
 import React from "react";
-import ReactBorderWrapper from "react-border-wrapper";
+import { useTranslation } from "react-i18next";
+import Border from "../Border";
 
 const BronzeBorder = ({ children }) => {
+  const { t } = useTranslation();
+  let icon = <Icon type="crown" style={{ fontSize: 18 }} />;
+
   return (
-    <ReactBorderWrapper
-      style={{ backgroundColor: "#cd7f3299" }}
-      borderColour="#cd7f32"
-      borderWidth="12px"
-      borderRadius="5px"
-      borderType="solid"
-      innerPadding="20px"
-      rightGap="4px"
-      bottomElement={
-        <Tag color="#cd7f32" style={{ margin: "0 3px" }}>
-          <Icon type="crown" style={{ fontSize: 18 }} />
-          <Icon type="crown" style={{ fontSize: 18 }} />
-        </Tag>
-      }
-      bottomOffset="2px"
-      bottomPosition={0.5}
-      bottomGap="4px"
+    <Border
+      mainColor="#cd7f32"
+      secondaryColor="#cd7f3299"
+      title={t("border.titles.bronze")}
+      borderIcon={icon}
     >
       {children}
-    </ReactBorderWrapper>
+    </Border>
   );
 };
 

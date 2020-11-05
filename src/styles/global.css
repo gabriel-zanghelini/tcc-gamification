@@ -9,3 +9,27 @@
 .kanban-progress .ant-progress-inner {
   border-radius: 3px !important;
 }
+
+.row-rank-1 {
+  background: linear-gradient(270deg, #fbb034 0%, #ffdd00 74%);
+}
+
+.row-rank-1:hover {
+  background: none !important;
+}
+
+.row-rank-2 {
+  background: linear-gradient(270deg, rgb(153, 153, 153) 0%, silver 74%);
+}
+
+.row-rank-2:hover {
+  background: none !important;
+}
+
+.row-rank-3 {
+  background: linear-gradient(270deg, #ad6319 0%, #cd7f32 74%);
+}
+
+.row-rank-3:hover {
+  background: none !important;
+}

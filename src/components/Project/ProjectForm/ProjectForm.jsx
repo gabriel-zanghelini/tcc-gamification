@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Badge, Icon, Typography } from "antd";
+import { Typography } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
 
 import * as Styled from "./styled";
-import { ContentWrapper } from "styles/components";
+import { FlexDiv } from "styles/components";
 import { useLocalStore } from "mobx-react";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import RepPointsTag from "components/Common/RepPointsTag";
@@ -32,6 +32,11 @@ const ProjectForm = () => {
       error: null,
       dirty: false,
     },
+    deadline: {
+      value: null,
+      error: null,
+      dirty: false,
+    },
   }));
 
   const createProject = async () => {
@@ -42,6 +47,7 @@ const ProjectForm = () => {
         leader_id: currentUserStore.currentUser.id,
         team_id: 0,
         status: "open",
+        deadline: formState.deadline.value,
       })
       .then(({ data }) => {
         console.table(data);
@@ -61,7 +67,7 @@ const ProjectForm = () => {
             {t("project_form.title")}
             <span style={{ marginLeft: 10 }}>
               <RepPointsTag
-                points={100}
+                points={40}
                 action="plus"
                 style={{ fontSize: 14 }}
               />
@@ -69,19 +75,27 @@ const ProjectForm = () => {
           </Title>
           <Styled.ProjectInput
             size="large"
-            placeholder="Título"
+            placeholder={t("project_form.inputs.title")}
             formState={formState}
             name="title"
           />
           <Styled.ProjectInput
             size="large"
-            placeholder="Descrição"
+            placeholder={t("project_form.inputs.description")}
             formState={formState}
             name="description"
           />
-          {formState.title.value}
-          {formState.description.value}
-          <ContentWrapper justifyContent={"flex-end"}>
+          <Styled.ProjectDatePicker
+            size="large"
+            placeholder={t("project_form.inputs.deadline")}
+            formState={formState}
+            name="deadline"
+          />
+
+          {/* {formState.title.value} */}
+          {/* {formState.description.value} */}
+          {/* {formState.deadline.value?.format()} */}
+          <FlexDiv justifyContent={"flex-end"}>
             <Text
               strong
               style={{
@@ -100,7 +114,7 @@ const ProjectForm = () => {
               size={"large"}
               onClick={createProject}
             />
-          </ContentWrapper>
+          </FlexDiv>
         </>
       ) : (
         <Redirect to={`/edit/project/${redirectId}`} />

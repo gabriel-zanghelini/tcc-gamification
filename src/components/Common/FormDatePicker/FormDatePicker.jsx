@@ -2,24 +2,18 @@ import React from "react";
 
 import { observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
-import { Form, Rate } from "antd";
+import { Form, DatePicker } from "antd";
+import i18n, { EN_DATE_FORMAT, PT_DATE_FORMAT } from "configs/language";
 
-export const FormTaskRate = ({
+const FormDatePicker = ({
   formState,
   name,
+  icon,
   label,
   formItemStyle,
   ...props
 }) => {
   const { t } = useTranslation();
-
-  const desc = [
-    t("task_rate.very_easy"),
-    t("task_rate.easy"),
-    t("task_rate.medium"),
-    t("task_rate.hard"),
-    t("task_rate.very_hard"),
-  ];
 
   const { value, error, dirty } = formState[name];
 
@@ -28,12 +22,13 @@ export const FormTaskRate = ({
   const status = showError ? "error" : undefined;
   const errorMessage = showError ? t(error) : undefined;
 
-  const onChange = (rate) => {
-    console.log(rate, name);
-    formState[name].value = rate;
+  const onChange = (date, dateString) => {
+    console.log(dateString);
+    formState[name].value = date;
     formState[name].dirty = true;
   };
 
+  console.log(i18n.language);
   return (
     <Form.Item
       validateStatus={status}
@@ -41,12 +36,16 @@ export const FormTaskRate = ({
       label={label}
       style={formItemStyle}
     >
-      <span>
-        <Rate tooltips={desc} onChange={onChange} value={value} />
-        {value ? <span className="ant-rate-text">{desc[value - 1]}</span> : ""}
-      </span>
+      <DatePicker
+        name={name}
+        onChange={onChange}
+        placeholder={t("add_task_modal.deadline_placeholder")}
+        value={value}
+        format={i18n.language === "pt-BR" ? PT_DATE_FORMAT : EN_DATE_FORMAT}
+        {...props}
+      />
     </Form.Item>
   );
 };
 
-export default observer(FormTaskRate);
+export default observer(FormDatePicker);

@@ -50,33 +50,35 @@ const SignUpForm = ({ onOk }) => {
   const onSubmit = async () => {
     setLoading(true);
     cleanForm();
-    try {
-      await fetcher
-        .post("signup", {
-          name: formState.name.value,
-          email: formState.email.value,
-          password: formState.password.value,
-        })
-        .then(({ data }) => {
-          console.log("SIGN UP", data);
-          onLogin(data);
-        });
-    } catch ({ response }) {
-      setLoading(false);
-      switch (response.data) {
-        case "Email Already In Use":
-          formState.email.error = "login.error.email_in_use";
-          break;
-        default:
-      }
-    }
+
+    await fetcher
+      .post("signup", {
+        name: formState.name.value,
+        email: formState.email.value,
+        password: formState.password.value,
+        reputation_points: 40,
+      })
+      .then(({ data }) => {
+        console.log("SIGN UP", data);
+        onLogin(data);
+      })
+      .catch(({ response }) => {
+        console.log("err", response);
+        setLoading(false);
+        switch (response?.data) {
+          case "Email Already In Use":
+            formState.email.error = "login.error.email_in_use";
+            break;
+          default:
+        }
+      });
   };
 
   const onLogin = (user) => {
     console.log("onLogin", user);
     currentUserStore.setUser(user);
     setLoading(false);
-    onOk();
+    // onOk();
   };
 
   return (
@@ -109,7 +111,7 @@ const SignUpForm = ({ onOk }) => {
         disabled={loading}
         onClick={onSubmit}
       >
-        {t("login.button")}
+        {t("login.signin_button")}
       </Button>
     </div>
   );
