@@ -57,11 +57,13 @@ const CardHeader = ({ task }) => {
 };
 
 const CardExtra = ({ task, removeCard }) => {
+  const { t } = useTranslation();
   const { confirm } = Modal;
+
   let pointsLost = task.points_rewarded / 2;
   let confirmContent = (
     <span>
-      {"Você perderá "}
+      <span>{t("kanban_card.remove_task_pop_up.description")}</span>
       &nbsp;
       <RepPointsTag points={pointsLost} />
     </span>
@@ -69,7 +71,7 @@ const CardExtra = ({ task, removeCard }) => {
 
   function showConfirm() {
     confirm({
-      title: "Tem certeza que deseja remover essa tarefa?",
+      title: t("kanban_card.remove_task_pop_up.title"),
       content: confirmContent,
       onOk() {
         removeCard();
@@ -131,7 +133,7 @@ const KanbanCard = ({ task, dragging, removeCard }) => {
 
   if (today.getTime() > deadline.getTime()) task["isDelayed"] = true;
   else task["isDelayed"] = false;
-  
+
   // console.log("KanbanCard", task, dragging, removeCard);
   return (
     <Card

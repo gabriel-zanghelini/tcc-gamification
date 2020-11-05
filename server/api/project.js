@@ -112,7 +112,19 @@ export default function register(app) {
     try {
       pool.connect().then((client) => {
         return client
-          .query("select * from tb_project")
+          .query(
+            `select 
+              tb_project.id,
+              title,
+              description,
+              deadline,
+              status,
+              leader_id,
+              tb_user.name as leader_name
+            from tb_project 
+            inner join tb_user 
+            on tb_user.id = tb_project.leader_id`
+          )
           .then((result) => {
             client.release();
             // console.table(result.rows);

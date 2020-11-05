@@ -109,7 +109,7 @@ const KanbanBoard = ({
     if (column) {
       let newColumn = { ...column };
       newColumn.cards = tasks;
-      console.log(column, newColumn);
+      console.log(column.title, newColumn.title, board);
 
       const newBoard = changeColumn(board, column, newColumn); //update state
       setBoard(newBoard);
@@ -201,21 +201,21 @@ const KanbanBoard = ({
     if (todo) {
       setColumnTasks("todo", 1, todo);
     }
-  }, [todo]);
+  }, [todo, t]);
 
   useEffect(() => {
     // console.log("useEffect DOING", doing);
     if (doing) {
       setColumnTasks("doing", 2, doing);
     }
-  }, [doing]);
+  }, [doing, t]);
 
   useEffect(() => {
     // console.log("useEffect DONE", done);
     if (done) {
       setColumnTasks("done", 3, done);
     }
-  }, [done]);
+  }, [done, t]);
 
   useEffect(() => {
     if (board) {

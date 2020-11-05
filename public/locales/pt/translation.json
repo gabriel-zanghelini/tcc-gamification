@@ -6,10 +6,6 @@
         "projects": "Projetos",
         "created_projects": "Projetos criados"
       }
-    },
-    "project_view": {
-      "tasks": "Tarefas",
-      "rankings": "Rankings"
     }
   },
   "header": {
@@ -67,6 +63,7 @@
       "title": "Título",
       "description": "Descrição",
       "leader": "Líder",
+      "deadline": "Data de Conclusão",
       "actions": "Ações"
     },
     "actions": {
@@ -74,6 +71,18 @@
       "edit": "Editar",
       "delete": "Excluir"
     }
+  },
+  "project_view": {
+    "tasks": "Tarefas",
+    "rankings": "Rankings",
+    "project_ranking": {
+      "title": "Ranking do Projeto",
+      "columns": {
+        "user": "Usuário",
+        "pontuation": "Pontuação"
+      }
+    },
+    "profile_ranking": "Ranking de Perfil"
   },
   "project_steps_view": {
     "actions": {
@@ -93,6 +102,18 @@
     "step_3": {
       "title": "Finalizar",
       "description": "xxxxxxx"
+    }
+  },
+  "reputation_tag": {
+    "plus": {
+      "info_message": "Você irá ganhar {{points}} pontos ao realizar essa ação",
+      "alert_message": "Você precisa ter ao menos {{points}} de Reputação para realizar essa ação"
+    },
+    "minus": {
+      "alert_message": "Você irá perder {{points}} pontos se realizar essa ação"
+    },
+    "default": {
+      "info_message": "{{points}} Pontos de Reputação"
     }
   },
   "kanban_board": {
@@ -120,7 +141,20 @@
     "projectResultDelayed": "Bom trabalho! Mas você não conseguiu concluir dentro do prazo:"
   },
   "kanban_card": {
-    "reputation_points_awarded": "Pontos de Reputação concedidos"
+    "reputation_points_awarded": "Pontos de Reputação concedidos",
+    "remove_task_pop_up": {
+      "title": "Tem certeza que deseja remover essa tarefa?",
+      "description": "Você perderá"
+    }
+  },
+  "add_task_modal": {
+    "add_button": "Adicionar",
+    "cancel_button": "Cancelar",
+    "title": "Nova Tarefa",
+    "description": "Descrição",
+    "deadline": "Data de Conclusão",
+    "difficulty": "Dificuldade",
+    "deadline_placeholder": "Selecione uma data"
   },
   "reputation_points": {
     "title": "Pontos de Reputação"
@@ -134,5 +168,12 @@
       "platinum": "Platina",
       "diamond": "Diamante"
     }
+  },
+  "task_rate": {
+    "very_easy": "Muito Fácil",
+    "easy": "Fácil",
+    "medium": "Média",
+    "hard": "Difícil",
+    "very_hard": "Muito Difícil"
   }
 }

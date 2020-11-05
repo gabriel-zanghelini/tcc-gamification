@@ -13,7 +13,13 @@ export const FormTaskRate = ({
 }) => {
   const { t } = useTranslation();
 
-  const desc = ["very easy", "easy", "medium", "hard", "very hard"];
+  const desc = [
+    t("task_rate.very_easy"),
+    t("task_rate.easy"),
+    t("task_rate.medium"),
+    t("task_rate.hard"),
+    t("task_rate.very_hard"),
+  ];
 
   const { value, error, dirty } = formState[name];
 

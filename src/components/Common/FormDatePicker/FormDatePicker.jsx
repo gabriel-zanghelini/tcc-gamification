@@ -39,6 +39,7 @@ const FormDatePicker = ({
       <DatePicker
         name={name}
         onChange={onChange}
+        placeholder={t("add_task_modal.deadline_placeholder")}
         value={value}
         format={i18n.language === "pt-BR" ? PT_DATE_FORMAT : EN_DATE_FORMAT}
         {...props}

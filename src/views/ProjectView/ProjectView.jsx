@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Icon, Table, Tabs } from "antd";
+import { Icon, Table, Tabs, Typography } from "antd";
 
 import LoginForm from "components/MainLayout/LoginForm";
 import KanbanBoard from "components/Project/KanbanBoard";
@@ -11,6 +11,8 @@ import { useTranslation } from "react-i18next";
 import useCurrentUserStore from "stores/CurrentUserStore";
 import { observer } from "mobx-react";
 import ProfileBorder from "components/MainLayout/ProfileBorder";
+
+const { Text } = Typography;
 
 const fetcher = axios.create({
   baseURL: "/api",
@@ -74,13 +76,13 @@ const ProjectView = () => {
     },
     {
       key: "user",
-      title: "User",
+      title: t("project_view.project_ranking.columns.user"),
       dataIndex: "userName",
       align: "center",
     },
     {
       key: "pontuation",
-      title: "Pontuation",
+      title: t("project_view.project_ranking.columns.pontuation"),
       dataIndex: "pontuation",
       align: "center",
     },
@@ -93,7 +95,7 @@ const ProjectView = () => {
           tab={
             <span>
               <Icon type="inbox" />
-              {t("menus.project_view.tasks")}
+              {t("project_view.tasks")}
             </span>
           }
           key="tasks"
@@ -107,7 +109,7 @@ const ProjectView = () => {
           tab={
             <span>
               <Icon type="trophy" />
-              {t("menus.project_view.rankings")}
+              {t("project_view.rankings")}
             </span>
           }
           key="ranking"
@@ -120,7 +122,9 @@ const ProjectView = () => {
           >
             <Table
               dataSource={dataSource}
-              title={() => "Ranking de Projeto"}
+              title={() => (
+                <Text strong>{t("project_view.project_ranking.title")}</Text>
+              )}
               columns={columns}
               rowKey="key"
               bordered
@@ -137,7 +141,7 @@ const ProjectView = () => {
               }}
             />
             <FlexDiv width="384px" column="column">
-              <span>Ranking Pessoal</span>
+              <Text strong>{t("project_view.profile_ranking")}</Text>
               <span>
                 <ProfileBorder />
               </span>

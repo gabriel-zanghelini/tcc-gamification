@@ -6,10 +6,6 @@
         "projects": "Projects",
         "created_projects": "Created projects"
       }
-    },
-    "project_view": {
-      "tasks": "Tasks",
-      "rankings": "Rankings"
     }
   },
   "footer": {
@@ -67,6 +63,7 @@
       "title": "Title",
       "description": "Description",
       "leader": "Leader",
+      "deadline": "Deadline",
       "actions": "Actions"
     },
     "actions": {
@@ -74,6 +71,18 @@
       "edit": "Edit",
       "delete": "Delete"
     }
+  },
+  "project_view": {
+    "tasks": "Tasks",
+    "rankings": "Rankings",
+    "project_ranking": {
+      "title": "Project Ranking",
+      "columns": {
+        "user": "User",
+        "pontuation": "Pontuation"
+      }
+    },
+    "profile_ranking": "Profile Ranking"
   },
   "project_steps_view": {
     "actions": {
@@ -93,6 +102,18 @@
     "step_3": {
       "title": "Waiting",
       "description": "xxxxxxx"
+    }
+  },
+  "reputation_tag": {
+    "plus": {
+      "info_message": "You will earn {{points}} points for performing this action",
+      "alert_message": "You must have at least {{points}} Reputation to perform this action"
+    },
+    "minus": {
+      "alert_message": "You will lose {{points}} points if you perform this action"
+    },
+    "default": {
+      "info_message": "{{points}} Reputation Points"
     }
   },
   "kanban_board": {
@@ -120,7 +141,20 @@
     "projectResultDelayed": "Good job! But you failed to complete on time:"
   },
   "kanban_card": {
-    "reputation_points_awarded": "Reputation Points Awarded"
+    "reputation_points_awarded": "Reputation Points Awarded",
+    "remove_task_pop_up": {
+      "title": "Are you sure you want to remove this task?",
+      "description": "You will lose"
+    }
+  },
+  "add_task_modal": {
+    "add_button": "Add",
+    "cancel_button": "Cancel",
+    "title": "New Task",
+    "description": "Description",
+    "deadline": "Deadline",
+    "difficulty": "Difficulty",
+    "deadline_placeholder": "Select date"
   },
   "reputation_points": {
     "title": "Reputation Points"
@@ -134,5 +168,12 @@
       "platinum": "Platinum",
       "diamond": "Diamond"
     }
+  },
+  "task_rate": {
+    "very_easy": "Very Easy",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "very_hard": "Very Hard"
   }
 }

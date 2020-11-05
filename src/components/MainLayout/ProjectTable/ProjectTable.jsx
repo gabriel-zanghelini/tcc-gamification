@@ -3,6 +3,7 @@ import { Button, Divider, Icon, Table, Tooltip } from "antd";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { getDateString } from "configs/language";
 
 const fetcher = axios.create({
   baseURL: "/api/project",
@@ -24,9 +25,10 @@ const ProjectTable = ({ style }) => {
                 key: p.id,
                 title: p.title,
                 description: p.description,
-                leader: p.leader_id,
+                leader: p.leader_name,
                 team: p.team_id,
                 status: p.status,
+                deadline: p.deadline,
               };
             })
         );
@@ -35,24 +37,6 @@ const ProjectTable = ({ style }) => {
         console.error(err);
       });
   }, []);
-
-  const actions = [
-    {
-      tooltip: "Abrir",
-      icon: "folder-open",
-      route: "/project/",
-    },
-    {
-      tooltip: "Editar",
-      icon: "edit",
-      route: "/edit/project/",
-    },
-    {
-      tooltip: "Excluir",
-      icon: "delete",
-      route: "/project",
-    },
-  ];
 
   const columns = [
     {
@@ -90,6 +74,12 @@ const ProjectTable = ({ style }) => {
       key: "leader",
     },
     {
+      title: t("project_table.columns.deadline"),
+      dataIndex: "deadline",
+      key: "deadline",
+      render: (text) => getDateString(new Date(text)),
+    },
+    {
       title: t("project_table.columns.actions"),
       dataIndex: "",
       key: "action",
@@ -120,7 +110,7 @@ const ProjectTable = ({ style }) => {
                   <Icon type="edit" />
                 </Link>
               </Tooltip>
-              <Divider type="vertical" />
+              {/* <Divider type="vertical" /> */}
             </span>
             {/* <span key={3}>
               <Tooltip title={t("project_table.actions.delete")}>

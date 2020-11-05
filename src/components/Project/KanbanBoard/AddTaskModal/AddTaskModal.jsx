@@ -1,14 +1,14 @@
 import React from "react";
 import { Button, Modal } from "antd";
 import { observer, useLocalStore } from "mobx-react";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import FormInput from "components/Common/FormInput";
 import { FormTaskRate } from "components/Common/FormTaskRate/FormTaskRate";
 import FormDatePicker from "components/Common/FormDatePicker";
 
 const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
 
   const formState = useLocalStore(() => ({
     description: {
@@ -38,12 +38,12 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
   return (
     <Modal
       visible={visible}
-      title="New Task"
+      title={t("add_task_modal.title")}
       // onOk={onAdd}
       onCancel={cancel}
       footer={[
         <Button key="back" onClick={cancel}>
-          Cancel
+          {t("add_task_modal.cancel_button")}
         </Button>,
         <Button
           key="submit"
@@ -60,27 +60,27 @@ const AddTaskModal = ({ visible, onAdd, onCancel, status, projectId }) => {
             formState.deadline.value = null;
           }}
         >
-          Add
+          {t("add_task_modal.add_button")}
         </Button>,
       ]}
     >
       <FormInput
         formState={formState}
         name="description"
-        label="Description"
+        label={t("add_task_modal.description")}
         autoFocus={true}
         formItemStyle={{ margin: "0 15%", width: "70%" }}
       />
       <FormDatePicker
         formState={formState}
         name="deadline"
-        label="Data de Conclusão"
+        label={t("add_task_modal.deadline")}
         formItemStyle={{ margin: "0 15%", width: "70%" }}
       />
       <FormTaskRate
         formState={formState}
         name="difficulty"
-        label="Difficulty"
+        label={t("add_task_modal.difficulty")}
         formItemStyle={{ margin: "0 15%", width: "70%" }}
       />
       <span style={{ display: "none" }}>{formState.description.value}</span>
