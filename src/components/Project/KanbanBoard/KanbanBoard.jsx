@@ -79,8 +79,6 @@ const KanbanBoard = ({
     await fetcher
       .get(`/project/${projectId}/task/${status}`)
       .then(({ data: tasks }) => {
-        console.log("getTasksByStatus", tasks);
-
         tasks.forEach((t) => setTaskDeadlineInfo(t));
 
         switch (status) {
@@ -109,7 +107,6 @@ const KanbanBoard = ({
     if (column) {
       let newColumn = { ...column };
       newColumn.cards = tasks;
-      console.log(column.title, newColumn.title, board);
 
       const newBoard = changeColumn(board, column, newColumn); //update state
       setBoard(newBoard);
@@ -172,7 +169,6 @@ const KanbanBoard = ({
       .put("/task", card)
       .then(async (result) => {
         try {
-          console.log("task updated", result);
           if (card.status === "done") {
             setUserReputation(card.points_rewarded)
               .then(() => {
@@ -225,13 +221,14 @@ const KanbanBoard = ({
         board.columns?.find((c) => c.id === "doing")?.cards?.length || 0;
       const doneCnt =
         board.columns?.find((c) => c.id === "done")?.cards?.length || 0;
-      console.log(
-        "EFFECT PROGRESS BAR",
-        board.columns,
-        todoCnt,
-        doingCnt,
-        doneCnt
-      );
+
+      // console.log(
+      //   "EFFECT PROGRESS BAR",
+      //   board.columns,
+      //   todoCnt,
+      //   doingCnt,
+      //   doneCnt
+      // );
 
       let totalCnt = todoCnt + doingCnt + doneCnt;
 
@@ -254,7 +251,7 @@ const KanbanBoard = ({
 
   useEffect(() => {
     columns.map(async (c) => {
-      console.log("UPDATING COLUMNS", c);
+      // console.log("UPDATING COLUMNS", c);
       await getTasksByStatus(c);
     });
   }, []);
@@ -263,7 +260,6 @@ const KanbanBoard = ({
     fetcher
       .get(`project/${projectId}`)
       .then(({ data: project }) => {
-        console.log("PROJECT INFO", project);
         setProjectDeadlineInfo(project);
         setProjectInfo(project);
       })
@@ -287,7 +283,6 @@ const KanbanBoard = ({
       .then(({ data }) => {
         let column = board.columns.find((c) => c.id === status);
 
-        console.log("task added", data, board);
         addCard(board, column, data, { on: "bottom" }); //update state
         getTasksByStatus(status);
       })
@@ -333,7 +328,7 @@ const KanbanBoard = ({
     let userReputation = currentUserStore.currentUser.reputation_points;
     let newStatus = destination.toColumnId;
 
-    console.log(`task "${card.description}" | ${card.status} -> ${newStatus}`);
+    // console.log(`task "${card.description}" | ${card.status} -> ${newStatus}`);
     if (card.status !== newStatus) {
       if (newStatus === "done") {
         if (userReputation < card.points_rewarded) {
@@ -356,7 +351,6 @@ const KanbanBoard = ({
 
     const newBoard = moveCard(board, source, destination); //update state
     setBoard(newBoard);
-    console.log("newBoard", newBoard);
   };
 
   const renderCard = (task, { dragging }) => (
@@ -374,7 +368,6 @@ const KanbanBoard = ({
   );
 
   const onCancel = () => {
-    console.log("CANCEL");
     setModalVisible(false);
   };
 
@@ -424,7 +417,7 @@ const KanbanBoard = ({
           style={{ width: "30%", margin: "auto" }}
           status="success"
           icon={<CompleteProjectButton projectInfo={projectInfo} />}
-          title="Projeto Concluído!"
+          title={t("kanban_board.result.title")}
           subTitle={
             projectInfo?.isDelayed ? (
               <Alert
@@ -472,14 +465,12 @@ const CompleteProjectButton = ({ projectInfo }) => {
   const { t } = useTranslation();
   const [completed, setCompleted] = useState(false);
   const currentUserStore = useCurrentUserStore();
-  console.log("projectInfo", projectInfo);
 
   const completeProject = async () => {
     await fetcher //update database
       .put(`/project/${projectInfo.id}/complete`)
       .then(async (result) => {
         try {
-          console.log("project completed", result);
           let userId = currentUserStore.currentUser.id;
           let userReputation = currentUserStore.currentUser.reputation_points;
           let newReputation =

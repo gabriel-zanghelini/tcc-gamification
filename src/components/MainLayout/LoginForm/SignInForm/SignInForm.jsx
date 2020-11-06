@@ -69,7 +69,7 @@ const SignInForm = ({ onOk }) => {
   };
 
   const onLogin = (user) => {
-    console.log("onLogin", user);
+    // console.log("onLogin", user);
     currentUserStore.setUser(user);
     setLoading(false);
     onOk();

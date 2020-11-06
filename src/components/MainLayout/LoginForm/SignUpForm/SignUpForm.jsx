@@ -59,11 +59,10 @@ const SignUpForm = ({ onOk }) => {
         reputation_points: 40,
       })
       .then(({ data }) => {
-        console.log("SIGN UP", data);
+        // console.log("SIGN UP", data);
         onLogin(data);
       })
       .catch(({ response }) => {
-        console.log("err", response);
         setLoading(false);
         switch (response?.data) {
           case "Email Already In Use":
@@ -75,7 +74,7 @@ const SignUpForm = ({ onOk }) => {
   };
 
   const onLogin = (user) => {
-    console.log("onLogin", user);
+    // console.log("onLogin", user);
     currentUserStore.setUser(user);
     setLoading(false);
     // onOk();

@@ -51,7 +51,6 @@ export default function register(app) {
           .compare(authData.password, registeredUser.password)
           .then((result) => {
             if (result) {
-              console.log(registeredUser.reputation_points);
               let userInfo = {
                 id: registeredUser.id,
                 name: registeredUser.name,
@@ -76,12 +75,13 @@ export default function register(app) {
         return res.status(401).send("Email Not Found");
       }
     } catch (err) {
+      console.log(err);
       return res.status(500).send(err);
     }
   });
 
   app.get("/login/token", authorize, async (req, res) => {
-    console.log("/login/token", req.user);
+    // console.log("/login/token", req.user);
     res.status(200).send(req.user);
   });
 }

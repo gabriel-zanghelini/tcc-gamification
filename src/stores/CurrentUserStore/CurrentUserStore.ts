@@ -19,7 +19,6 @@ class CurrentUserStore {
   @action
   setRepPoints = (points: number) => {
     if (this.currentUser) {
-      console.log("setRepPoints", points);
       this.currentUser.reputation_points = points;
     }
   };

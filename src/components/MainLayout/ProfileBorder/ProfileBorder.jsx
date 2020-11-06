@@ -21,7 +21,6 @@ const ProfileBorder = ({ children }) => {
   let percentNextLevel = 0;
 
   Object.keys(REPUTATION_BORDERS).forEach((b, i) => {
-    console.log(reputation, parseInt(b));
     if (reputation >= parseInt(b)) {
       Border = REPUTATION_BORDERS[b];
     }
@@ -32,9 +31,7 @@ const ProfileBorder = ({ children }) => {
   });
 
   percentNextLevel = ((reputation / nextLevelReputation) * 100).toFixed(0);
-  console.log(reputation, nextLevelReputation, percentNextLevel);
 
-  console.log("border", Border);
   return (
     <FlexDiv column="column">
       <span>

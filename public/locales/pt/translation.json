@@ -132,6 +132,9 @@
       "tooltipDone_0": "Nenhuma tarefa foi concluída ainda...",
       "tooltipDone_plural": "{{count}} tarefas concluídas"
     },
+    "result": {
+      "title": "Projeto Concluído!"
+    },
     "addTaskFeedback": "Você ganhou",
     "moveTaskFeedback1": "Você precisa ter pelo menos",
     "moveTaskFeedback2": "para concluir essa tarefa!",

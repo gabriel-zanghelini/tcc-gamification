@@ -130,7 +130,6 @@ const ProjectView = () => {
               bordered
               style={{ width: "40%" }}
               rowClassName={(record, rowIndex) => {
-                console.log(record, rowIndex);
                 if (rowIndex === 0) {
                   return "row-rank-1";
                 } else if (rowIndex === 1) {

@@ -18,7 +18,7 @@ export function verifyToken(token) {
 export async function validate(req, res, next) {
   const token = req.cookies[TOKEN_NAME];
   const { success, data } = verifyToken(token);
-  console.log("validate jwt", success);
+
   if (success) {
     req.user = await getUserByEmail(data.email);
   } else {

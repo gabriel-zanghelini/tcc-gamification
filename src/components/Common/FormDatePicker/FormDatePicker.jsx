@@ -23,12 +23,10 @@ const FormDatePicker = ({
   const errorMessage = showError ? t(error) : undefined;
 
   const onChange = (date, dateString) => {
-    console.log(dateString);
     formState[name].value = date;
     formState[name].dirty = true;
   };
 
-  console.log(i18n.language);
   return (
     <Form.Item
       validateStatus={status}

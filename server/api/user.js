@@ -122,7 +122,7 @@ export default function register(app) {
     try {
       const id = req.params.id;
       const points = req.params.points;
-      console.log("setUserPoints", id, points);
+
       await setUserPoints(id, points);
 
       return res.sendStatus(200);

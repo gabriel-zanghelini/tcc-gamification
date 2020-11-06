@@ -132,6 +132,9 @@
       "tooltipDone_0": "No task done yet.",
       "tooltipDone_plural": "{{count}} tasks done"
     },
+    "result": {
+      "title": "Project Completed!"
+    },
     "addTaskFeedback": "You have earned",
     "moveTaskFeedback1": "You need at least",
     "moveTaskFeedback2": "to complete this task!",

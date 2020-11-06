@@ -58,7 +58,6 @@ const ProjectForm = () => {
       .catch((err) => console.error);
   };
 
-  console.log(redirectId !== null);
   return (
     <>
       {redirectId === null ? (

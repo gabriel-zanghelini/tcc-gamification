@@ -15,7 +15,7 @@ const { Title } = Typography;
 const HomeView = () => {
   const { t } = useTranslation();
   const currentUserStore = useCurrentUserStore();
-  console.log("HV", currentUserStore.isLoggedIn);
+
   return (
     <>
       <ContentTabs>
