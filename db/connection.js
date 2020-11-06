@@ -1,7 +1,10 @@
 const { Pool } = require("pg");
 require("dotenv/config");
 
+console.log("ENV", process.env.NODE_ENV, process.env.DATABASE_URL)
+
 console.log(
+  "PG_DATA:",
   process.env.PG_USER,
   process.env.PG_PASSWORD,
   process.env.PG_HOST,
