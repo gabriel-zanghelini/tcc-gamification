@@ -2,7 +2,7 @@ const { Pool } = require("pg");
 require("dotenv/config");
 
 console.log("ENV", process.env.NODE_ENV, process.env.DATABASE_URL);
-
+console.log("HEROKU", process.env.DATABASE_URL);
 console.log(
   "PG_DATA:",
   process.env.USER,
