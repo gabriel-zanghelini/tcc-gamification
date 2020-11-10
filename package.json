@@ -1,6 +1,7 @@
 {
   "name": "tcc-gamification",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.28",
