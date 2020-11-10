@@ -2,24 +2,23 @@ const { Pool } = require("pg");
 require("dotenv/config");
 
 console.log("ENV", process.env.NODE_ENV, process.env.DATABASE_URL);
-console.log("HEROKU", process.env.DATABASE_URL);
 console.log(
   "PG_DATA:",
-  process.env.USER,
-  process.env.PASSWORD,
-  process.env.HOST,
-  process.env.PORT,
-  process.env.DATABASE
+  process.env.PG_USER,
+  process.env.PG_PASSWORD,
+  process.env.PG_HOST,
+  process.env.PG_PORT,
+  process.env.PG_DATABASE
 );
 
 const pool =
   process.env.NODE_ENV === "development"
     ? new Pool({
-        user: process.env.USER,
-        password: process.env.PASSWORD,
-        host: process.env.HOST,
-        port: process.env.PORT,
-        database: process.env.DATABASE,
+        user: process.env.PG_USER,
+        password: process.env.PG_PASSWORD,
+        host: process.env.PG_HOST,
+        port: process.env.PG_PORT,
+        database: process.env.PG_DATABASE,
       })
     : new Pool({
         connectionString: process.env.DATABASE_URL,
