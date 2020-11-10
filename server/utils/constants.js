@@ -5,7 +5,7 @@ import cryptoRandomString from "crypto-random-string";
 
 export const ENV = process.env.NODE_ENV || "development";
 
-export const PORT = process.env.PORT || 3000;
+export const PORT = process.env.PORT || 8080;
 export const HOST = "0.0.0.0";
 
 const interfaces = os.networkInterfaces();
