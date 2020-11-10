@@ -6,7 +6,7 @@ import Express from "express";
 
 import api from "./api";
 import { validate } from "./utils/auth";
-import { PORT, HOST, IP, STATIC_PATH } from "./utils/constants";
+import { PORT, STATIC_PATH } from "./utils/constants";
 
 const app = Express();
 
@@ -19,16 +19,14 @@ app.use("/api", validate, api);
 app.use(Express.static(STATIC_PATH));
 app.get("*", (req, res) => res.sendFile(path.join(STATIC_PATH, "index.html")));
 
-console.log('SERVER INFO', PORT, HOST, IP, STATIC_PATH);
-console.log(`Starting the development server...
-`);
+console.log("SERVER INFO", PORT, STATIC_PATH);
 app.listen(PORT, () =>
   console.log(`Compiled successfully!
   
   You can now access your backend through http.
 
-    Local:            http://localhost:${PORT}/
-    On Your Network:  http://${IP}:${PORT}/
+  HOST: ${process.env.HOST}
+  PORT: ${process.env.PORT}
 
   `)
 );
