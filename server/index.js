@@ -10,6 +10,8 @@ import { PORT, STATIC_PATH } from "./utils/constants";
 
 const app = Express();
 
+console.log("SERVER INFO", PORT, STATIC_PATH);
+
 app.use(Express.json());
 app.use(cookieParser());
 app.use(cors());

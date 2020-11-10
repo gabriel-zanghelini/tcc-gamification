@@ -3,7 +3,7 @@ import path from "path";
 
 import cryptoRandomString from "crypto-random-string";
 
-export const ENV = process.env.ENVIRONMENT || "DEV";
+export const ENV = process.env.NODE_ENV || "development";
 
 export const PORT = process.env.PORT || 3000;
 export const HOST = "0.0.0.0";
@@ -28,5 +28,5 @@ export const TOKEN_NAME = "access-token";
 export const STATIC_PATH = path.join(
   __dirname,
   "../..",
-  ENV === "DEV" ? "build" : "build"
+  ENV === "development" ? "build" : "build"
 );
