@@ -22,6 +22,9 @@ const pool =
       })
     : new Pool({
         connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false
+        }
       });
 
 // postgres://gafjlouxgkynoz:f4ed7bdb3fdc1c035d1a6398227fd187b99314f58a7745d18e095b809e5ae9f5@ec2-100-25-100-81.compute-1.amazonaws.com:5432/d6jro4q0k1cg7h

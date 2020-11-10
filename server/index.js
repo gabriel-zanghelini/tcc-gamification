@@ -22,7 +22,7 @@ app.get("*", (req, res) => res.sendFile(path.join(STATIC_PATH, "index.html")));
 console.log('SERVER INFO', PORT, HOST, IP, STATIC_PATH);
 console.log(`Starting the development server...
 `);
-app.listen(PORT, HOST, () =>
+app.listen(PORT, () =>
   console.log(`Compiled successfully!
   
   You can now access your backend through http.
