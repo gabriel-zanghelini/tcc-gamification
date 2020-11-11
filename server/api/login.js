@@ -25,7 +25,7 @@ export default function register(app) {
           .cookie(TOKEN_NAME, createToken(userInfo), {
             httpOnly: true,
             sameSite: true,
-            secure: ENV !== "DEV",
+            secure: ENV !== "development",
           })
           .status(200)
           .send(userInfo);
@@ -62,7 +62,7 @@ export default function register(app) {
                 .cookie(TOKEN_NAME, createToken(userInfo), {
                   httpOnly: true,
                   sameSite: true,
-                  secure: ENV !== "DEV",
+                  secure: ENV !== "development",
                   // signed: true,
                 })
                 .status(200)
