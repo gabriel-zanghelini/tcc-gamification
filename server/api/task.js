@@ -1,6 +1,10 @@
-import { pool } from "../../db/connection";
+/*import { pool } from "../../db/connection";*/
 
-export const createTask = async (task, projectId) => {
+var connection = require("../../db/connection");
+
+var pool = connection.pool;
+
+const createTask = async (task, projectId) => {
   let taskResult = null;
 
   await pool
@@ -84,7 +88,7 @@ const deleteTask = async (id) => {
     });
 };
 
-export default function register(app) {
+function register(app) {
   app.get("/task", async (req, res) => {
     try {
       pool.connect().then((client) => {
@@ -141,3 +145,8 @@ export default function register(app) {
     }
   });
 }
+
+module.exports = {
+  createTask: createTask,
+  register: register,
+};

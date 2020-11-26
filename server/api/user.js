@@ -1,7 +1,12 @@
-import bcrypt from "bcrypt";
-import { pool } from "../../db/connection";
+/*import bcrypt from "bcrypt";
+import { pool } from "../../db/connection";*/
 
-export const getUserByEmail = async (email) => {
+var bcrypt = require("bcrypt");
+var connection = require("../../db/connection");
+
+var pool = connection.pool;
+
+const getUserByEmail = async (email) => {
   let user = null;
   await pool.connect().then((client) => {
     return client
@@ -23,7 +28,7 @@ export const getUserByEmail = async (email) => {
   return user;
 };
 
-export const createUser = async (user) => {
+const createUser = async (user) => {
   let userResult = null;
 
   await bcrypt.hash(user.password, 10).then(async (hash) => {
@@ -76,7 +81,7 @@ const setUserPoints = async (userId, points) => {
     });
 };
 
-export default function register(app) {
+function register(app) {
   app.get("/user", async (req, res) => {
     try {
       pool.connect().then((client) => {
@@ -162,3 +167,9 @@ export default function register(app) {
     }
   });
 }
+
+module.exports = {
+  getUserByEmail: getUserByEmail,
+  createUser: createUser,
+  register: register,
+};

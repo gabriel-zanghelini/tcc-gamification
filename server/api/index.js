@@ -1,17 +1,26 @@
-import { Router } from "express";
+/*import { Router } from "express";
 
 import registerProject from "./project";
 import registerLogin from "./login";
 import registerUser from "./user";
 import registerTask from "./task";
-import registerPontuation from "./pontuation";
+import registerPontuation from "./pontuation";*/
 
-const router = Router();
+var express = require("express");
 
-registerPontuation(router);
-registerProject(router);
-registerLogin(router);
-registerUser(router);
-registerTask(router);
+var registerProject = require("./project");
+var registerLogin = require("./login");
+var registerUser = require("./user");
+var registerTask = require("./task");
+var registerPontuation = require("./pontuation");
 
-export default router;
+const router = express.Router();
+
+registerPontuation.register(router);
+registerProject.register(router);
+registerLogin.register(router);
+registerUser.register(router);
+registerTask.register(router);
+
+/*export default router;*/
+module.exports = router;

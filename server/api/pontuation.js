@@ -1,4 +1,5 @@
-import { pool } from "../../db/connection";
+/*import { pool } from "../../db/connection";*/
+var { pool } =  require("../../db/connection");
 
 const getUserPontuationByProject = async ({ userId, projectId }) => {
   let userPontuation = null;
@@ -127,7 +128,7 @@ const removePontuation = async (points, userId, projectId) => {
     });
 };
 
-export default function register(app) {
+function register(app) {
   app.put("/pontuation/add", async (req, res) => {
     try {
       const data = req.body;
@@ -179,4 +180,8 @@ export default function register(app) {
       return res.sendStatus(500);
     }
   });
-}
+};
+
+module.exports = {
+  register: register,
+};

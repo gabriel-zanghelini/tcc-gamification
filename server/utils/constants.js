@@ -1,32 +1,21 @@
 // import os from "os";
-import path from "path";
+/*import path from "path";
 
-import cryptoRandomString from "crypto-random-string";
+import cryptoRandomString from "crypto-random-string";*/
+var path = require("path");
+var cryptoRandomString = require("crypto-random-string");
 
-export const ENV = process.env.NODE_ENV || "development";
+const ENV = process.env.NODE_ENV || "development";
 
-export const PORT = process.env.PORT || 5000;
-// export const HOST = "0.0.0.0";
+const PORT = process.env.PORT || 5000;
 
-// const interfaces = os.networkInterfaces();
+const TOKEN_KEY = cryptoRandomString({ length: 124, type: "base64" });
+const TOKEN_NAME = "access-token";
 
-// let CURRENT_IP = HOST;
-// if (CURRENT_IP === "0.0.0.0" || CURRENT_IP === "127.0.0.1") {
-//   for (const [iface] of Object.values(interfaces)) {
-//     if (iface.family === "IPv4" && !iface.internal) {
-//       CURRENT_IP = iface.address;
-//       break;
-//     }
-//   }
-// }
-
-// export const IP = CURRENT_IP;
-
-export const TOKEN_KEY = cryptoRandomString({ length: 124, type: "base64" });
-export const TOKEN_NAME = "access-token";
-
-export const STATIC_PATH = path.join(
+const STATIC_PATH = path.join(
   __dirname,
   "../..",
   ENV === "development" ? "build" : "build"
 );
+
+module.exports = { ENV, PORT, TOKEN_KEY, TOKEN_NAME, STATIC_PATH };
