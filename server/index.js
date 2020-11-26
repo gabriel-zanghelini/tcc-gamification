@@ -27,7 +27,6 @@ app.listen(PORT, () =>
   
   You can now access your backend through http.
 
-  HOST: ${process.env.HOST}
   PORT: ${process.env.PORT}
 
   `)
