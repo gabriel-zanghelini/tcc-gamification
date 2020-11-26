@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "homepage": "https://tcc-gamification.herokuapp.com/",
   "private": true,
+  "engines": {
+    "node": "12.13.0"
+  },
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
