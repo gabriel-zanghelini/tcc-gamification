@@ -334,9 +334,9 @@ const KanbanBoard = ({
         if (userReputation < card.points_rewarded) {
           let msg = (
             <span>
-              {t("kaban_board.moveTaskFeedback1")}
+              {t("kanban_board.moveTaskFeedback1")}
               <RepPointsTag points={card.points_rewarded} />
-              {t("kaban_board.moveTaskFeedback2")}
+              {t("kanban_board.moveTaskFeedback2")}
             </span>
           );
           message.error(msg, 3);
