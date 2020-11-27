@@ -15,15 +15,15 @@ const create_tb_task = async () => {
 						description text NOT NULL,
 						status text NOT NULL,
 						difficulty integer NOT NULL,
-						deadline date NOT NULL,
 						points_rewarded integer NOT NULL,
-						project_id integer NOT NULL,
+						project_id integer,
+						deadline date,
+						CONSTRAINT tb_task_pkey PRIMARY KEY (id),
 						CONSTRAINT tb_task_project_fkey FOREIGN KEY (project_id)
 								REFERENCES public.tb_project (id) MATCH SIMPLE
 								ON UPDATE NO ACTION
 								ON DELETE NO ACTION
-								NOT VALID,
-						CONSTRAINT "tb_task_pkey" PRIMARY KEY (id)
+								NOT VALID
 				)
 
 				TABLESPACE pg_default;
