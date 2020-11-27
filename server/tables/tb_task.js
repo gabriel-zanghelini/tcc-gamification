@@ -28,8 +28,8 @@ const create_tb_task = async () => {
 
 				TABLESPACE pg_default;
 
-				ALTER TABLE public.tb_task
-						OWNER to postgres;
+				-- ALTER TABLE public.tb_task
+				-- 		OWNER to postgres;
         `
       )
       .then((result) => {
