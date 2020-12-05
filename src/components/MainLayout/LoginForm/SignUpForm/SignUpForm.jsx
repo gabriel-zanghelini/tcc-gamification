@@ -68,6 +68,12 @@ const SignUpForm = ({ onOk }) => {
           case "Email Already In Use":
             formState.email.error = "login.error.email_in_use";
             break;
+          case "Invalid Username":
+            formState.name.error = "login.error.invalid_username";
+            break;
+          case "Invalid Email":
+            formState.email.error = "login.error.invalid_email";
+            break;
           default:
         }
       });

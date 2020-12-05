@@ -31,6 +31,8 @@
     "error": {
       "wrong_username": "Wrong Username!",
       "wrong_password": "Wrong Password!",
+      "invalid_username": "Invalid Username!",
+      "invalid_email": "Invalid Email!",
       "email_in_use": "Email already in use!",
       "email_not_found": "Email not found!"
     }

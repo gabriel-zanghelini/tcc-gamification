@@ -1,5 +1,6 @@
-/*import { pool } from "../../db/connection";*/
-var { pool } =  require("../../db/connection");
+var connection = require("../../db/connection");
+
+var pool = connection.pool;
 
 const getUserPontuationByProject = async ({ userId, projectId }) => {
   let userPontuation = null;

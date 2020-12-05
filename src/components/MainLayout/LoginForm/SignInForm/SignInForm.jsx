@@ -53,12 +53,13 @@ const SignInForm = ({ onOk }) => {
       })
       .catch(({ response }) => {
         setLoading(false);
+        console.log(response?.data);
         switch (response?.data) {
           case "Incorrect Password":
             formState.password.error = "login.error.wrong_password";
             break;
-          case "Incorrect Email":
-            formState.password.error = "login.error.wrong_email";
+          case "Invalid Email":
+            formState.email.error = "login.error.invalid_email";
             break;
           case "Email Not Found":
             formState.email.error = "login.error.email_not_found";

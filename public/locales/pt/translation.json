@@ -31,6 +31,8 @@
     "error": {
       "wrong_username": "Usuário Incorreto!",
       "wrong_password": "Senha Incorreta!",
+      "invalid_username": "Usuário Inválido!",
+      "invalid_email": "Email Inválido!",
       "email_in_use": "Email já está em uso!",
       "email_not_found": "Email não encontrado!"
     }

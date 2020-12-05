@@ -18,11 +18,21 @@ var createUser = user.createUser;
 
 var ENV = constants.ENV;
 var TOKEN_NAME = constants.TOKEN_NAME;
+const EMAIL_REG = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 function register(app) {
   app.post("/signup", async (req, res, next) => {
     try {
       const authData = req.body;
+
+      if (!authData.name && authData.name === "") {
+        return res.status(401).send("Invalid Username");
+      }
+
+      if (!EMAIL_REG.test(authData.email)) {
+        return res.status(401).send("Invalid Email");
+      }
+
       const registeredUser = await getUserByEmail(authData.email);
 
       if (!registeredUser) {
@@ -55,47 +65,14 @@ function register(app) {
     }
   });
 
-  /*DEIXEI ISSO PRA CASO EU TENHA FEITO MERDA
-export default function register(app) {
-  app.post("/signup", async (req, res, next) => {
-    try {
-      const authData = req.body;
-      const registeredUser = await getUserByEmail(authData.email);
-
-      if (!registeredUser) {
-        let { id, reputation_points } = await createUser(authData);
-
-        let userInfo = {
-          id: id,
-          name: authData.name,
-          email: authData.email,
-          reputation_points: reputation_points,
-        };
-        
-        return res
-          .cookie(TOKEN_NAME, createToken(userInfo), {
-            httpOnly: true,
-            sameSite: true,
-            secure: ENV !== "development",
-          })
-          .status(200)
-          .send(userInfo);
-      } else {
-        return res.status(401).send("Email Already In Use");
-      }
-    } catch (err) {
-      if (err) {
-        return res.status(500).send(err);
-      }
-
-      return res.status(500);
-    }
-  });*/
-
   app.post("/login", async (req, res) => {
     try {
       const authData = req.body;
       const registeredUser = await getUserByEmail(authData.email);
+
+      if (!EMAIL_REG.test(authData.email)) {
+        return res.status(401).send("Invalid Email");
+      }
 
       if (registeredUser) {
         bcrypt
