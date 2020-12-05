@@ -174,7 +174,7 @@ const KanbanBoard = ({
               .then(() => {
                 let msg = (
                   <span>
-                    {t("kanban_board.addTaskFeedback")}
+                    {t("kanban_board.add_task_feedback")}
                     &nbsp;
                     <RepPointsTag points={card.points_rewarded} />
                   </span>
@@ -307,7 +307,7 @@ const KanbanBoard = ({
           await setUserReputation(newReputation).then(() => {
             let msg = (
               <span>
-                {t("kanban_board.removeTaskFeedback")}
+                {t("kanban_board.remove_task_feedback")}
                 &nbsp;
                 <RepPointsTag points={pointsLost} />
               </span>
@@ -328,20 +328,24 @@ const KanbanBoard = ({
     let userReputation = currentUserStore.currentUser.reputation_points;
     let newStatus = destination.toColumnId;
 
-    // console.log(`task "${card.description}" | ${card.status} -> ${newStatus}`);
+    console.log(`task "${card.description}" | ${card.status} -> ${newStatus}`);
     if (card.status !== newStatus) {
       if (newStatus === "done") {
         if (userReputation < card.points_rewarded) {
           let msg = (
             <span>
-              {t("kanban_board.moveTaskFeedback1")}
+              {t("kanban_board.move_task_feedback1")}
               <RepPointsTag points={card.points_rewarded} />
-              {t("kanban_board.moveTaskFeedback2")}
+              {t("kanban_board.move_task_feedback2")}
             </span>
           );
           message.error(msg, 3);
           return;
         }
+      } else if (card.status === "done" && newStatus !== "done") {
+        let msg = <span>{t("kanban_board.task_already_done")}</span>;
+        message.error(msg, 3);
+        return;
       }
 
       card.status = newStatus;
@@ -423,7 +427,7 @@ const KanbanBoard = ({
               <Alert
                 message={
                   <span>
-                    {t("kanban_board.projectResultDelayed")}
+                    {t("kanban_board.project_result_delayed")}
                     &nbsp;
                     <RepPointsTag points={projectInfo?.reputationOnComplete} />
                   </span>
@@ -435,7 +439,7 @@ const KanbanBoard = ({
               <Alert
                 message={
                   <span>
-                    {t("kanban_board.projectResultOnTime")}
+                    {t("kanban_board.project_result_on_time")}
                     &nbsp;
                     <RepPointsTag points={projectInfo?.reputationOnComplete} />
                   </span>
@@ -483,7 +487,7 @@ const CompleteProjectButton = ({ projectInfo }) => {
             .then(() => {
               let msg = (
                 <span>
-                  {t("kanban_board.addTaskFeedback")}
+                  {t("kanban_board.add_task_feedback")}
                   &nbsp;
                   <RepPointsTag points={projectInfo?.reputationOnComplete} />
                 </span>

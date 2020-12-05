@@ -137,13 +137,14 @@
     "result": {
       "title": "Projeto Concluído!"
     },
-    "addTaskFeedback": "Você ganhou",
-    "moveTaskFeedback1": "Você precisa ter pelo menos",
-    "moveTaskFeedback2": "para concluir essa tarefa!",
-    "removeTaskFeedback": "Você perdeu",
-    "completeProjectFeedback": "Você ganhou",
-    "projectResultOnTime": "Parabéns! Projeto concluído dentro do prazo:",
-    "projectResultDelayed": "Bom trabalho! Mas você não conseguiu concluir dentro do prazo:"
+    "task_already_done": "Essa tarefa já foi concluída. Não é mais possível movê-la.",
+    "add_task_feedback": "Você ganhou",
+    "move_task_feedback1": "Você precisa ter pelo menos",
+    "move_task_feedback2": "para concluir essa tarefa!",
+    "remove_task_feedback": "Você perdeu",
+    "complete_project_feedback": "Você ganhou",
+    "project_result_on_time": "Parabéns! Projeto concluído dentro do prazo:",
+    "project_result_delayed": "Bom trabalho! Mas você não conseguiu concluir dentro do prazo:"
   },
   "kanban_card": {
     "reputation_points_awarded": "Pontos de Reputação concedidos",

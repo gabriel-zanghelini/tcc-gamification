@@ -137,13 +137,14 @@
     "result": {
       "title": "Project Completed!"
     },
-    "addTaskFeedback": "You have earned",
-    "moveTaskFeedback1": "You need at least",
-    "moveTaskFeedback2": "to complete this task!",
-    "removeTaskFeedback": "You lost",
-    "completeProjectFeedback": "You have earned",
-    "projectResultOnTime": "Congratulations! You completed on time:",
-    "projectResultDelayed": "Good job! But you failed to complete on time:"
+    "task_already_done": "This task has already been completed. It is no longer possible to move it.",
+    "add_task_feedback": "You have earned",
+    "move_task_feedback1": "You need at least",
+    "move_task_feedback2": "to complete this task!",
+    "remove_task_feedback": "You lost",
+    "complete_project_feedback": "You have earned",
+    "project_result_on_time": "Congratulations! You completed on time:",
+    "project_result_delayed": "Good job! But you failed to complete on time:"
   },
   "kanban_card": {
     "reputation_points_awarded": "Reputation Points Awarded",
