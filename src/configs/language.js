@@ -9,10 +9,12 @@ export const EN_DATE_FORMAT = "MM/DD/YYYY";
 export const PT_DATE_FORMAT = "DD/MM/YYYY";
 
 export const getDateString = (date) => {
-  let day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+  let day = date.getUTCDate() > 9 ? date.getUTCDate() : "0" + date.getUTCDate();
   let month =
-    date.getMonth() > 8 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1);
-  let year = date.getFullYear();
+    date.getUTCMonth() > 8
+      ? date.getUTCMonth() + 1
+      : "0" + (date.getUTCMonth() + 1);
+  let year = date.getUTCFullYear();
 
   if (i18n.language === "pt-BR") {
     return `${day}/${month}/${year}`;
