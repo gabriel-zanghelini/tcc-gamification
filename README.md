@@ -1,7 +1,8 @@
-# tcc-gamification
- SISTEMA DE GERENCIAMENTO DE PROJETOS COM TÉCNICAS DE GAMIFICAÇÃO
+# SISTEMA DE GERENCIAMENTO DE PROJETOS COM TÉCNICAS DE GAMIFICAÇÃO
+
+Trabalho desenvolvido para a conclusão do curso de Engenharia de Software - Católica de Santa Catarina - Jaraguá do Sul
  
- Gabriel Zanghelini
+Autor: Gabriel Zanghelini
 
 ## Alterar cor primária do Antd 
 
